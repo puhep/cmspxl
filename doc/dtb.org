@@ -1,0 +1,41 @@
+# Digital Test Board
+
+* Board Info
+
+** DTB 47 
+
+   <2014-01-15 Wed> Connected with purduepix-Inspiron-660 (rename it to pupx1). 
+   Found problem with psi46test:
+   : PSI46V2 ROC/Wafer Tester V1.3 (07.08.2013)
+   : void Init();
+   : ERROR: READ_ERROR
+   
+   <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
+
+
+** DTB 48 
+
+   <2014-01-15 Wed> Tested in PHYS347. Connected with pupx1, passed the psi46test:
+
+ : PSI46V2 ROC/Wafer Tester V1.3 (07.08.2013)
+ : 
+ : DTB DTB_WRMT3D opened
+ : --- DTB info-------------------------------------
+ : Board id:    48
+ : HW version:  DTB1.2
+ : FW version:  1.1
+ : SW version:  1.7
+ : USB id:      DTB_WRMT3D
+ : MAC address: 40D855118030
+ : Hostname:    pixelDTB048
+ : Comment:     
+ : -------------------------------------------------
+ : 
+ : +-- control commands ------------------------------------------+
+ : | h                  display this text                         |
+ : | exit               exit commander                            |
+ : +-- chip test -------------------------------------------------+
+ : | test <chip id>     run chip test                             |
+ : +--------------------------------------------------------------+
+
+   
