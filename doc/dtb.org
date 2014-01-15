@@ -4,18 +4,24 @@
 
 ** DTB 47 
 
-   <2014-01-15 Wed> Connected with purduepix-Inspiron-660 (rename it to pupx1). 
-   Found problem with psi46test:
+   <2014-01-15 Wed> 
+   Connected with purduepix-Inspiron-660 (rename it to pupx1). 
+
+   Noticed the four LED's labeled 1 through 4 DOES NOT show a moving pattern!
+
+   Try to test with psi46test:
    : PSI46V2 ROC/Wafer Tester V1.3 (07.08.2013)
    : void Init();
    : ERROR: READ_ERROR
-   
+
    <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
 
 
 ** DTB 48 
 
-   <2014-01-15 Wed> Tested in PHYS347. Connected with pupx1, passed the psi46test:
+   <2014-01-15 Wed> Connected with pupx1, noticed the four LEDs moving pattern. 
+
+   Passed the psi46test:
 
  : PSI46V2 ROC/Wafer Tester V1.3 (07.08.2013)
  : 
@@ -37,5 +43,24 @@
  : +-- chip test -------------------------------------------------+
  : | test <chip id>     run chip test                             |
  : +--------------------------------------------------------------+
-
    
+   Try with pxar:
+
+   [10:55:07.758] ERROR: RPC Call count of DTB and host do not match.
+
+   Update the FW to 1.13, according to [[https://twiki.cern.ch/twiki/bin/view/CMS/PixelDTB][PixelDTB]]. 
+   
+   DTB DTB_WRMT3D opened
+   --- DTB info-------------------------------------
+   Board id:    48
+   HW version:  DTB1.2
+   FW version:  1.2
+   SW version:  1.13
+   USB id:      DTB_WRMT3D
+   MAC address: 40D855118030
+   Hostname:    pixelDTB048
+
+   Try again with pxar: still problem. 
+
+   <2014-01-14 Tue> Introduced by Kirk in PHYS347. 
+
