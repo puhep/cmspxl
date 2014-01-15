@@ -14,6 +14,8 @@
    : void Init();
    : ERROR: READ_ERROR
 
+   Returned to Mayur at PHYS360. Labeled "BAD FIRMWARE". 
+
    <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
 
 
@@ -64,6 +66,8 @@
 
    Got info from Simon, need to use the file at: 
    https://twiki.cern.ch/twiki/bin/view/CMS/Pxar
+   
+   Can see the pXar GUI now! 
    
    <2014-01-14 Tue> Introduced by Kirk in PHYS347. 
 
