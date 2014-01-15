@@ -62,5 +62,8 @@
 
    Try again with pxar: still problem. 
 
+   Got info from Simon, need to use the file at: 
+   https://twiki.cern.ch/twiki/bin/view/CMS/Pxar
+   
    <2014-01-14 Tue> Introduced by Kirk in PHYS347. 
 
