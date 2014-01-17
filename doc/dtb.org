@@ -21,6 +21,8 @@
 
 ** DTB 48 
 
+   <2014-01-17 Fri> Flashed with 1.14. 
+
    <2014-01-15 Wed> Connected with pupx1, noticed the four LEDs moving pattern. 
 
    Passed the psi46test:
