@@ -20,13 +20,16 @@
 
 
 ** DTB 48 
-
+   
+   <2014-02-04 Tue> Flashed with 1.16 for HDI reception test. 
+   
    <2014-01-29 Wed> Flash with 1.17 with JTAG... with error. 
    Found twiki:
    http://www.alterawiki.com/wiki/Quartus_for_Linux#Setup_JTAG
    
    http://www.ict.kth.se/courses/IS1200/2008-2009/nios2setup/linux.html
    
+   <2014-01-17 Fri> Flashed with 1.14. 
 
    <2014-01-15 Wed> Connected with pupx1, noticed the four LEDs moving pattern. 
 
