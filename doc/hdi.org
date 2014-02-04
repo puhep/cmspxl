@@ -1,0 +1,30 @@
+
+* FPix HDI Drawing #173854-1
+  
+  <2014-01-28 Tue> Test the DTB 66 and 68 
+  
+  w/o power connection: no output in pin 68 and 66. 
+  used the psi46test: hvon, can see the led on, but no output on pin66. 
+
+  connect to the adaptor card: 
+  
+  | Voltage (V) | Current (uA) |
+  |-------------+--------------|
+  | 2           | 0            |
+  | 5           | 0            |
+  | 10          | 0            |
+  | 20          | 10           |
+  
+
+  <2014-01-27 Mon> Attached to the flex cable and connected with the adapter card. 
+  Set complience 105uA on Keithiley 2410.
+  Take apart DTB-48, found pin 66 (BIAS_GND) and 68(BIAS) for the HV 
+
+  
+
+* HDI with TBM08 #21 - Good  
+
+  <2014-02-04 Tue> Connected with DTB#48, use Robert's psi46test
+  software, flash v1.16 from Suvadeep  
+
+  <2014-02-03 Mon> Received from FNAL. 
