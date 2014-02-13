@@ -2,7 +2,16 @@
 
 * Board Info
 
+** DTB 40 
+   <2014-02-05 Wed> Took from Kirk's office, with initial label "OLD
+   FIRMWARE". Now in PHYS 347. 
+   Updated the firmware to 1.17. 
+   
+   
 ** DTB 47 
+
+   <2014-02-13 Thu> Took from PHYS360 to PHYS347.
+   Flashed with v1.25 using JTAG. 
 
    <2014-01-15 Wed> 
    Connected with purduepix-Inspiron-660 (rename it to pupx1). 
