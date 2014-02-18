@@ -1,0 +1,11 @@
+nDeadPixel: 0
+nNoisyPixel: 0
+nDeadTrimbits: 0
+nDeadBumps: 0
+nMaskDefect: 0
+nAddressProblems: 0
+nRootFileProblems: 1
+SCurve 4160 227.437 38.6694
+Threshold 4160 60.7269 1.9449
+Gain 4160 2.82507 0.119664
+Pedestal 4160 307.44 41.4083

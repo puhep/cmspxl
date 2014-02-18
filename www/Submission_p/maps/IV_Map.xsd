@@ -1,0 +1,64 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created from XmlMap.Name: CV_scan -->
+<!-- XmlMap.DataBinding.SourceUrl: C:\Users\Kamal\Desktop\PurdueSensor_BBM-WA17-S8-1x1_PostAssembly_IV.xml -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element nillable="true" name="ROOT">
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0">
+				<xsd:element minOccurs="0" nillable="true" name="HEADER" form="unqualified">
+					<xsd:complexType>
+						<xsd:sequence minOccurs="0">
+							<xsd:element minOccurs="0" nillable="true" name="TYPE" form="unqualified">
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="EXTENSION_TABLE_NAME" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="NAME" form="unqualified"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element minOccurs="0" nillable="true" name="RUN" form="unqualified">
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="RUN_NAME" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="RUN_BEGIN_TIMESTAMP" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="INITIATED_BY_USER" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="LOCATION" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="COMMENT_DESCRIPTION" form="unqualified"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element minOccurs="0" nillable="true" name="DATA_SET" form="unqualified">
+					<xsd:complexType>
+						<xsd:sequence minOccurs="0">
+							<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="VERSION" form="unqualified"/>
+							<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="COMMENT_DESCRIPTION" form="unqualified"/>
+							<xsd:element minOccurs="0" nillable="true" name="PART" form="unqualified">
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="SERIAL_NUMBER" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:string" name="KIND_OF_PART" form="unqualified"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element minOccurs="0" maxOccurs="unbounded" nillable="true" name="DATA" form="unqualified">
+								<xsd:complexType>
+									<xsd:sequence minOccurs="0">
+										<xsd:element minOccurs="0" nillable="true" type="xsd:integer" name="VOLTAGE_VOLT" form="unqualified"/>
+										<xsd:element minOccurs="0" nillable="true" type="xsd:double" name="ACTV_CURRENT_AMP" form="unqualified"/>
+
+	<xsd:element minOccurs="0" nillable="true" type="xsd:double" name="GRD_CURRENT_AMP" form="unqualified"/>
+
+	<xsd:element minOccurs="0" nillable="true" type="xsd:double" name="TOTAL_CURRENT_AMP" form="unqualified"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
