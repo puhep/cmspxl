@@ -8,6 +8,7 @@ __author__ = "Xin Shi <Xin.Shi@cern.ch>"
 
 import csv
 import sys
+from decimal import Decimal 
 
 csvFile = sys.argv[1]
 xmlFile = csvFile.replace('.csv', '.xml')
@@ -42,16 +43,19 @@ for row in csvData:
 
     if rowNum == 1:
         print 'Using %s and %s as Voltage and Current ...' %(row[0], row[1]) 
+        if '[nA]' in row[1]:
+            factor = 1e-9 
+            print 'Convert from nA to A...'
 
     else: 
-        voltage = row[0]
-        current = row[1]
+        voltage = Decimal(row[0]) 
+        current = Decimal(row[1]) * Decimal(factor)
         xmlData.write('<DATA>\n')
-        xmlData.write('<VOLTAGE_VOLT>%s</VOLTAGE_VOLT>\n' %voltage)
-        xmlData.write('<TOTAL_CURRENT_AMP>%s</TOTAL_CURRENT_AMP>\n' %current)
+        xmlData.write('<VOLTAGE_VOLT>%.2E</VOLTAGE_VOLT>\n' %voltage)
+        xmlData.write('<TOTAL_CURRENT_AMP>%.2E</TOTAL_CURRENT_AMP>\n' %current)
         xmlData.write('</DATA>\n')
 
-        if len(current) == 0:
+        if len(row[0]) == 0 or len(row[1]) == 0 :
             break
 
 xmlData.write('</DATA_SET>\n')
