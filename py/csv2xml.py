@@ -52,7 +52,6 @@ xmlHeader = '''<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 ''' % (st, user, sr) 
 
 xmlData.write(xmlHeader)
-xmlData.write('<DATA_SET>\n')
 
 rowNum = 0
 for row in csvData:
