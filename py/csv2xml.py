@@ -56,9 +56,12 @@ xmlData.write(xmlHeader)
 rowNum = 0
 for row in csvData:
     rowNum +=1
+    if len(row[0]) == 0 or len(row[1]) == 0 :
+        break
 
     if rowNum == 1:
         print 'Using %s and %s as Voltage and Current ...' %(row[0], row[1]) 
+        factor = 1 
         if '[nA]' in row[1]:
             factor = 1e-9 
             print 'Convert from nA to A...'
@@ -71,8 +74,6 @@ for row in csvData:
         xmlData.write('<TOT_CURRENT_AMP>%.2E</TOT_CURRENT_AMP>\n' %current)
         xmlData.write('</DATA>\n')
 
-        if len(row[0]) == 0 or len(row[1]) == 0 :
-            break
 
 xmlData.write('</DATA_SET>\n')
 xmlData.write('</ROOT>\n')
