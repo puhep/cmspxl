@@ -9,10 +9,18 @@ __author__ = "Xin Shi <Xin.Shi@cern.ch>"
 import csv
 import sys
 from decimal import Decimal 
+import time
+import datetime
+
+ts = time.time()
+st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 csvFile = sys.argv[1]
 xmlFile = csvFile.replace('.csv', '.xml')
 
+sr = csvFile.replace('.csv', '')
+
+user = raw_input('Initiated by user: ')
 
 csvData = csv.reader(open(csvFile))
 xmlData = open(xmlFile, 'w')
@@ -26,13 +34,22 @@ xmlHeader = '''<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
     </TYPE>
     <RUN>
       <RUN_NAME></RUN_NAME>
-      <RUN_BEGIN_TIMESTAMP></RUN_BEGIN_TIMESTAMP>
-      <INITIATED_BY_USER></INITIATED_BY_USER>
+      <RUN_BEGIN_TIMESTAMP>%s</RUN_BEGIN_TIMESTAMP>
+      <INITIATED_BY_USER>%s</INITIATED_BY_USER>
       <LOCATION>Purdue</LOCATION>
       <COMMENT_DESCRIPTION></COMMENT_DESCRIPTION>
     </RUN>
   </HEADER>
-'''
+  
+  <DATA_SET>
+    <VERSION></VERSION>
+    <COMMENT_DESCRIPTION></COMMENT_DESCRIPTION>
+    <PART>
+      <SERIAL_NUMBER>%s</SERIAL_NUMBER>
+      <KIND_OF_PART></KIND_OF_PART>
+    </PART>
+
+''' % (st, user, sr) 
 
 xmlData.write(xmlHeader)
 xmlData.write('<DATA_SET>\n')
@@ -52,7 +69,7 @@ for row in csvData:
         current = Decimal(row[1]) * Decimal(factor)
         xmlData.write('<DATA>\n')
         xmlData.write('<VOLTAGE_VOLT>%.2E</VOLTAGE_VOLT>\n' %voltage)
-        xmlData.write('<TOTAL_CURRENT_AMP>%.2E</TOTAL_CURRENT_AMP>\n' %current)
+        xmlData.write('<TOT_CURRENT_AMP>%.2E</TOT_CURRENT_AMP>\n' %current)
         xmlData.write('</DATA>\n')
 
         if len(row[0]) == 0 or len(row[1]) == 0 :
