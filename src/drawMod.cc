@@ -4,10 +4,20 @@
 // 
 
 #include <iostream>
+// #include <string> 
 
 #include <TSystem.h>
+#include <TString.h>
 
 using namespace std; 
+
+
+void daq(TString inputFile) {
+  cout << inputFile << endl; 
+  
+}
+
+
 
 #ifndef __CINT__ 
 #include <iostream>
@@ -24,7 +34,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cerr << "Usage: drawMod DAQ\n" << endl; 
+  cerr << "Usage: drawMod daq inputFile\n" << endl; 
 }
 
 int main(int argc, char** argv) {
@@ -32,9 +42,15 @@ int main(int argc, char** argv) {
     print_usage() ;  
     return -1; 
   }
-
-  // TString label = argv[1]; 
-  // draw(label); 
+  
+  if (strcmp(argv[1], "daq") == 0 ) {
+    TString inputFile = argv[2]; 
+    daq(inputFile); 
+  }
+  
+  else {
+    print_usage(); 
+  }
 
   gSystem->Exit(0);
 
