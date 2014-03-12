@@ -12,7 +12,7 @@ ROOTGLIBS     = $(shell $(ROOTSYS)/bin/root-config --glibs)
 GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 
 
-DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS)  
+DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
 
 all: drawMod 
