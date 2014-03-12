@@ -48,7 +48,7 @@ void daq(TFile * inputFile, TString outFile="test.root") {
 }
 
 
-void pixelAlive(TFile * inputFile, TString outFile="test.root") {
+void pixelAlive(TFile * inputFile, TString outFile) {
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   TH2D *h2d;
   for (int chip = 0; chip < 16 ; chip++) { 
@@ -96,8 +96,8 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cerr << "Usage: drawMod DAQ        inputFile outFile\n" 
-       << "               PixelAlive inputFile outFile\n" 
+  cerr << "Usage: drawMod DAQ        inputFile [test.pdf]\n" 
+       << "               PixelAlive inputFile [test.pdf]\n" 
        << endl; 
 }
 
