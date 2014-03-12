@@ -4,8 +4,6 @@
 // 
 
 #include <iostream>
-// #include <string> 
-
 #include <TROOT.h>
 #include <TSystem.h>
 #include <TString.h>
@@ -18,7 +16,7 @@
 using namespace std; 
 
 
-void daq(TFile * inputFile) {
+void daq(TFile * inputFile, TString outFile="test.root") {
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   TH2D *h2d;
   for (int chip = 0; chip < 16 ; chip++) { 
@@ -46,7 +44,7 @@ void daq(TFile * inputFile) {
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  c->SaveAs(Form("test.pdf"));  
+  c->SaveAs(outFile);
 }
 
 
@@ -66,7 +64,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cerr << "Usage: drawMod daq inputFile\n" << endl; 
+  cerr << "Usage: drawMod daq inputFile outFile\n" << endl; 
 }
 
 int main(int argc, char** argv) {
@@ -78,7 +76,9 @@ int main(int argc, char** argv) {
   if (strcmp(argv[1], "daq") == 0 ) {
     TFile * inputFile = TFile::Open(argv[2]);
     if ( inputFile ) {
-      daq(inputFile); 
+      TString outFile = "test.pdf"; 
+      if (argc == 4) outFile = argv[3]; 
+      daq(inputFile, outFile);
     } else {
       cerr << "Unable to open file: " << argv[2] << endl; 
     }
