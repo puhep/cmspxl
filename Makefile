@@ -19,8 +19,16 @@ DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter
 PROG=drawMod 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
+
 all: $(LIST)
 	@echo "Build successful."
+
+$(LIST): | $(BIN)
+
+
+$(BIN): 
+	mkdir -p $(BIN)
+
 
 $(BIN)/drawMod: $(SRC)/drawMod.cc
 	$(CC) $< $(DRAWMODFLAGS) -o $@
