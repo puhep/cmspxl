@@ -11,16 +11,14 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS     = $(shell $(ROOTSYS)/bin/root-config --glibs)
 GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 
-
 DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
 
 all: drawMod 
 	@echo "Build successful."
 
-
 drawMod: drawMod.cc
-	$(CC) $(DRAWMODFLAGS) $< -o $@
+	$(CC) $< $(DRAWMODFLAGS) -o $@
 
 clean:
 	rm -rf *~  *.dSYM 
