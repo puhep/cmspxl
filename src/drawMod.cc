@@ -27,19 +27,21 @@ void addChip(const TString hist, int chip, TH2D *h3) {
 
   for (int icol = 0; icol < 52; icol++) {
     for (int irow = 0; irow < 80; irow++)  {
-      double value = h2d->GetBinContent(icol, irow); 
+      double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
+
       int icol_mod, irow_mod; 
       if (chip < 8) {
-	icol_mod = 415-(chip*52+icol)+1;
-	irow_mod = 159-irow+1; 
+	icol_mod = 415-(chip*52+icol);
+	irow_mod = 159-irow; 
       }
       if (chip > 7) {
-	icol_mod = (chip-8)*52+icol+1; 
-	irow_mod = irow+1; 
+	icol_mod = (chip-8)*52+icol; 
+	irow_mod = irow; 
       }
-      double old_value = h3->GetBinContent(icol_mod, irow_mod); 
+
+      double old_value = h3->GetBinContent(icol_mod+1, irow_mod+1); //(0,0) is underflow
       double new_value = old_value + value; 
-      h3->SetBinContent(icol_mod, irow_mod, new_value);
+      h3->SetBinContent(icol_mod+1, irow_mod+1, new_value); 
     }
   }
 }
@@ -51,7 +53,6 @@ void daq(TString inputFile, TString outFile="test.root", int V=0) {
   
   for (int chip = 0; chip < 16 ; chip++) { 
     for (int ver=0; ver<V+1; ver++) {
-      // cout << "Adding chip " << chip << " V" << ver << endl; 
       TString hist = Form("DAQ/Hits_C%d_V%d", chip, ver); 
       addChip(hist, chip, h3); 
     }
