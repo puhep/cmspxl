@@ -28,8 +28,18 @@ void addChip(const TString hist, int chip, TH2D *h3) {
   for (int icol = 0; icol < 52; icol++) {
     for (int irow = 0; irow < 80; irow++)  {
       double value = h2d->GetBinContent(icol, irow); 
-      if (chip < 8) {h3->SetBinContent(415-(chip*52+icol)+1, 159-irow+1, value);}
-      if (chip > 7) {h3->SetBinContent((chip-8)*52+icol+1, irow+1, value);}
+      int icol_mod, irow_mod; 
+      if (chip < 8) {
+	icol_mod = 415-(chip*52+icol)+1;
+	irow_mod = 159-irow+1; 
+      }
+      if (chip > 7) {
+	icol_mod = (chip-8)*52+icol+1; 
+	irow_mod = irow+1; 
+      }
+      double old_value = h3->GetBinContent(icol_mod, irow_mod); 
+      double new_value = old_value + value; 
+      h3->SetBinContent(icol_mod, irow_mod, new_value);
     }
   }
 }
@@ -40,10 +50,13 @@ void daq(TString inputFile, TString outFile="test.root", int V=0) {
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   
   for (int chip = 0; chip < 16 ; chip++) { 
-    TString hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
-    addChip(hist, chip, h3); 
+    for (int ver=0; ver<V+1; ver++) {
+      // cout << "Adding chip " << chip << " V" << ver << endl; 
+      TString hist = Form("DAQ/Hits_C%d_V%d", chip, ver); 
+      addChip(hist, chip, h3); 
+    }
   }
-
+  
   TCanvas *c = new TCanvas("c", "DAQ module", 800, 200); 
   h3->DrawCopy("colz");
 
@@ -108,8 +121,10 @@ int main(int argc, char** argv) {
     TString inputFile(argv[2]);
     if ( inputFile ) {
       TString outFile = "test.pdf"; 
-      if (argc == 4) outFile = argv[3]; 
-      daq(inputFile, outFile);
+      int V = 0; 
+      if (argc >= 4) outFile = argv[3]; 
+      if (argc >= 5) V = atoi(argv[4]); 
+      daq(inputFile, outFile, V);
     } else {
       cerr << "Unable to open file: " << argv[2] << endl; 
     }
