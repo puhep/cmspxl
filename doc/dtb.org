@@ -98,6 +98,8 @@
 
 
 ** DTB 52
+   <2014-03-17 Mon> Retured by Gino. Xin took at PHYS352 for pXar dev. 
+   
    <2014-03-10 Mon> Upgrade the firmware to 1.26. Give Gino to test. 
    
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
