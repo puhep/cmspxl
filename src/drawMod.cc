@@ -16,11 +16,14 @@
 using namespace std; 
 
 
-void daq(TFile * inputFile, TString outFile="test.root") {
+void daq(TString inputFile, TString outFile="test.root", int V=0) {
+  TFile::Open(inputFile.Data());
+  
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   TH2D *h2d;
+  
   for (int chip = 0; chip < 16 ; chip++) { 
-    gDirectory->GetObject(Form("DAQ/Hits_C%d_V0", chip), h2d); 
+    gDirectory->GetObject(Form("DAQ/Hits_C%d_V%d", chip, V), h2d); 
     if (!h2d){
       cerr << "No object name found: " << endl;
       return ;
@@ -34,7 +37,7 @@ void daq(TFile * inputFile, TString outFile="test.root") {
       }
     }
   }
-  
+
   TCanvas *c = new TCanvas("c", "DAQ module", 800, 200); 
   h3->DrawCopy("colz");
 
@@ -108,7 +111,8 @@ int main(int argc, char** argv) {
   }
   
   if (strcmp(argv[1], "DAQ") == 0 ) {
-    TFile * inputFile = TFile::Open(argv[2]);
+    // TFile * inputFile = TFile::Open(argv[2]);
+    TString inputFile(argv[2]);
     if ( inputFile ) {
       TString outFile = "test.pdf"; 
       if (argc == 4) outFile = argv[3]; 
