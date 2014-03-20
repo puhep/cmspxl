@@ -13,6 +13,9 @@
    <2014-02-28 Fri> Flashed with 1.25. Will be used for Mayur to test. 
    Also take a set of power cord and take to PHYS360. 
    
+** DTB 45
+   <2014-03-20 Thu> Flashed with 2.0. 
+   
 ** DTB 47 
 
    <2014-02-13 Thu> Took from PHYS360 to PHYS347.
