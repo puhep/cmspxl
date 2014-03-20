@@ -2,5 +2,5 @@
   1    counters   0x01
   2        mode   0xC0
   3    pkam_set   0x10
-  4      delays   0x00
+  4      delays   0x40
   5 temperature   0x00
