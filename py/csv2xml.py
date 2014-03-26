@@ -71,7 +71,7 @@ for row in csvData:
         current = Decimal(row[1]) * Decimal(factor)
         xmlData.write('<DATA>\n')
         xmlData.write('<VOLTAGE_VOLT>%.2E</VOLTAGE_VOLT>\n' %voltage)
-        xmlData.write('<TOT_CURRENT_AMP>%.2E</TOT_CURRENT_AMP>\n' %current)
+        xmlData.write('<ACTV_CURRENT_AMP>%.2E</ACTV_CURRENT_AMP>\n' %current)
         xmlData.write('</DATA>\n')
 
 
