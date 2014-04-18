@@ -41,7 +41,9 @@ Scan Type: <input name="scan" value="IV" type="radio">IV
 <br>
 Scan Level: &nbsp;<input name="level" value="wafer" type="radio"> On Wafer
  &nbsp; &nbsp; 
- <input name="level" value="module" type="radio"> On Module
+ <input name="level" value="module" type="radio"> Bare Module
+ &nbsp; &nbsp; 
+ <input name="level" value="assembled" type="radio"> Fully-Assembled Module
 <br>
 <br>
 XML file:
@@ -80,7 +82,7 @@ if(isset($_POST['submit']) &&  $_FILES['xml']['size'] > 0 && isset($_POST['level
 
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

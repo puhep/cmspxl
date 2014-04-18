@@ -38,9 +38,12 @@ if(isset($_POST['submit']) && isset($_POST['box']) && $_POST['who'] != ""){
 	if($_POST['notes']!=""){
 		$submittednotes = $_POST['notes'];
 	}
-	addcomment("module_p", $id, $submittedstep);
-	addcomment("module_p", $id, $submittednotes);
+	addcomment("HDI_p", $id, $submittedstep);
+	addcomment("HDI_p", $id, $submittednotes);
 	$assembly++;
+	if($_POST['box'] == "reject"){
+		$assembly *= -1;
+	}
 	$funcassembly = "UPDATE HDI_p SET assembly=$assembly WHERE id=$id";
 	mysql_query($funcassembly, $connection);
 }
@@ -66,13 +69,27 @@ echo"<br>";
 
 if($assembly == 1){
 	echo"Ready for Assembly   <input name=\"box\" value=\"ready\" type=\"checkbox\">";
+	echo"OR   Reject   <input name=\"box\" value=\"reject\" type=\"checkbox\">";
+	echo"<br>";
 	echo"User: <input name=\"who\" type=\"text\">   ";
 	echo"Comments: <input name=\"notes\" type=\"text\">   ";
 	$checker = "";
 }
 else{
+	if($assembly > 0){
+		$readychecker = " CHECKED ";
+		$rejectchecker = "";
+	}
+	else{
+		$readychecker = "";
+		$rejectchecker = " CHECKED ";
+		$checker = "";
+	}
 	echo"Ready for Assembly   <input name=\"box\" value=\"ready\"
- 	type=\"checkbox\"".$checker."DISABLED>";
+ 	type=\"checkbox\"".$readychecker."DISABLED>";
+
+	echo"Reject   <input name=\"box\" value=\"reject\"
+ 	type=\"checkbox\"".$rejectchecker."DISABLED>";
 }
 
 echo"<br>";
@@ -92,6 +109,10 @@ echo"<br>";
 if($assembly > 2){
 	echo "Attached to ";
 	curmod($id, "HDI_p");
+}
+
+if($assembly < 0){
+	echo "HDI rejected";
 }
 
 echo"<br>";
@@ -129,7 +150,7 @@ conditionalSubmit();
 
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 </body>

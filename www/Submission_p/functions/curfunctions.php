@@ -1,7 +1,7 @@
 <?php
 
 function curnotes($db, $id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query('USE cmsfpix_u', $connection);
 
@@ -66,7 +66,7 @@ function curpics($type, $id){
 }
 
 function curgraphs($sensorid, $scan){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	$func = "SELECT filesize,notes  FROM measurement_p WHERE part_ID =$sensorid AND scan_type=\"$scan\"";
 	mysql_query('USE cmsfpix_u', $connection);
@@ -89,7 +89,7 @@ function curgraphs($sensorid, $scan){
 }
 
 function curname($db, $id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query('USE cmsfpix_u', $connection);
 
@@ -113,18 +113,26 @@ function curstep($part, $assembly){
 	if(!strcmp($part, "module")){
 		echo $modulesteps[$assembly];}
 	if(!strcmp($part, "hdi")){
-		echo $hdisteps[$assembly];}
+		if($assembly == -2){
+			echo "Rejected";
+		}
+		else{
+			echo $hdisteps[$assembly];
+		}
+	}
 
 }
 
 function currocs($module){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query('USE cmsfpix_u', $connection);
 
 	$func = "SELECT name from ROC_p WHERE assoc_module=\"$module\" ORDER BY position";
+	$revfunc = "SELECT name from ROC_p WHERE assoc_module=\"$module\" ORDER BY position DESC";
 
 	$output = mysql_query($func, $connection);
+	$outputrev = mysql_query($revfunc, $connection);
 
 	echo "<table border=0>";
 
@@ -154,7 +162,7 @@ function currocs($module){
 	echo "<td>";
 
 	echo "<table border=1>";
-	for($i=8;$i<16;$i++){
+	for($i=15;$i>7;$i--){
 
 		echo "<tr>";
 
@@ -163,8 +171,8 @@ function currocs($module){
 		echo "</td>";
 
 		echo "<td>";
-		$rocrow = mysql_fetch_assoc($output);
-		echo $rocrow['name'];
+		$rocrowrev = mysql_fetch_assoc($outputrev);
+		echo $rocrowrev['name'];
 		echo "</td>";
 
 		echo "</tr>";
@@ -180,7 +188,7 @@ function currocs($module){
 }
 
 function findid($db, $name){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query('USE cmsfpix_u', $connection);
 
@@ -194,7 +202,7 @@ function findid($db, $name){
 }
 
 function dump($db, $id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query("USE cmsfpix_u", $connection);
 
@@ -209,7 +217,7 @@ function daqdump($id){
 
 	$src = "../download/dbc0dl.php?id=$id";
 
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	mysql_query('USE cmsfpix_u', $connection);
 
@@ -277,7 +285,7 @@ function daqdump($id){
 }
 
 function namedump($db, $id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	$namearr;
 	$hdi = $id;
@@ -343,12 +351,13 @@ function namedump($db, $id){
 }
 
 function xmlbuttongen($id, $scan){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	$func = "SELECT id, part_type FROM measurement_p WHERE part_ID=\"$id\" AND scan_type=\"$scan\"";
 	
 	$id1=0;
 	$id2=0;
+	$id3=0;
 	
 	mysql_query('USE cmsfpix_u', $connection);
 
@@ -362,6 +371,9 @@ function xmlbuttongen($id, $scan){
 		if($row['part_type'] == "module"){
 			$id2 = $row['id'];
 		}
+		if($row['part_type'] == "assembled"){
+			$id3 = $row['id'];
+		}
 	}
 
 	if($id1>0){
@@ -372,10 +384,14 @@ function xmlbuttongen($id, $scan){
 		echo "<form><input type=\"button\" value=\"Download Bare Module $scan Data\" onClick=\"window.location.href='../download/dbxmldl.php?id=$id2'\"></form>";
 		echo "<a href=\"../download/XMLfiles.php?part=module&partid=$id&scan=$scan\" target=\"_blank\">More Files</a>";
 	}
+	if($id3>0){
+		echo "<form><input type=\"button\" value=\"Download Assembled Module $scan Data\" onClick=\"window.location.href='../download/dbxmldl.php?id=$id3'\"></form>";
+		echo "<a href=\"../download/XMLfiles.php?part=assembled&partid=$id&scan=$scan\" target=\"_blank\">More Files</a>";
+	}
 }
 
 function curmod($id,$part){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 
 	if($part=="sensor_p"){
 		$field = "assoc_sens";
@@ -404,7 +420,7 @@ function curmod($id,$part){
 }
 
 function isTestedWaferDisp($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	mysql_query("USE cmsfpix_u", $connection);
 
 	$sensorfunc = "SELECT name,id FROM sensor_p WHERE assoc_wafer=$id ORDER BY name";
@@ -438,7 +454,7 @@ function isTestedWaferDisp($id){
 }
 
 function isTestedWaferUpdate($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	mysql_query("USE cmsfpix_u", $connection);
 
 	$all=0;
@@ -476,7 +492,7 @@ function isTestedWaferUpdate($id){
 }
 
 function isTestedModuleUpdate($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	mysql_query("USE cmsfpix_u", $connection);
 
 	$sensorfunc = "SELECT name,id FROM sensor_p WHERE assoc_wafer=$id";
@@ -510,7 +526,7 @@ function isTestedModuleUpdate($id){
 }
 
 function promoteBoxes($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	mysql_query("USE cmsfpix_u", $connection);
 
 	$func = "SELECT name, id FROM sensor_p WHERE assoc_wafer=$id AND name LIKE 'WL%'";
@@ -528,7 +544,7 @@ function promoteBoxes($id){
 }
 
 function sensorSetPromote($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	mysql_query("USE cmsfpix_u", $connection);
 
 	$func = "UPDATE sensor_p SET promote=1 WHERE id=".$id;
@@ -537,7 +553,7 @@ function sensorSetPromote($id){
 }
 
 function promoteSensors($id){
-	include('../connect.php');
+	include('../../../Submission_p_secure_pages/connect.php');
 	include('../functions/submitfunctions.php');
 	mysql_query("USE cmsfpix_u", $connection);
 	
@@ -552,10 +568,12 @@ function promoteSensors($id){
 	}
 }
 
-function isLocal(){
-	$ip = $_SERVER['REMOTE_ADDR'];
+function isLoggedIn(){
+	if(!isset($_SESSION)){
+		session_start();
+	}
 
-	if(!strncmp($ip, "128.210", 7)){
+	if(isset($_SESSION['user'])){
 		return 1;
 	}
 	else{

@@ -51,8 +51,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC0"></textarea> 
 		</td>
 		<td>
-		ROC8
-		<textarea cols="20" rows="1" name="ROC8"></textarea> 
+		ROC15
+		<textarea cols="20" rows="1" name="ROC15"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -61,8 +61,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC1"></textarea> 
 		</td>
 		<td>
-		ROC9
-		<textarea cols="20" rows="1" name="ROC9"></textarea> 
+		ROC14
+		<textarea cols="20" rows="1" name="ROC14"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -71,8 +71,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC2"></textarea> 
 		</td>
 		<td>
-		ROC10
-		<textarea cols="20" rows="1" name="ROC10"></textarea> 
+		ROC13
+		<textarea cols="20" rows="1" name="ROC13"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -81,8 +81,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC3"></textarea> 
 		</td>
 		<td>
-		ROC11
-		<textarea cols="20" rows="1" name="ROC11"></textarea> 
+		ROC12
+		<textarea cols="20" rows="1" name="ROC12"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -91,8 +91,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC4"></textarea> 
 		</td>
 		<td>
-		ROC12
-		<textarea cols="20" rows="1" name="ROC12"></textarea> 
+		ROC11
+		<textarea cols="20" rows="1" name="ROC11"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -101,8 +101,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC5"></textarea> 
 		</td>
 		<td>
-		ROC13
-		<textarea cols="20" rows="1" name="ROC13"></textarea> 
+		ROC10
+		<textarea cols="20" rows="1" name="ROC10"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -111,8 +111,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC6"></textarea> 
 		</td>
 		<td>
-		ROC14
-		<textarea cols="20" rows="1" name="ROC14"></textarea> 
+		ROC9
+		<textarea cols="20" rows="1" name="ROC9"></textarea> 
 		</td>
 	</tr>
 	<tr>
@@ -121,8 +121,8 @@ if($i == 0){
 		<textarea cols="20" rows="1" name="ROC7"></textarea> 
 		</td>
 		<td>
-		ROC15
-		<textarea cols="20" rows="1" name="ROC15"></textarea> 
+		ROC8
+		<textarea cols="20" rows="1" name="ROC8"></textarea> 
 		</td>
 	</tr>
 </table>
@@ -163,7 +163,7 @@ if(isset($_POST['submit']) && isset($_POST['ROC0'])){
 
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

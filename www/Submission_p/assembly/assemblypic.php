@@ -82,7 +82,7 @@ Additional Notes <textarea cols="40" rows="5" name="notes"></textarea><br>
 <input type="submit" value="Back to Assembly">
 </form>
 <br>
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 </body>

@@ -9,7 +9,15 @@
 <form action="<?=$_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data">
 HDI ID <textarea cols="20" rows="1" name="HDI_id"></textarea><br>
 <br>
-Arrival Date (mm/dd/yyyy) <textarea cols="10" rows="1" name="arrival"></textarea>
+Arrival Date (yyyy/mm/dd) <textarea cols="10" rows="1" name="arrival"></textarea>
+<br>
+<br>
+Location <select name="loc">
+	<option value="Purdue">Purdue</option>
+	<option value="Nebraska">Nebraska</option>
+	</select>
+	
+<br>
 <br>
 Additional Notes <textarea cols="40" rows="5" name="notes"></textarea><br>
 <br>
@@ -21,7 +29,7 @@ conditionalSubmit();
 
 if(isset($_POST['submit']) && isset($_POST['HDI_id']) && isset($_POST['arrival'])){
  
- hdiinfo($_POST['HDI_id'],$_POST['notes'],$_POST['arrival']);
+ hdiinfo($_POST['HDI_id'],$_POST['notes'],$_POST['arrival'],$_POST['loc']);
 }
 elseif(isset($_POST['submit'])){
  echo "Not all forms were filled, please retry.";
@@ -29,7 +37,7 @@ elseif(isset($_POST['submit'])){
 ?>
 </form>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 <form>
 

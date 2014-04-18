@@ -66,7 +66,7 @@ echo "</td>";
 for($loop=0;$loop<$wafernum;$loop++){
 
 echo "<td valign=middle>";
-echo "<a href=\"step.php?part=wafer&sl=".$loop."\">".$wafersteparray[$loop]."</a>";
+echo "<a href=\"step.php?sort=sh&part=wafer&sl=".$loop."\">".$wafersteparray[$loop]."</a>";
 echo "</td>";
 
 }
@@ -109,7 +109,7 @@ echo "</td>";
 for($loop=0;$loop<$hdinum;$loop++){
 
 echo "<td valign=middle>";
-echo "<a href=\"step.php?part=HDI&sl=".$loop."\">".$hdisteparray[$loop]."</a>";
+echo "<a href=\"step.php?sort=sh&part=HDI&sl=".$loop."\">".$hdisteparray[$loop]."</a>";
 echo "</td>";
 
 }
@@ -151,7 +151,7 @@ echo "</td>";
 for($loop=1;$loop<$bbmnum;$loop++){
 
 echo "<td valign=middle>";
-echo "<a href=\"step.php?part=module&sl=".$loop."\">".$bbmsteparray[$loop]."</a>";
+echo "<a href=\"step.php?sort=sh&part=module&sl=".$loop."\">".$bbmsteparray[$loop]."</a>";
 echo "</td>";
 
 }
@@ -187,7 +187,7 @@ echo "</td>";
 
 ?>
 <br>
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

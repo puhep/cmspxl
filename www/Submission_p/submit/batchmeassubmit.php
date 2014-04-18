@@ -45,7 +45,7 @@ if(isset($_POST['submit']) &&  $_FILES['zipped']['size'] > 0 && isset($_POST['le
 ?>
 </form>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

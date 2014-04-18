@@ -103,12 +103,14 @@ elseif($_POST['screen']==1){
 	}
 }
 
-conditiionalSubmit();
+
+conditionalSubmit();
 ?>
 
+</form>
 <br>
 
-<form method='link' action='../index.html'>
+<form method='link' action='../index.php'>
 <input type='submit' value='MAIN MENU'>
 </form>
 

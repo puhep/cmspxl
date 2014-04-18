@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 
@@ -108,7 +108,7 @@ echo"<br>";
 echo"<br>";
 ?>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

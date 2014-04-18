@@ -32,12 +32,12 @@
 		echo "<br>";
 		echo "<br>";
 
-		echo "<h>";
-		echo "Arrival Date:";
-		echo "</h>";
-		echo $dumped['received'];
-		echo "<br>";
-		echo "<br>";
+		#echo "<h>";
+		#echo "Arrival Date:";
+		#echo "</h>";
+		#echo $dumped['arrival'];
+		#echo "<br>";
+		#echo "<br>";
 
 		#echo "<h>";
 		#echo "Added to Database: ";
@@ -46,10 +46,27 @@
 		#echo "<br>";
 		#echo "<br>";
 
+		if($dumped['assembly'] != 12){
+		echo "<h>";
+		echo "Location: ";
+		echo "</h>";
+		}
+		else{
+		echo "<h>";
+		echo "Processed at: ";
+		echo "</h>";
+		}
+
+		echo $dumped['location'];
+		echo "<br>";
+		echo "<br>";
+
 		echo "<h>";
 		echo "Status: ";
 		echo "</h>";
 		curstep("module", $dumped['assembly']);
+		echo "<br>";
+		echo "<a href=\"../assembly/bbm.php?id=$id\">Update Status</a>";
 		echo "<br>";
 		echo "<br>";
 

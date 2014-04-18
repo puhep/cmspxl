@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 
@@ -25,11 +25,21 @@ error_reporting(E_ALL | E_STRICT);
 include('../functions/popfunctions.php');
 include('../connect.php');
 
-$part = $_GET['part'];
+$prepart = $_GET['part'];
 $sl = $_GET['sl'];
-$part = $part."_p";
+$part = $prepart."_p";
 
-$func = "SELECT name, id from ".$part." WHERE assembly=".$sl." ORDER BY name";
+$sortby = $_GET['sort'];
+
+$order = "name";
+if($sortby == "ar"){
+	$order = "arrival";
+}
+if($sortby == "sh" && $part == "module_p" && $sl == 12){
+	$order = "shipped";
+}
+
+$func = "SELECT name, id, arrival, shipped from ".$part." WHERE assembly=".$sl." ORDER BY ".$order." DESC";
 
 if($part == "wafer_p"){
 	$steparray = array("Received", "Inspected", "Tested", "Promoted", "Ready for Shipping", "Shipped");
@@ -53,17 +63,54 @@ mysql_query('USE cmsfpix_u', $connection);
 $output = mysql_query($func, $connection);
 
 echo "<table cellspacing=10 border=2>";
+
 echo "<tr valign=top>";
+
 echo "<td valign=top>";
-echo $steparray[$sl];
+echo "<a href=step.php?sort=na&part=".$prepart."&sl=".$sl.">".$steparray[$sl]."</a>";
 echo "</td>";
+
+if($part=="module_p" && $sl==12){
+echo "<td valign=top>";
+echo "<a href=step.php?sort=sh&part=".$prepart."&sl=".$sl.">Ship Date</a>";
+echo "</td>";
+
+echo "<td valign=top>";
+#echo "<a href=step.php?sort=sh&part=".$prepart."&sl=".$sl.">Destination</a>";
+echo "Destination";
+echo "</td>";
+}
+
 echo "</tr>";
 
 while($row = mysql_fetch_assoc($output)){
 	echo "<tr valign=top>";
+
 	echo "<td valign=top>";
-	echo "<a href=".$page."?id=".$row['id'].">".$row['name']."</a>";
+	echo "<a href=../summary/".$page."?id=".$row['id'].">".$row['name']."</a>";
 	echo "</td>";
+
+	if($part=="module_p" && $sl==12){
+
+	$modfunc = "SELECT destination FROM module_p WHERE id=".$row['id'];
+	$modout = mysql_query($modfunc, $connection);
+	$modrow = mysql_fetch_assoc($modout);
+
+	echo "<td valign=top>";
+	echo $row['shipped'];
+	echo "</td>";
+
+	echo "<td valign=top>";
+	echo $modrow['destination'];
+	echo "</td>";
+	}
+	
+	#else{
+	#echo "<td valign=top>";
+	#echo "<a href=".$page."?id=".$row['id'].">".$row['name']."</a>";
+	#echo "</td>";
+	#}
+
 	echo "</tr>";
 }
 
@@ -78,7 +125,7 @@ echo "</table>";
 
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

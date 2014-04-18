@@ -23,6 +23,7 @@ waferpop();
 <?php
 }
 else{
+echo "<input type='hidden' name='wafers' value='".$_POST['wafers']."'>";
 ?>
 
 Available Modules
@@ -39,6 +40,18 @@ availmodule($_POST['wafers']);
 &nbsp; &nbsp; <input name="QC" value="reject"
  type="radio">Reject<br>
 <br>
+
+Location <select name="loc">
+	<option value="Purdue">Purdue</option>
+	<option value="Nebraska">Nebraska</option>
+	</select>
+<br>
+<br>
+
+
+Arrival Date (yyyy/mm/dd) <textarea cols="10" rows="1" name="arrival"></textarea>
+<br>
+
 Additional Notes <textarea cols="40" rows="5" name="notes"></textarea>
 <?php
 }
@@ -51,20 +64,35 @@ Additional Notes <textarea cols="40" rows="5" name="notes"></textarea>
 
 conditionalSubmit();
 
-if(isset($_POST['submit']) && isset($_POST['modules']) && isset($_POST['QC'])){
+if(isset($_POST['submit']) && isset($_POST['modules']) && isset($_POST['QC']) && isset($_POST['arrival'])){
+
+	include('../connect.php');
+
+	mysql_query('USE cmsfpix_u', $connection);
+
 	if(!strcmp($_POST['QC'],"accept")){
 		$good = 1;
 	}
 	else{
 		$good = -1;
 	}
-	$func = 'UPDATE module_p set assembly='.$good.' WHERE id='.$_POST['modules'];
+	$func = 'UPDATE module_p set assembly='.$good.', arrival='.$_POST['arrival'].', location="'.$_POST['loc'].'", notes="'.$_POST['notes'].'" WHERE id='.$_POST['modules'];
+
+	if(mysql_query($func, $connection)){
+		echo "<br>";
+		echo "The module was successfully added to the database";
+	}
+	else{
+		echo "<br>";
+		echo "An error occurred and the module was not added to the database";
+	}
 }
+
 ?>
 </form>
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 

@@ -30,12 +30,12 @@
 		echo "<br>";
 		echo "<br>";
 
-		echo "<h>";
-		echo "Arrival Date: ";
-		echo "</h>";
-		echo $dumped['arrival'];
-		echo "<br>";
-		echo "<br>";
+		#echo "<h>";
+		#echo "Arrival Date: ";
+		#echo "</h>";
+		#echo $dumped['arrival'];
+		#echo "<br>";
+		#echo "<br>";
 
 		#echo "<h>";
 		#echo "Added to Database: ";
@@ -43,6 +43,24 @@
 		#echo $dumped['time_created'];
 		#echo "<br>";
 		#echo "<br>";
+
+		echo "<h>";
+		echo "Location: ";
+		echo "</h>";
+		echo "<br>";
+		echo $dumped['location'];
+		echo "<br>";
+		echo "<br>";
+
+		echo "<h>";
+		echo "Status: ";
+		echo "</h>";
+		echo "<br>";
+		curstep("hdi", $dumped['assembly']);
+		echo "<br>";
+		echo "<a href=\"../assembly/hdi.php?id=$id\">Update Status</a>";
+		echo "<br>";
+		echo "<br>";
 
 		echo "<h>";
 		echo "On Module: ";

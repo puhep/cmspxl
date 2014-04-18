@@ -8,7 +8,7 @@ include('../connect.php');
 	$date = date('Y-m-d H:i:s');
 
 	if($notes != ""){
-		$notes = $date."  ".$notes;
+		$notes = $date."  ".$notes."\n";
 	}
 
 	$func = "INSERT INTO wafer_p(notes, name, vendor, thickness, received, assembly) VALUES (\"$notes\", \"$id\", \"SINTEF\", \"$fthickness\", \"$rec\", 0)";
@@ -32,7 +32,7 @@ include('../connect.php');
 	$date = date('Y-m-d H:i:s');
 
 	if($notes != ""){
-		$notes = $date."  ".$notes;
+		$notes = $date."  ".$notes."\n";
 	}
 
 	$func = "INSERT INTO sensor_p(notes, name, assoc_wafer, assembly) VALUES (\"$notes\", \"$id\", \"$wafer\", 0)";
@@ -58,7 +58,7 @@ include('../functions/curfunctions.php');
 	$date = date('Y-m-d H:i:s');
 
 	if($notes != ""){
-		$notes = $date."  ".$notes;
+		$notes = $date."  ".$notes."\n";
 	}
 	$func = "INSERT INTO measurement_p(part_ID, part_type, scan_type, notes, file, filesize, filename) VALUES (\"$id\", \"$parttype\", \"$scan\", \"$notes\", \"$file\",\"$size\",\"$name\")";
 	
@@ -97,16 +97,16 @@ function batchmeasurement($zipfile, $parttype, $notes){
 	
 }
 
-function hdiinfo($name, $notes, $arrival){
+function hdiinfo($name, $notes, $arrival, $loc){
 include('../connect.php');
 
 	$date = date('Y-m-d H:i:s');
 
 	if($notes != ""){
-		$notes = $date."  ".$notes;
+		$notes = $date."  ".$notes."\n";
 	}
 
-	$func = "INSERT INTO HDI_p(notes, name, arrival, assembly) VALUES (\"$notes\", \"$name\", \"$arrival\", 0)";
+	$func = "INSERT INTO HDI_p(notes, name, arrival, assembly, location) VALUES (\"$notes\", \"$name\", \"$arrival\", 0, \"$loc\")";
 
 	mysql_query('USE cmsfpix_u' , $connection);
 
@@ -179,7 +179,7 @@ function DAQinfo($module, $C0file, $C0size, $aPfile, $dPfile, $phfile, $sumfile,
 	$date = date('Y-m-d H:i:s');
 	
 	if($notes != ""){
-		$notes = $date."  ".$notes;
+		$notes = $date."  ".$notes."\n";
 	}
 
 	$fnoise = floatval($noise);
@@ -245,11 +245,11 @@ function DAQinfo($module, $C0file, $C0size, $aPfile, $dPfile, $phfile, $sumfile,
 
 function conditionalSubmit(){
   include("../functions/curfunctions.php");
-  if(isLocal()){ 
+  if(isLoggedIn()){ 
       echo "<input name=\"submit\" value=\"SUBMIT\" type=\"submit\">";
   }
   else{
-     echo "Editing options are only available on the Purdue campus";
+     echo "Editing and submission not available";
   }
 
 }

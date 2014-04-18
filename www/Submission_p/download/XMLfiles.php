@@ -39,7 +39,7 @@ error_reporting(E_ALL | E_STRICT);
 		$id = $row['id'];
 		$file = $row['file'];
 		$doc=simplexml_load_string($file);
-		$filename = $doc->HEADER->RUN->RUN_NAME;
+		$filename = $doc->DATA_SET->PART->SERIAL_NUMBER."_".$scan;
 		$timestamp = $doc->HEADER->RUN->RUN_BEGIN_TIMESTAMP;
 		echo "<td>";
 		echo "<a href=\"../download/dbxmldl.php?id=$id\" target=\"_blank\">$filename</a>";

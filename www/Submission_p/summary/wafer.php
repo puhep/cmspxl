@@ -34,12 +34,12 @@
 		echo "<br>";
 		echo "<br>";
 
-		echo "<h>";
-		echo "Arrival Date: ";
-		echo "</h>";
-		echo $dumped['received'];
-		echo "<br>";
-		echo "<br>";
+		#echo "<h>";
+		#echo "Arrival Date: ";
+		#echo "</h>";
+		#echo $dumped['arrival'];
+		#echo "<br>";
+		#echo "<br>";
 
 		#echo "<h>";
 		#echo "Added to Database: ";
@@ -47,6 +47,15 @@
 		#echo $dumped['time_created'];
 		#echo "<br>";
 		#echo "<br>";
+
+		echo "<h>";
+		echo "Status: ";
+		echo "</h>";
+		curstep("wafer",$dumped['assembly']);
+		echo "<br>";
+		echo "<a href=\"../assembly/wafer.php?id=$id\">Update Status</a>";
+		echo "<br>";
+		echo "<br>";
 
 		echo "<h>";
 		echo "Vendor: ";

@@ -3,10 +3,21 @@
 <title> SINTEF 2012 6" Submission </title>
 <body>
 Submission Form for Purdue University Sensor Data
+<div style="position:fixed;left:400px;top:2px;">
+<form method="link" action="login.php">
+<input type="submit" value="LOG IN">
+</form>
+</div>
 <br>
+<div2 style="position:fixed;left:400px;top:30px;">
+<form method="link" action="logout.php">
+<input type="submit" value="LOG OUT">
+</form>
+</div2>
 Pre-Production/Production
 <br>
 <br>
+
 Assembly Flow Handler
 <form action="assembly/status.php" method="post">
   <input name="assembly" value="Assembly Status" type="submit">
@@ -34,6 +45,10 @@ New Parts Information
 
 <form action="submit/ROCsubmit.php" method="post">
   <input name="ROC" value="ROC Submit" type="submit">
+  </form>
+
+<form action="submit/flexsubmit.php" method="post">
+  <input name="flex" value="Flex Cable Submit" type="submit">
   </form>
 
 <br>

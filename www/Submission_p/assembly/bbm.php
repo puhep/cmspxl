@@ -33,16 +33,25 @@ curname("module_p", $id);
 
 $steparray = array("Received", "Inspected", "IV Tested", "Ready for HDI Assembly", "HDI Attached", "Wirebonded", "Encapsulated", "Tested", "Thermal Cycling", "Tested", "Ready for Shipping", "Shipped");
 
-if(isset($_POST['submit']) && isset($_POST['box']) && $_POST['who'] != "" && (!is_null($_POST['hdi']) || $assembly!=4)){
+if(isset($_POST['submit']) && (isset($_POST['box']) || isset($_POST['shipbox'])) && $_POST['who'] != "" && (!is_null($_POST['hdi']) || $assembly!=4)){
+	
+	if(isset($_POST['shipbox'])){
+		$assembly = 11;
+	}
+
 	$submittedstep = $steparray[$assembly]." by ".$_POST['who'];
+	$assembly++;
+	
+
 	if($_POST['notes']!=""){
 		$submittednotes = $_POST['notes'];
 	}
 	addcomment("module_p", $id, $submittedstep);
 	addcomment("module_p", $id, $submittednotes);
-	$assembly++;
 	$funcassembly = "UPDATE module_p SET assembly=$assembly WHERE id=$id";
+	$funcship = "UPDATE module_p SET shipped=\"".$_POST['date']."\", destination=\"".$_POST['dest']."\" WHERE id=$id";
 	mysql_query($funcassembly, $connection);
+	mysql_query($funcship, $connection);
 	
 	if($assembly==5){
 		$hdi = $_POST['hdi'];
@@ -204,14 +213,16 @@ else{
 
 echo"<br>";
 
-if($assembly == 11){
-	echo"Shipped    <input name=\"box\" value=\"ship\" type=\"checkbox\">";
+if($assembly >= 6 && $assembly <= 11){
+	echo"Shipped    <input name=\"shipbox\" value=\"ship\" type=\"checkbox\">";
 	echo"User: <input name=\"who\" type=\"text\">   ";
 	echo"Comments: <input name=\"notes\" type=\"text\">   ";
+	echo"Destination: <input name=\"dest\" type=\"text\">   ";
+	echo"Date (yyyy/mm/dd): <input name=\"date\" type=\"text\">   ";
 	$checker = "";
 }
 else{
-	echo"Shipped    <input name=\"box\" value=\"ship\"
+	echo"Shipped    <input name=\"shipbox\" value=\"ship\"
  	type=\"checkbox\"".$checker."DISABLED>";
 }
 
@@ -255,7 +266,7 @@ conditionalSubmit();
 
 <br>
 
-<form method="link" action="../index.html">
+<form method="link" action="../index.php">
 <input type="submit" value="MAIN MENU">
 </form>
 </body>
