@@ -37,6 +37,8 @@
    <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
 
 ** DTB 48 
+   <2014-04-21 Mon> Stay flashed with v1.25. Keep for HDI test using
+   the psi46test. in PHYS347. 
    
    <2014-02-04 Tue> Flashed with 1.16 for HDI reception test. in
    PHYS347.  
@@ -101,7 +103,10 @@
 
 ** DTB 50
 
-   <2014-04-21 Mon> no flash version specified, in a tupperware box in
+   <2014-04-21 Mon> Flashed with KU version v116 for HDI
+   debugging. PHYS347. 
+
+   <2014-04-19 Sat> no flash version specified, in a tupperware box in
    assembly lab Phys 347.
  
 ** DTB 52
