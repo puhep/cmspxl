@@ -3,7 +3,8 @@
 * Board Info
 
 
-** DTB 40 
+** DTB 40 (not exist)
+   <2014-04-19 Sat> Checked by Mayur, no such item found in lab. 
    <2014-02-05 Wed> Took from Kirk's office, with initial label "OLD
    FIRMWARE". Now in PHYS 347. 
    Updated the firmware to 1.17. 
@@ -14,7 +15,7 @@
    Also take a set of power cord and take to PHYS360. 
    
 ** DTB 45
-   <2014-03-20 Thu> Flashed with 2.0. 
+   <2014-03-20 Thu> Flashed with 2.7 in PHYS347. 
    
 ** DTB 47 
 
@@ -35,10 +36,10 @@
 
    <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
 
-
 ** DTB 48 
    
-   <2014-02-04 Tue> Flashed with 1.16 for HDI reception test. 
+   <2014-02-04 Tue> Flashed with 1.16 for HDI reception test. in
+   PHYS347.  
    
    <2014-01-29 Wed> Flash with 1.17 with JTAG... with error. 
    Found twiki:
@@ -98,20 +99,24 @@
    
    <2014-01-14 Tue> Introduced by Kirk in PHYS347. 
 
+** DTB 50
 
-
+   <2014-04-21 Mon> no flash version specified, in a tupperware box in
+   assembly lab Phys 347.
+ 
 ** DTB 52
+   <2014-04-21 Mon> Give Mayur for testing. 
+
    <2014-03-17 Mon> Retured by Gino. Xin took at PHYS352 for pXar dev. 
    
    <2014-03-10 Mon> Upgrade the firmware to 1.26. Give Gino to test. 
    
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
 
-
 ** DTB 53
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
 
-
-** DTB 54
+** DTB 54 (not exist) 
+   <2014-04-19 Sat> Checked by Mayur, no such item found in lab. 
+   
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
-   
