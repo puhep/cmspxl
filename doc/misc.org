@@ -7,3 +7,11 @@
    <2014-04-18 Fri>  Give the card to Mayur in PHYS360. Also give him one
    new SCSI cable made by Mark. 
 
+** Digital Single ROC adaptor card #91
+
+   <2014-04-21 Mon> DTBv2.1, in PHYS347
+
+** Digital Single ROC adaptor card #92
+
+   <2014-04-21 Mon> DTBv2.1, in PHYS347
+
