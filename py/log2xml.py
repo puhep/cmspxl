@@ -19,7 +19,8 @@ xmlFile = logFile.replace('.log', '.xml')
 
 sr = logFile.replace('.log', '')
 
-user = raw_input('Initiated by user: ')
+user = 'Xin'
+#user = raw_input('Initiated by user: ')
 
 logData = open(logFile, 'r')
 xmlData = open(xmlFile, 'w')
@@ -53,31 +54,18 @@ xmlHeader = '''<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 xmlData.write(xmlHeader)
 
 for row in logData:
-    print row
+    if row.find('#') == 0:
+        continue
 
-sys.exit()
+    items = row.split() 
+    voltage = -1*Decimal(items[0])
+    current = -1*Decimal(items[1])
 
-rowNum = 0
-for row in logData:
-    rowNum +=1
-    if len(row[0]) == 0 or len(row[1]) == 0 :
-        break
-
-    if rowNum == 1:
-        print 'Using %s and %s as Voltage and Current ...' %(row[0], row[1]) 
-        factor = 1 
-        if '[nA]' in row[1]:
-            factor = 1e-9 
-            print 'Convert from nA to A...'
-
-    else: 
-        voltage = Decimal(row[0]) 
-        current = Decimal(row[1]) * Decimal(factor)
-        xmlData.write('<DATA>\n')
-        xmlData.write('<VOLTAGE_VOLT>%.2E</VOLTAGE_VOLT>\n' %voltage)
-        xmlData.write('<ACTV_CURRENT_AMP>%.2E</ACTV_CURRENT_AMP>\n' %current)
-        xmlData.write('</DATA>\n')
-
+    xmlData.write('<DATA>\n')
+    xmlData.write('<VOLTAGE_VOLT>%.2E</VOLTAGE_VOLT>\n' %voltage)
+    xmlData.write('<ACTV_CURRENT_AMP>%.2E</ACTV_CURRENT_AMP>\n' %current)
+    xmlData.write('</DATA>\n')
+    
 
 xmlData.write('</DATA_SET>\n')
 xmlData.write('</ROOT>\n')
