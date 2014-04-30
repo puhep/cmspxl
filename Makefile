@@ -34,7 +34,7 @@ $(BIN)/drawMod: $(SRC)/drawMod.cc
 	$(CC) $< $(DRAWMODFLAGS) -o $@
 
 clean:
-	rm -rf *~  *.dSYM 
-	rm -f $(BIN)/drawMod
+	rm -f $(BIN)/drawMod 
+	rm -rf $(BIN)/drawMod.dSYM
 
 
