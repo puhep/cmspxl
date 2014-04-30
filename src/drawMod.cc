@@ -29,6 +29,8 @@ void addChip(const TString hist, int chip, TH2D *h3) {
     for (int irow = 0; irow < 80; irow++)  {
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
 
+      if (value > 10) value = 10; 
+
       int icol_mod, irow_mod; 
       if (chip < 8) {
 	icol_mod = 415-(chip*52+icol);
