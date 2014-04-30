@@ -25,11 +25,19 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
     return ; 
   }
 
+  int n_total = 0; 
+  int n_overflow = 0;  
+
   for (int icol = 0; icol < 52; icol++) {
     for (int irow = 0; irow < 80; irow++)  {
+      n_total += 1; 
+
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
 
-      if (vmax !=0 && value > vmax) value = vmax; 
+      if (vmax !=0 && value > vmax) {
+	value = vmax; 
+	n_overflow += 1; 
+      }
 
       int icol_mod, irow_mod; 
       if (chip < 8) {
@@ -46,6 +54,10 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
       h3->SetBinContent(icol_mod+1, irow_mod+1, new_value); 
     }
   }
+
+  cout << "n_overflow = " << n_overflow << " out of " << n_total 
+       << " (% " << 100*double(n_overflow)/double(n_total) << ")" 
+       << endl; 
 }
 
 
@@ -79,6 +91,7 @@ void pixelAlive(TString inputFile, TString outFile, int V=0) {
 
   for (int chip = 0; chip < 16 ; chip++) { 
     TString hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
+    cout << " --- ROC " << chip << " ---: " << endl; 
     addChip(hist, chip, h3, max_trig); 
   }
   
