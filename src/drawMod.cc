@@ -15,7 +15,7 @@
 using namespace std; 
 
 
-void addChip(const TString hist, int chip, TH2D *h3) {
+void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
   
   TH2D *h2d;
   gDirectory->GetObject(hist, h2d); 
@@ -29,7 +29,7 @@ void addChip(const TString hist, int chip, TH2D *h3) {
     for (int irow = 0; irow < 80; irow++)  {
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
 
-      if (value > 10) value = 10; 
+      if (vmax !=0 && value > vmax) value = vmax; 
 
       int icol_mod, irow_mod; 
       if (chip < 8) {
@@ -73,11 +73,13 @@ void daq(TString inputFile, TString outFile="test.root", int V=0) {
 
 void pixelAlive(TString inputFile, TString outFile, int V=0) {
   TFile::Open(inputFile.Data());
+  double max_trig = 10; 
+
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
 
   for (int chip = 0; chip < 16 ; chip++) { 
     TString hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
-    addChip(hist, chip, h3); 
+    addChip(hist, chip, h3, max_trig); 
   }
   
   TCanvas *c = new TCanvas("c", "PixelAlive module", 800, 200); 
