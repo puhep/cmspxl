@@ -69,12 +69,12 @@ void daq(TString inputFile, TString outFile="test.root", int V=0) {
 }
 
 
-void pixelAlive(TString inputFile, TString outFile) {
+void pixelAlive(TString inputFile, TString outFile, int V=0) {
   TFile::Open(inputFile.Data());
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
 
   for (int chip = 0; chip < 16 ; chip++) { 
-    TString hist = Form("PixelAlive/PixelAlive_C%d_V0", chip); 
+    TString hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
     addChip(hist, chip, h3); 
   }
   
@@ -135,8 +135,10 @@ int main(int argc, char** argv) {
     TString inputFile(argv[2]);
     if ( inputFile ) {
       TString outFile = "test.pdf"; 
+      int V = 0; 
       if (argc == 4) outFile = argv[3]; 
-      pixelAlive(inputFile, outFile);
+      if (argc >= 5) V = atoi(argv[4]); 
+      pixelAlive(inputFile, outFile, V);
     } else {
       cerr << "Unable to open file: " << argv[2] << endl; 
     }
