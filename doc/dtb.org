@@ -15,6 +15,8 @@
    Also take a set of power cord and take to PHYS360. 
    
 ** DTB 45
+   <2014-05-01 Thu> Flashed with 2.14 in PHYS347. 
+
    <2014-03-20 Thu> Flashed with 2.7 in PHYS347. 
    
 ** DTB 47 
@@ -37,6 +39,8 @@
    <2014-01-14 Tue> Got from PHYS 360 with board and connector. 
 
 ** DTB 48 
+   <2014-04-25 Fri> Flashed with v1.26. Keep for HDI test using
+
    <2014-04-21 Mon> Stay flashed with v1.25. Keep for HDI test using
    the psi46test. in PHYS347. 
    
