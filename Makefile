@@ -15,8 +15,9 @@ ROOTGLIBS     = $(shell $(ROOTSYS)/bin/root-config --glibs)
 GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 
 DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
+DRAWIVFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod 
+PROG=drawMod, drawIV 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
@@ -33,8 +34,11 @@ $(BIN):
 $(BIN)/drawMod: $(SRC)/drawMod.cc
 	$(CC) $< $(DRAWMODFLAGS) -o $@
 
+$(BIN)/drawIV: $(SRC)/drawIV.cc
+	$(CC) $< $(DRAWIVFLAGS) -o $@
+
 clean:
-	rm -f $(BIN)/drawMod 
-	rm -rf $(BIN)/drawMod.dSYM
+	rm -f $(BIN)/drawMod $(BIN)/drawIV
+	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM 
 
 
