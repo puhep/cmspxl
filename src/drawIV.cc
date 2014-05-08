@@ -13,13 +13,62 @@
 #include <TStyle.h> 
 #include "Riostream.h"
 
+
 using namespace std; 
 
 
 void drawIV(TString inputFile, TString outFile) {
   ifstream in;
   in.open(inputFile); 
+  // if ( !inputFile.is_open()) return; 
+
+  Float_t x,y; 
+  Int_t z;
+  Int_t nlines = 0;
+  TFile *f = new TFile(outFile, "RECREATE");
+  TH1F *h1 = new TH1F("h1","x distribution",100, 0, -500);
+
+  string line; 
+  // while (getline(inputFile, line))
+  //   {
+  //     // if ( strcmp(line[0], "#") != 0 ) 
+  //     size_t found = line.find("#"); 
+  //     cout << "found pos: " << found << endl; 
+
+  //     // if ( strcmp(line[0], "#") != 0 ) 
+  // 	// {
+  // 	//   istringstream iss(line);
+  // 	//   float num; // The number in the line
+	  
+  // 	//   //while the iss is a number 
+  // 	//   while ((iss >> num))
+  // 	//     {
+  //       //     //look at the number
+  // 	//     }
+  // 	// }
+  //   }
   
+  while (1) {
+    in >> line; 
+    size_t found = line.find("#"); 
+    // cout << "found pos: " << found << endl; 
+    if (found == 0) continue; // cout << line << endl; 
+
+    in >> x >> y >> z;
+    cout << line << endl; 
+    
+    if (!in.good()) break;
+    if (nlines < 5) printf("x=%8f, y=%8f, z=%d\n",x,y,z);
+    h1->Fill(x);
+    nlines++;
+  }
+
+  printf(" found %d points\n",nlines);
+
+  in.close();
+
+  f->Write();
+
   // TFile::Open(inputFile.Data());
   // double max_trig = 10; 
 
@@ -60,7 +109,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cout << "Usage: drawIV inputFile [test.pdf]\n" 
+  cout << "Usage: drawIV inputFile [test.root]\n" 
        << endl; 
 }
 
@@ -72,7 +121,7 @@ int main(int argc, char** argv) {
   
   TString inputFile(argv[1]);
   if ( inputFile ) {
-    TString outFile = "test.pdf"; 
+    TString outFile = "test.root"; 
     if (argc >= 3) outFile = argv[3]; 
     drawIV(inputFile, outFile);
     
