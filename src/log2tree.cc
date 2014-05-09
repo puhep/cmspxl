@@ -79,9 +79,8 @@ int main(int argc, char** argv) {
   TString inputFile(argv[1]);
   if ( inputFile ) {
     TString outFile = "test.root"; 
-    if (argc >= 3) outFile = argv[3]; 
+    if (argc >= 2) outFile = argv[2];
     log2tree(inputFile, outFile);
-    
   } else {
     cerr << "Unable to open file: " << inputFile << endl; 
   }
