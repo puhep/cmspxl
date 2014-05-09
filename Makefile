@@ -17,7 +17,7 @@ GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 DRAWIVFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod, drawIV, log2tree 
+PROG=drawMod drawIV log2tree 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
