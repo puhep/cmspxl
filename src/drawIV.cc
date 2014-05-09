@@ -21,8 +21,8 @@
 
 using namespace std; 
 
-//TString log2tree(TString inputFile) {
-TTree * log2tree(TString inputFile) {
+TString log2tree(TString inputFile) {
+//TTree * log2tree(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
 
@@ -52,20 +52,33 @@ TTree * log2tree(TString inputFile) {
   tree->Write(); 
   in.close();
   f->Close();
-  // return outFile; 
-  return tree; 
+  return outFile; 
+  // return tree; 
 }
 
 void drawIV(TString inputFile, TString outFile) {
-  // TString treeFile = log2tree(inputFile);
-
+  TString treeFile = log2tree(inputFile); 
   // cout << "treefile = " << treeFile << endl;
-  TTree *tree = log2tree(inputFile);
 
-  cout << "tree: " << tree << endl;  
+  TFile::Open(treeFile); 
+  TTree *tree = NULL;
+
+  gDirectory->GetObject("tree", tree);
+
   if (!tree){
     cerr << "No object name tree! " << endl;
     return ;
+  }
+
+  Float_t voltage;
+  Float_t current;
+  tree->SetBranchAddress("voltage", &voltage); 
+  tree->SetBranchAddress("current", &current); 
+
+  Long64_t nentries = tree->GetEntries();
+  for (Long64_t i=0;i<nentries;i++) {
+    tree->GetEntry(i);
+    cout << voltage << " " << current << endl; 
   }
 
   // TFile::Open(inputFile.Data());
