@@ -4,6 +4,10 @@
 // 
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
 #include <TROOT.h>
 #include <TSystem.h>
 #include <TString.h>
@@ -14,6 +18,7 @@
 #include "Riostream.h"
 
 
+
 using namespace std; 
 
 
@@ -22,11 +27,23 @@ void drawIV(TString inputFile, TString outFile) {
   in.open(inputFile); 
   // if ( !inputFile.is_open()) return; 
 
+  string line;
+  while (std::getline(in, line))
+    {
+      std::istringstream iss(line);
+      cout << line << endl; 
+      // int a, b;
+      // if (!(iss >> a >> b)) { break; } // error
+      // process pair (a,b)
+    }
+  
+  
+  /* 
   Float_t x,y; 
   Int_t z;
   Int_t nlines = 0;
-  TFile *f = new TFile(outFile, "RECREATE");
-  TH1F *h1 = new TH1F("h1","x distribution",100, 0, -500);
+  // TFile *f = new TFile(outFile, "RECREATE");
+  // TH1F *h1 = new TH1F("h1","x distribution",100, 0, -500);
 
   string line; 
   // while (getline(inputFile, line))
@@ -54,20 +71,22 @@ void drawIV(TString inputFile, TString outFile) {
     // cout << "found pos: " << found << endl; 
     if (found == 0) continue; // cout << line << endl; 
 
-    in >> x >> y >> z;
-    cout << line << endl; 
+    // in >> x >> y >> z;
+    cout << nlines << ": " << line << endl; 
     
-    if (!in.good()) break;
-    if (nlines < 5) printf("x=%8f, y=%8f, z=%d\n",x,y,z);
-    h1->Fill(x);
+    // if (!in.good()) break;
+    // if (nlines < 5) printf("x=%8f, y=%8f, z=%d\n",x,y,z);
+    // h1->Fill(x);
     nlines++;
   }
 
   printf(" found %d points\n",nlines);
 
+  */
+
   in.close();
 
-  f->Write();
+  // f->Write();
 
   // TFile::Open(inputFile.Data());
   // double max_trig = 10; 
