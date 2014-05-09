@@ -28,17 +28,22 @@ void drawIV(TString inputFile, TString outFile) {
   // if ( !inputFile.is_open()) return; 
 
   string line;
+  float x, y;
+  int z;
+
   while (getline(in, line)) {
     istringstream iss(line);
     // size_t found = line.find("#"); 
     // cout << "found pos: " << found << endl; 
     // if (found == 0) continue; // cout << line << endl;
     if ( line.find("#") == 0 ) continue; 
-    
-    cout << line << endl; 
+  
+    // cout << line << endl; 
     // int a, b;
-    // if (!(iss >> a >> b)) { break; } // error
+    if (!(iss >> x >> y >> z )) { break; } // error
     // process pair (a,b)
+    printf("x=%8f, y=%8e, z=%d\n",x,y,z);
+    
   }
   
   
