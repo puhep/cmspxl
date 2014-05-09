@@ -17,16 +17,14 @@
 #include <TStyle.h> 
 #include "Riostream.h"
 
-
-
 using namespace std; 
 
-
-void drawIV(TString inputFile, TString outFile) {
+TString log2tree(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
-  // if ( !inputFile.is_open()) return; 
 
+  TString outFile = "tmp_tree.root"; 
+  TFile *f = new TFile(outFile, "RECREATE");
   string line;
   float x, y;
   int z;
@@ -34,21 +32,23 @@ void drawIV(TString inputFile, TString outFile) {
   int nlines = 0; 
   while (getline(in, line)) {
     istringstream iss(line);
-    // size_t found = line.find("#"); 
-    // cout << "found pos: " << found << endl; 
-    // if (found == 0) continue; // cout << line << endl;
     if ( line.find("#") == 0 ) continue; 
-
-    // cout << line << endl; 
-    // int a, b;
-    if (!(iss >> x >> y >> z )) { break; } // error
-    // process pair (a,b)
+    if (!(iss >> x >> y >> z )) break; 
     if (!in.good()) break;
     if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
+    // h1->Fill(x);
     nlines ++; 
   }
-  
-  
+  in.close();
+  f->Write();
+  return outFile; 
+}
+
+
+void drawIV(TString inputFile, TString outFile) {
+  TString treeFile = log2tree(inputFile);
+  cout << "treefile = " << treeFile << endl;
+
   /* 
   Float_t x,y; 
   Int_t z;
@@ -95,9 +95,6 @@ void drawIV(TString inputFile, TString outFile) {
 
   */
 
-  in.close();
-
-  // f->Write();
 
   // TFile::Open(inputFile.Data());
   // double max_trig = 10; 
