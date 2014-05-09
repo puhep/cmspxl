@@ -21,7 +21,8 @@
 
 using namespace std; 
 
-TString log2tree(TString inputFile) {
+//TString log2tree(TString inputFile) {
+TTree * log2tree(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
 
@@ -51,12 +52,21 @@ TString log2tree(TString inputFile) {
   tree->Write(); 
   in.close();
   f->Close();
-  return outFile; 
+  // return outFile; 
+  return tree; 
 }
 
 void drawIV(TString inputFile, TString outFile) {
-  TString treeFile = log2tree(inputFile);
-  cout << "treefile = " << treeFile << endl;
+  // TString treeFile = log2tree(inputFile);
+
+  // cout << "treefile = " << treeFile << endl;
+  TTree *tree = log2tree(inputFile);
+
+  cout << "tree: " << tree << endl;  
+  if (!tree){
+    cerr << "No object name tree! " << endl;
+    return ;
+  }
 
   // TFile::Open(inputFile.Data());
   // double max_trig = 10; 
