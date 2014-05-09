@@ -15,7 +15,9 @@
 #include <TFile.h> 
 #include <TCanvas.h> 
 #include <TStyle.h> 
-#include "Riostream.h"
+#include <Riostream.h>
+#include <TTree.h>
+
 
 using namespace std; 
 
@@ -25,22 +27,37 @@ TString log2tree(TString inputFile) {
 
   TString outFile = "tmp_tree.root"; 
   TFile *f = new TFile(outFile, "RECREATE");
+  TTree *tree = new TTree("tree", "data from log file");
+  Float_t voltage;
+  Float_t current;
+  Int_t timestamp; 
+  
+  tree->Branch("voltage", &voltage, "voltage/F" ); 
+  tree->Branch("current", &current, "current/F" ); 
+  tree->Branch("timestamp", &timestamp, "timestamp/I" ); 
+  
   string line;
-  float x, y;
-  int z;
+  // float x, y;
+  // int z;
 
   int nlines = 0; 
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
-    if (!(iss >> x >> y >> z )) break; 
+    // if (!(iss >> x >> y >> z )) break; 
+    if (!(iss >> voltage >> current >> timestamp )) break; 
     if (!in.good()) break;
-    if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
+    // if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
+    // if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
+
     // h1->Fill(x);
+    tree->Fill(); 
     nlines ++; 
   }
+  tree->Write(); 
   in.close();
-  f->Write();
+  // f->Write();
+  f->Close();
   return outFile; 
 }
 
