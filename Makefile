@@ -3,7 +3,7 @@
 #  2014.03.11 
 #
 
-BIN=./bin
+BIN=$(HOME)/local/bin
 SRC=./src
 
 CC = g++
