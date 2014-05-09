@@ -37,81 +37,26 @@ TString log2tree(TString inputFile) {
   tree->Branch("timestamp", &timestamp, "timestamp/I" ); 
   
   string line;
-  // float x, y;
-  // int z;
 
   int nlines = 0; 
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
-    // if (!(iss >> x >> y >> z )) break; 
     if (!(iss >> voltage >> current >> timestamp )) break; 
     if (!in.good()) break;
     // if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
-    // if (nlines < 5) printf("x=%8f, y=%8e, z=%d\n",x,y,z);
-
-    // h1->Fill(x);
     tree->Fill(); 
     nlines ++; 
   }
   tree->Write(); 
   in.close();
-  // f->Write();
   f->Close();
   return outFile; 
 }
 
-
 void drawIV(TString inputFile, TString outFile) {
   TString treeFile = log2tree(inputFile);
   cout << "treefile = " << treeFile << endl;
-
-  /* 
-  Float_t x,y; 
-  Int_t z;
-  Int_t nlines = 0;
-  // TFile *f = new TFile(outFile, "RECREATE");
-  // TH1F *h1 = new TH1F("h1","x distribution",100, 0, -500);
-
-  string line; 
-  // while (getline(inputFile, line))
-  //   {
-  //     // if ( strcmp(line[0], "#") != 0 ) 
-  //     size_t found = line.find("#"); 
-  //     cout << "found pos: " << found << endl; 
-
-  //     // if ( strcmp(line[0], "#") != 0 ) 
-  // 	// {
-  // 	//   istringstream iss(line);
-  // 	//   float num; // The number in the line
-	  
-  // 	//   //while the iss is a number 
-  // 	//   while ((iss >> num))
-  // 	//     {
-  //       //     //look at the number
-  // 	//     }
-  // 	// }
-  //   }
-  
-  while (1) {
-    in >> line; 
-    size_t found = line.find("#"); 
-    // cout << "found pos: " << found << endl; 
-    if (found == 0) continue; // cout << line << endl; 
-
-    // in >> x >> y >> z;
-    cout << nlines << ": " << line << endl; 
-    
-    // if (!in.good()) break;
-    // if (nlines < 5) printf("x=%8f, y=%8f, z=%d\n",x,y,z);
-    // h1->Fill(x);
-    nlines++;
-  }
-
-  printf(" found %d points\n",nlines);
-
-  */
-
 
   // TFile::Open(inputFile.Data());
   // double max_trig = 10; 
