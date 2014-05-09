@@ -50,14 +50,21 @@ void drawIV(TString inputFile, TString outFile) {
   Long64_t nentries = tree->GetEntries();
   for (Long64_t i=0;i<nentries;i++) {
     tree->GetEntry(i);
-    cout << voltage << " " << current << endl;
-    gr->SetPoint(i, voltage, current); 
+    // cout << voltage << " " << current << endl;
+    // gr->SetPoint(i, voltage, current); 
+    gr->SetPoint(i, -voltage, -current); 
   }
 
   TCanvas *c = new TCanvas("c", "IV scan", 400, 400); 
 
-  gr->Draw("ACP");
+  gr->GetXaxis()->SetTitle("Bias Voltage [V]");
+  gr->GetYaxis()->SetTitle("Leakage Current [A]");
 
+  // gr->SetMarkerColor(kRed);
+  gr->SetMarkerStyle(20);
+  gr->Draw();
+  // gr->Draw("ACP");
+  
   gROOT->SetStyle("Plain");
   
   gStyle->SetPalette(1);
