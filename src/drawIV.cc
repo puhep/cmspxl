@@ -22,6 +22,31 @@
 
 using namespace std; 
 
+void drawIVlogs(){
+  TString inputFile = "SCAB_001_iv_20140508.log";
+  ifstream in;
+  in.open(inputFile); 
+
+  Float_t voltage;
+  Float_t current;
+  Int_t timestamp; 
+
+  string line;
+  int nlines = 0; 
+  while (getline(in, line)) {
+    istringstream iss(line);
+    if ( line.find("#") == 0 ) continue; 
+    if (!(iss >> voltage >> current >> timestamp )) break; 
+    if (!in.good()) break;
+    nlines ++; 
+  }
+
+  cout << "Read " << nlines << " lines." << endl;
+  in.close();
+  
+}
+
+
 
 void drawIV(TString inputFile, TString outFile) {
 
@@ -90,7 +115,8 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cout << "Usage: drawIV inputFile [test.pdf]\n" 
+  cout << "Usage: drawIV inputFile [test.pdf]\n"
+       << "               logs input1 input2 ... \n"
        << endl; 
 }
 
@@ -99,10 +125,16 @@ int main(int argc, char** argv) {
     print_usage() ;  
     return -1; 
   }
-  
+  TString outFile = "test.pdf";
+
+  if (strncmp (argv[1], "logs", 4) == 0) {
+    drawIVlogs(); 
+    return 0 ;
+  }
+
   TString inputFile(argv[1]);
   if ( inputFile ) {
-    TString outFile = "test.pdf"; 
+
     if (argc >= 2) outFile = argv[2]; 
     drawIV(inputFile, outFile);
   } else {
