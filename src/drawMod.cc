@@ -21,7 +21,7 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
   gDirectory->GetObject(hist, h2d); 
   
   if (!h2d) {
-    cerr << "Not valid histogram!" << endl; 
+    cerr << "Chip "<< chip << ": Not valid histogram!" << endl; 
     return ; 
   }
 
@@ -60,16 +60,13 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
     }
   }
 
-  // cout << "overflow: " << 100*double(n_overflow)/double(n_total) << "%, " 
-  //      << "underflow: " << 100*double(n_underflow)/double(n_total) << "%" 
-  //      << endl; 
-
-  printf("overflow: %.2f%%, underflow: %.2f%%", 100.*n_overflow/n_total, 
-	 100.*n_underflow/n_total); 
+  if (n_overflow != 0 || n_underflow != 0)
+    printf("chip %d: overflow: %.2f%%, underflow: %.2f%% \n ",
+	   chip, 100.*n_overflow/n_total, 100.*n_underflow/n_total); 
 }
 
 
-void daq(TString inputFile, TString outFile="test.root", int V=0) {
+void DAQ(TString inputFile, TString outFile="test.root", int V=0) {
   TFile::Open(inputFile.Data());
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   
@@ -91,7 +88,7 @@ void daq(TString inputFile, TString outFile="test.root", int V=0) {
 }
 
 
-void pixelAlive(TString inputFile, TString outFile, int V=0) {
+void PixelAlive(TString inputFile, TString outFile, int V=0) {
   TFile::Open(inputFile.Data());
   double max_trig = 10; 
 
@@ -99,7 +96,30 @@ void pixelAlive(TString inputFile, TString outFile, int V=0) {
 
   for (int chip = 0; chip < 16 ; chip++) { 
     TString hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
-    cout << "\n --- ROC " << chip << " ---: " << endl; 
+    addChip(hist, chip, h3, max_trig); 
+  }
+  
+  TCanvas *c = new TCanvas("c", "PixelAlive module", 800, 200); 
+  h3->DrawCopy("colz");
+
+  gROOT->SetStyle("Plain");
+  
+  gStyle->SetPalette(1);
+  gStyle->SetOptStat(0);
+  gStyle->SetTitle(0);
+
+  c->SaveAs(outFile);
+}
+
+
+void BumpBonding(TString inputFile, TString outFile, int V=0) {
+  TFile::Open(inputFile.Data());
+  double max_trig = 0; 
+
+  TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
+
+  for (int chip = 0; chip < 16 ; chip++) { 
+    TString hist = Form("BumpBonding/BB- %d", chip);
     addChip(hist, chip, h3, max_trig); 
   }
   
@@ -132,8 +152,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cerr << "Usage: drawMod DAQ        inputFile [test.pdf]\n" 
-       << "               PixelAlive inputFile [test.pdf]\n" 
+  cerr << "Usage: drawMod DAQ | PixelAlive | BumpBonding inputFile [test.pdf]\n" 
        << endl; 
 }
 
@@ -142,33 +161,29 @@ int main(int argc, char** argv) {
     print_usage() ;  
     return -1; 
   }
-  
-  if (strcmp(argv[1], "DAQ") == 0 ) {
-    TString inputFile(argv[2]);
-    if ( inputFile ) {
-      TString outFile = "test.pdf"; 
-      int V = 0; 
-      if (argc >= 4) outFile = argv[3]; 
-      if (argc >= 5) V = atoi(argv[4]); 
-      daq(inputFile, outFile, V);
-    } else {
-      cerr << "Unable to open file: " << argv[2] << endl; 
-    }
+
+  TString outFile = "test.pdf";
+  TString inputFile(argv[2]);
+  if ( ! inputFile ) {
+        cerr << "Unable to open file: " << argv[2] << endl; 
+	return -1;
   }
 
-  else if (strcmp(argv[1], "PixelAlive") == 0 ) {
-    TString inputFile(argv[2]);
-    if ( inputFile ) {
-      TString outFile = "test.pdf"; 
-      int V = 0; 
-      if (argc == 4) outFile = argv[3]; 
-      if (argc >= 5) V = atoi(argv[4]); 
-      pixelAlive(inputFile, outFile, V);
-    } else {
-      cerr << "Unable to open file: " << argv[2] << endl; 
-    }
-  }
+  int V = 0;
+  if (argc >= 4) outFile = argv[3]; 
+  if (argc >= 5) V = atoi(argv[4]); 
   
+  if (strcmp(argv[1], "DAQ") == 0 ) {
+        DAQ(inputFile, outFile, V);
+  }
+  else if (strcmp(argv[1], "PixelAlive") == 0 ) {
+    PixelAlive(inputFile, outFile, V);
+  }
+
+  else if (strcmp(argv[1], "BumpBonding") == 0 ) {
+    BumpBonding(inputFile, outFile, V);
+  }
+    
   else {
     print_usage(); 
   }
