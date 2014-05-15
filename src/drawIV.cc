@@ -19,6 +19,7 @@
 #include <TTree.h>
 #include <TGraph.h>
 #include <TMultiGraph.h>
+#include <TLegend.h>
 
 
 using namespace std; 
@@ -63,27 +64,37 @@ void drawIVlogs(vector<TString> inputFiles){
   c->SetGrid();
 
   TMultiGraph *mg = new TMultiGraph();
-  
+  TLegend *leg = new TLegend(0.1, 0.74, 0.4, 0.9);
+  leg->SetBorderSize(1);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(0);
+  leg->SetNColumns(1);
+  leg->SetTextSize(0.035);
+  leg->SetTextSizePixels(25);
+
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TGraph *gr = get_graph_from_log(inputFiles[i]); 
-    gr->SetTitle(inputFiles[i]); 
+    // gr->SetTitle(inputFiles[i]); 
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.5);
     gr->SetMarkerColor(i+1);
+    // leg->AddEntry(gr); 
+    leg->AddEntry(gr, inputFiles[i], "p"); 
     mg->Add(gr); 
   }
   
   mg->Draw("ap"); 
   mg->GetXaxis()->SetTitle("Bias Voltage [V]");
   mg->GetYaxis()->SetTitle("Leakage Current [A]");
-
+  leg->Draw(); 
+  
   gROOT->SetStyle("Plain");
   
   gStyle->SetPalette(1);
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  c->BuildLegend();
+  // c->BuildLegend();
   c->SaveAs(outFile);
 }
 
