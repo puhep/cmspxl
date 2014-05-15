@@ -24,6 +24,8 @@ using namespace std;
 
 void drawIVlogs(){
   TString inputFile = "SCAB_001_iv_20140508.log";
+  TString outFile = "test.pdf";
+
   ifstream in;
   in.open(inputFile); 
 
@@ -31,19 +33,47 @@ void drawIVlogs(){
   Float_t current;
   Int_t timestamp; 
 
+  // vector<float> *voltages, *currents;
+  vector <Double_t> voltages; 
+  vector <Double_t> currents; 
+
   string line;
+
+  // TGraph *gr = new TGraph();
+
   int nlines = 0; 
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
     if (!(iss >> voltage >> current >> timestamp )) break; 
     if (!in.good()) break;
+    // gr->SetPoint(i, -voltage, -current); 
+    voltages.push_back(voltage);
+    currents.push_back(current);
     nlines ++; 
   }
 
   cout << "Read " << nlines << " lines." << endl;
   in.close();
+
+  TCanvas *c = new TCanvas("c", "IV scan", 400, 400); 
+
+  TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
+  gr->GetXaxis()->SetTitle("Bias Voltage [V]");
+  gr->GetYaxis()->SetTitle("Leakage Current [A]");
+
+  // gr->SetMarkerColor(kRed);
+  gr->SetMarkerStyle(20);
+  gr->Draw();
+  // gr->Draw("ACP");
   
+  gROOT->SetStyle("Plain");
+  
+  gStyle->SetPalette(1);
+  gStyle->SetOptStat(0);
+  gStyle->SetTitle(0);
+
+   c->SaveAs(outFile);
 }
 
 
