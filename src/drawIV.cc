@@ -51,13 +51,11 @@ TGraph * get_graph_from_log(TString inputFile) {
   cout << inputFile << " contains " << nlines << " lines." << endl;
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
-
   return gr; 
 }
 
 
 void drawIV(vector<TString> inputFiles){
-  // TString inputFile = "SCAB_001_iv_20140508.log";
   TString outFile = "test.pdf";
 
   TCanvas *c = new TCanvas("c", "IV scan", 400, 400);
@@ -74,11 +72,9 @@ void drawIV(vector<TString> inputFiles){
 
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TGraph *gr = get_graph_from_log(inputFiles[i]); 
-    // gr->SetTitle(inputFiles[i]); 
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.5);
     gr->SetMarkerColor(i+1);
-    // leg->AddEntry(gr); 
     leg->AddEntry(gr, inputFiles[i], "p"); 
     mg->Add(gr); 
   }
@@ -94,62 +90,8 @@ void drawIV(vector<TString> inputFiles){
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  // c->BuildLegend();
   c->SaveAs(outFile);
 }
-
-
-
-// void drawIV(TString inputFile, TString outFile) {
-
-//   TFile* treeFile = TFile::Open(inputFile); 
-
-//   if (!treeFile) {
-//     cerr << "Not able to open file: " << inputFile << endl;
-//     return ;
-//   }
-    
-//   TTree *tree = NULL;
-//   gDirectory->GetObject("tree", tree);
-
-//   if (!tree){
-//     cerr << "No object name tree! " << endl;
-//     return ;
-//   }
-
-//   Float_t voltage;
-//   Float_t current;
-//   tree->SetBranchAddress("voltage", &voltage); 
-//   tree->SetBranchAddress("current", &current); 
-
-//   TGraph *gr = new TGraph();
-
-//   Long64_t nentries = tree->GetEntries();
-//   for (Long64_t i=0;i<nentries;i++) {
-//     tree->GetEntry(i);
-//     // cout << voltage << " " << current << endl;
-//     // gr->SetPoint(i, voltage, current); 
-//     gr->SetPoint(i, -voltage, -current); 
-//   }
-
-//   TCanvas *c = new TCanvas("c", "IV scan", 400, 400); 
-
-//   gr->GetXaxis()->SetTitle("Bias Voltage [V]");
-//   gr->GetYaxis()->SetTitle("Leakage Current [A]");
-
-//   // gr->SetMarkerColor(kRed);
-//   gr->SetMarkerStyle(20);
-//   gr->Draw();
-//   // gr->Draw("ACP");
-  
-//   gROOT->SetStyle("Plain");
-  
-//   gStyle->SetPalette(1);
-//   gStyle->SetOptStat(0);
-//   gStyle->SetTitle(0);
-//   c->SaveAs(outFile);
-// }
-
 
 
 #ifndef __CINT__ 
@@ -167,8 +109,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cout << "Usage: drawIV inputFile [test.pdf]\n"
-       << "               logs input1 input2 ... \n"
+  cout << "Usage: drawIV input1 input2 ... \n"
        << endl; 
 }
 
@@ -178,28 +119,8 @@ int main(int argc, char** argv) {
     return -1; 
   }
   
-  TString outFile = "test.pdf";
   vector<TString> inputFiles(argv+1, argv+argc);
   drawIV(inputFiles);
-  
-  // if (strncmp (argv[1], "logs", 4) == 0) {
-  //   vector<TString> inputFiles(argv+2, argv+argc);
-
-  //   // cout << "in1: " << inputFiles[1] << endl;
-
-  //   drawIVlogs(inputFiles);
-    
-  //   return 0 ;
-  // }
-
-  // TString inputFile(argv[1]);
-  // if ( inputFile ) {
-
-  //   if (argc >= 2) outFile = argv[2]; 
-  //   drawIV(inputFile, outFile);
-  // } else {
-  //   cerr << "Unable to open file: " << inputFile << endl; 
-  // }
   
   gSystem->Exit(0);
   return 0 ;
