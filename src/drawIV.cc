@@ -22,10 +22,7 @@
 
 using namespace std; 
 
-void drawIVlogs(){
-  TString inputFile = "SCAB_001_iv_20140508.log";
-  TString outFile = "test.pdf";
-
+TGraph * get_graph_from_log(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
 
@@ -33,13 +30,10 @@ void drawIVlogs(){
   Float_t current;
   Int_t timestamp; 
 
-  // vector<float> *voltages, *currents;
   vector <Double_t> voltages; 
   vector <Double_t> currents; 
 
   string line;
-
-  // TGraph *gr = new TGraph();
 
   int nlines = 0; 
   while (getline(in, line)) {
@@ -47,7 +41,6 @@ void drawIVlogs(){
     if ( line.find("#") == 0 ) continue; 
     if (!(iss >> voltage >> current >> timestamp )) break; 
     if (!in.good()) break;
-    // gr->SetPoint(i, -voltage, -current); 
     voltages.push_back(voltage);
     currents.push_back(current);
     nlines ++; 
@@ -55,10 +48,19 @@ void drawIVlogs(){
 
   cout << "Read " << nlines << " lines." << endl;
   in.close();
+  TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
+  return gr; 
+}
+
+
+void drawIVlogs(){
+  TString inputFile = "SCAB_001_iv_20140508.log";
+  TString outFile = "test.pdf";
 
   TCanvas *c = new TCanvas("c", "IV scan", 400, 400); 
 
-  TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
+  TGraph *gr = get_graph_from_log(inputFile); 
+  
   gr->GetXaxis()->SetTitle("Bias Voltage [V]");
   gr->GetYaxis()->SetTitle("Leakage Current [A]");
 
