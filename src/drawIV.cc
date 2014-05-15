@@ -56,7 +56,7 @@ TGraph * get_graph_from_log(TString inputFile) {
 
 
 void drawIVlogs(vector<TString> inputFiles){
-  TString inputFile = "SCAB_001_iv_20140508.log";
+  // TString inputFile = "SCAB_001_iv_20140508.log";
   TString outFile = "test.pdf";
 
   TCanvas *c = new TCanvas("c", "IV scan", 400, 400);
@@ -66,6 +66,7 @@ void drawIVlogs(vector<TString> inputFiles){
   
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TGraph *gr = get_graph_from_log(inputFiles[i]); 
+    gr->SetTitle(inputFiles[i]); 
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.5);
     gr->SetMarkerColor(i+1);
@@ -82,7 +83,8 @@ void drawIVlogs(vector<TString> inputFiles){
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-   c->SaveAs(outFile);
+  c->BuildLegend();
+  c->SaveAs(outFile);
 }
 
 
