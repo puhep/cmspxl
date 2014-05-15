@@ -18,6 +18,7 @@
 #include <Riostream.h>
 #include <TTree.h>
 #include <TGraph.h>
+#include <TMultiGraph.h>
 
 
 using namespace std; 
@@ -41,34 +42,40 @@ TGraph * get_graph_from_log(TString inputFile) {
     if ( line.find("#") == 0 ) continue; 
     if (!(iss >> voltage >> current >> timestamp )) break; 
     if (!in.good()) break;
-    voltages.push_back(voltage);
-    currents.push_back(current);
+    voltages.push_back(-voltage);
+    currents.push_back(-current);
     nlines ++; 
   }
 
-  cout << "Read " << nlines << " lines." << endl;
+  cout << inputFile << " contains " << nlines << " lines." << endl;
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
+
   return gr; 
 }
 
 
-void drawIVlogs(){
+void drawIVlogs(vector<TString> inputFiles){
   TString inputFile = "SCAB_001_iv_20140508.log";
   TString outFile = "test.pdf";
 
-  TCanvas *c = new TCanvas("c", "IV scan", 400, 400); 
+  TCanvas *c = new TCanvas("c", "IV scan", 400, 400);
+  c->SetGrid();
 
-  TGraph *gr = get_graph_from_log(inputFile); 
+  TMultiGraph *mg = new TMultiGraph();
   
-  gr->GetXaxis()->SetTitle("Bias Voltage [V]");
-  gr->GetYaxis()->SetTitle("Leakage Current [A]");
+  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
+    TGraph *gr = get_graph_from_log(inputFiles[i]); 
+    gr->SetMarkerStyle(20+i);
+    gr->SetMarkerSize(0.5);
+    gr->SetMarkerColor(i+1);
+    mg->Add(gr); 
+  }
+  
+  mg->Draw("ap"); 
+  mg->GetXaxis()->SetTitle("Bias Voltage [V]");
+  mg->GetYaxis()->SetTitle("Leakage Current [A]");
 
-  // gr->SetMarkerColor(kRed);
-  gr->SetMarkerStyle(20);
-  gr->Draw();
-  // gr->Draw("ACP");
-  
   gROOT->SetStyle("Plain");
   
   gStyle->SetPalette(1);
@@ -160,7 +167,12 @@ int main(int argc, char** argv) {
   TString outFile = "test.pdf";
 
   if (strncmp (argv[1], "logs", 4) == 0) {
-    drawIVlogs(); 
+    vector<TString> inputFiles(argv+2, argv+argc);
+
+    // cout << "in1: " << inputFiles[1] << endl;
+
+    drawIVlogs(inputFiles);
+    
     return 0 ;
   }
 
