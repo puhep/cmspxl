@@ -74,7 +74,9 @@ void drawIV(vector<TString> inputFiles){
     TGraph *gr = get_graph_from_log(inputFiles[i]); 
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.5);
-    gr->SetMarkerColor(i+1);
+    int color = i+1;
+    if (color >= 5) color ++; // bypass the yellow  
+    gr->SetMarkerColor(color);
     leg->AddEntry(gr, inputFiles[i], "p"); 
     mg->Add(gr); 
   }
