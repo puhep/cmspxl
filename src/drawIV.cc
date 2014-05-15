@@ -62,7 +62,7 @@ void drawIV(vector<TString> inputFiles){
   c->SetGrid();
 
   TMultiGraph *mg = new TMultiGraph();
-  TLegend *leg = new TLegend(0.1, 0.74, 0.4, 0.9);
+  TLegend *leg = new TLegend(0.2, 0.6, 0.5 0.9);
   leg->SetBorderSize(1);
   leg->SetFillColor(0);
   leg->SetFillStyle(0);
