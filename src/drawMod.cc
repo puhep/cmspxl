@@ -70,11 +70,15 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
   TFile::Open(inputFile.Data());
   double max_trig = 10; 
-  TString hist; 
+  TString hist(label); 
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   for (int chip = 0; chip < 16 ; chip++) {
-    if (!strcmp(label, "BumpBonding") ) 
+    if (!strcmp(label, "BumpBonding") ){
       hist = Form("BumpBonding/BB- %d", chip);
+    } else {
+      cerr << "No such hist name: " << hist << endl;
+      break; 
+   }
     addChip(hist, chip, h3, max_trig); 
   }
   
