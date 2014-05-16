@@ -11,6 +11,7 @@
 #include <TFile.h> 
 #include <TCanvas.h> 
 #include <TStyle.h> 
+#include <TApplication.h> 
 
 using namespace std; 
 
@@ -64,6 +65,32 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
     printf("chip %d: overflow: %.2f%%, underflow: %.2f%% \n ",
 	   chip, 100.*n_overflow/n_total, 100.*n_underflow/n_total); 
 }
+
+TCanvas* drawMod(TString label, TString inputFile, int V=0){
+
+  TFile::Open(inputFile.Data());
+  double max_trig = 10; 
+  TString hist; 
+  TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
+  for (int chip = 0; chip < 16 ; chip++) {
+    if (!strcmp(label, "BumpBonding") ) 
+      hist = Form("BumpBonding/BB- %d", chip);
+    addChip(hist, chip, h3, max_trig); 
+  }
+  
+  TCanvas *c = new TCanvas("c", "c", 800, 200); 
+  h3->DrawCopy("colz");
+
+  gROOT->SetStyle("Plain");
+  
+  gStyle->SetPalette(1);
+  gStyle->SetOptStat(0);
+  gStyle->SetTitle(0);
+
+  // c->SaveAs(outFile);
+  return c; 
+}
+
 
 
 void DAQ(TString inputFile, TString outFile="test.root", int V=0) {
@@ -162,35 +189,56 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  TString outFile = "test.pdf";
+  bool doBatch(false);
+  TString label(argv[1]); 
   TString inputFile(argv[2]);
-  if ( ! inputFile ) {
-        cerr << "Unable to open file: " << argv[2] << endl; 
-	return -1;
-  }
-
-  int V = 0;
-  if (argc >= 4) outFile = argv[3]; 
-  if (argc >= 5) V = atoi(argv[4]); 
+  TString outFile = "test.pdf";
+  // int V = 0;
   
-  if (strcmp(argv[1], "DAQ") == 0 ) {
-        DAQ(inputFile, outFile, V);
-  }
-  else if (strcmp(argv[1], "PixelAlive") == 0 ) {
-    PixelAlive(inputFile, outFile, V);
+  for (int i = 0; i < argc; i++){
+    if (!strcmp(argv[i], "-h")) print_usage();
+    if (!strcmp(argv[i], "-b")) {
+      doBatch = true;
+      inputFile = TString(argv[3]); 
+    }
   }
 
-  else if (strcmp(argv[1], "BumpBonding") == 0 ) {
-    BumpBonding(inputFile, outFile, V);
+  if (doBatch) { 
+    cout << "Run in batch mode ... " << endl;
+    TCanvas *c = drawMod(label, inputFile);
+    c->SaveAs(outFile);
+    delete c;
+    gSystem->Exit(0);
   }
+  
+  TApplication theApp("App", 0, 0);
+  theApp.SetReturnFromRun(true);
+
+  drawMod(label, inputFile);  
+  theApp.Run();
+
+  
+  // if (argc >= 4) outFile = argv[3]; 
+  // if (argc >= 5) V = atoi(argv[4]); 
+  
+  // if (strcmp(argv[1], "DAQ") == 0 ) {
+  //       DAQ(inputFile, outFile, V);
+  // }
+  // else if (strcmp(argv[1], "PixelAlive") == 0 ) {
+  //   PixelAlive(inputFile, outFile, V);
+  // }
+
+  // else if (strcmp(argv[1], "BumpBonding") == 0 ) {
+  //   BumpBonding(inputFile, outFile, V);
+  // }
     
-  else {
-    print_usage(); 
-  }
+  // else {
+  //   print_usage(); 
+  // }
 
-  gSystem->Exit(0);
+  // gSystem->Exit(0);
 
-  return 0 ;
+  // return 0 ;
 }
 
 #endif
