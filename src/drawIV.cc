@@ -115,7 +115,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
     mg->Add(gr); 
   }
   
-  mg->Draw("ap"); 
+  mg->Draw("APL"); 
   mg->GetXaxis()->SetTitle("Bias Voltage [V]");
   mg->GetYaxis()->SetTitle("Leakage Current [A]");
   mg->GetYaxis()->SetRangeUser(1e-10, 1e-4); 
