@@ -28,27 +28,19 @@ using namespace std;
 TGraph * get_graph_from_log(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
-
-  Float_t voltage;
-  Float_t current;
-  // Int_t timestamp; 
-
-  vector <Double_t> voltages; 
-  vector <Double_t> currents; 
+  Float_t x, y; 
+  vector<Float_t> voltages; 
+  vector<Float_t> currents; 
 
   string line;
-
   int nlines = 0; 
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
-    // if (!(iss >> voltage >> current >> timestamp )) break; 
-    if (!(iss >> voltage >> current )) break; 
+    if (!(iss >> x >> y )) break; 
     if (!in.good()) break;
-    // voltages.push_back(fabs(voltage));
-    // currents.push_back(fabs(current));
-    voltages.push_back(-voltage);
-    currents.push_back(-current);
+    voltages.push_back(-x);
+    currents.push_back(-y);
     nlines ++; 
   }
 
@@ -97,7 +89,6 @@ TCanvas* drawIV(vector<TString> inputFiles){
 
 
 #ifndef __CINT__ 
-#include <iostream>
 
 int print_usage(){
   cout << "Usage: drawIV [-b] input1 input2 ... \n"
@@ -123,15 +114,10 @@ int main(int argc, char** argv) {
     }
   }
 
-  cout << "After size = " << inputFiles.size() << endl;
-  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
-    cout << i << " : " << inputFiles[i] << endl; 
-  }
-
   if (doBatch) { 
     cout << "Run in batch mode ... " << endl;
     TCanvas *c = drawIV(inputFiles);
-    // c->SaveAs(outFile);
+    c->SaveAs(outFile);
     delete c;
     gSystem->Exit(0);
   }
