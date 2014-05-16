@@ -83,15 +83,13 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   }
   
   TCanvas *c = new TCanvas("c", "c", 800, 200); 
-  h3->DrawCopy("colz");
 
+  h3->DrawCopy("colz");
   gROOT->SetStyle("Plain");
-  
   gStyle->SetPalette(1);
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  // c->SaveAs(outFile);
   return c; 
 }
 
@@ -170,20 +168,9 @@ void BumpBonding(TString inputFile, TString outFile, int V=0) {
 
 #ifndef __CINT__ 
 #include <iostream>
-#include <algorithm>
-
-char* get_option(char ** begin, char ** end, const std::string & option){
-  char ** itr = std::find(begin, end, option);
-  if (itr != end && ++itr != end)  return *itr;
-  return 0;
-}
-
-bool option_exists(char** begin, char** end, const std::string& option){
-  return std::find(begin, end, option) != end;
-}
 
 void print_usage(){
-  cerr << "Usage: drawMod DAQ | PixelAlive | BumpBonding inputFile [test.pdf]\n" 
+  cerr << "Usage: drawMod [-b] DAQ | PixelAlive | BumpBonding inputFile \n" 
        << endl; 
 }
 
@@ -221,28 +208,6 @@ int main(int argc, char** argv) {
   drawMod(label, inputFile);  
   theApp.Run();
 
-  
-  // if (argc >= 4) outFile = argv[3]; 
-  // if (argc >= 5) V = atoi(argv[4]); 
-  
-  // if (strcmp(argv[1], "DAQ") == 0 ) {
-  //       DAQ(inputFile, outFile, V);
-  // }
-  // else if (strcmp(argv[1], "PixelAlive") == 0 ) {
-  //   PixelAlive(inputFile, outFile, V);
-  // }
-
-  // else if (strcmp(argv[1], "BumpBonding") == 0 ) {
-  //   BumpBonding(inputFile, outFile, V);
-  // }
-    
-  // else {
-  //   print_usage(); 
-  // }
-
-  // gSystem->Exit(0);
-
-  // return 0 ;
 }
 
 #endif
