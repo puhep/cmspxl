@@ -20,7 +20,8 @@
 #include <TGraph.h>
 #include <TMultiGraph.h>
 #include <TLegend.h>
-
+#include <TApplication.h> 
+#include <TMath.h> 
 
 using namespace std; 
 
@@ -30,7 +31,7 @@ TGraph * get_graph_from_log(TString inputFile) {
 
   Float_t voltage;
   Float_t current;
-  Int_t timestamp; 
+  // Int_t timestamp; 
 
   vector <Double_t> voltages; 
   vector <Double_t> currents; 
@@ -41,8 +42,11 @@ TGraph * get_graph_from_log(TString inputFile) {
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
-    if (!(iss >> voltage >> current >> timestamp )) break; 
+    // if (!(iss >> voltage >> current >> timestamp )) break; 
+    if (!(iss >> voltage >> current )) break; 
     if (!in.good()) break;
+    // voltages.push_back(fabs(voltage));
+    // currents.push_back(fabs(current));
     voltages.push_back(-voltage);
     currents.push_back(-current);
     nlines ++; 
@@ -54,11 +58,10 @@ TGraph * get_graph_from_log(TString inputFile) {
   return gr; 
 }
 
-
 void drawIV(vector<TString> inputFiles){
   TString outFile = "test.pdf";
 
-  TCanvas *c = new TCanvas("c", "IV scan", 400, 400);
+  TCanvas *c = new TCanvas("c", "IV scan", 800, 800);
   c->SetGrid();
 
   TMultiGraph *mg = new TMultiGraph();
@@ -92,7 +95,10 @@ void drawIV(vector<TString> inputFiles){
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  c->SaveAs(outFile);
+  // c->Draw(); 
+  // c->SaveAs(outFile);
+  // return c;
+
 }
 
 
@@ -120,12 +126,17 @@ int main(int argc, char** argv) {
     print_usage() ;  
     return -1; 
   }
-  
+
+  if (option_exists(&argv[0], &argv[argc], "-g") )
+    cout << "found -g!" << endl; 
+      
+  TApplication theApp("App", 0, 0);
+  theApp.SetReturnFromRun(true);
   vector<TString> inputFiles(argv+1, argv+argc);
   drawIV(inputFiles);
-  
-  gSystem->Exit(0);
-  return 0 ;
+  theApp.Run();
+  // gSystem->Exit(0);
+  // return 0 ;
 }
 
 #endif
