@@ -25,6 +25,45 @@
 
 using namespace std; 
 
+void set_root_style(int stat=1110, int grid=0){
+  gROOT->Reset();
+
+  gStyle->SetTitleFillColor(0) ; 
+  gStyle->SetTitleBorderSize(0); 
+    
+  gStyle->SetCanvasBorderMode(0);
+  gStyle->SetCanvasColor(0);
+  gStyle->SetCanvasDefX(0); 
+  gStyle->SetCanvasDefY(0); 
+  gStyle->SetFrameBorderMode(0); 
+  gStyle->SetFrameBorderSize(1); 
+  gStyle->SetFrameFillColor(0); 
+  gStyle->SetFrameFillStyle(0); 
+  gStyle->SetFrameLineColor(1); 
+  gStyle->SetFrameLineStyle(1); 
+  gStyle->SetFrameLineWidth(1); 
+
+  // gStyle->SetPadTopMargin(PadTopMargin);  
+  gStyle->SetPadLeftMargin(0.10);  
+  gStyle->SetPadRightMargin(0.05);  
+
+  gStyle->SetLabelSize(0.03, "XYZ");  
+  gStyle->SetTitleSize(0.04, "XYZ");  
+  gStyle->SetTitleOffset(1.2, "Y");  
+
+  gStyle->SetPadBorderMode(0);  
+  gStyle->SetPadColor(0);  
+  gStyle->SetPadTickX(1); 
+  gStyle->SetPadTickY(1); 
+  gStyle->SetPadGridX(grid); 
+  gStyle->SetPadGridY(grid); 
+
+  gStyle->SetOptStat(stat); 
+  gStyle->SetStatColor(0); 
+  gStyle->SetStatBorderSize(1); 
+}
+
+
 TGraph * get_graph_from_log(TString inputFile) {
   ifstream in;
   in.open(inputFile); 
@@ -51,6 +90,8 @@ TGraph * get_graph_from_log(TString inputFile) {
 }
 
 TCanvas* drawIV(vector<TString> inputFiles){
+  set_root_style();
+
   TCanvas *c = new TCanvas("c", "IV scan", 800, 800);
   c->SetGrid();
 
@@ -66,7 +107,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TGraph *gr = get_graph_from_log(inputFiles[i]); 
     gr->SetMarkerStyle(20+i);
-    gr->SetMarkerSize(0.5);
+    gr->SetMarkerSize(0.9);
     int color = i+1;
     if (color >= 5) color ++; // bypass the yellow  
     gr->SetMarkerColor(color);
@@ -77,13 +118,10 @@ TCanvas* drawIV(vector<TString> inputFiles){
   mg->Draw("ap"); 
   mg->GetXaxis()->SetTitle("Bias Voltage [V]");
   mg->GetYaxis()->SetTitle("Leakage Current [A]");
+  mg->GetYaxis()->SetRangeUser(1e-10, 1e-4); 
   leg->Draw(); 
-  
-  gROOT->SetStyle("Plain");
-  
-  gStyle->SetPalette(1);
-  gStyle->SetOptStat(0);
-  gStyle->SetTitle(0);
+
+  // c->SetLogy();
   return c;
 }
 
