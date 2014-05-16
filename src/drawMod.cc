@@ -75,7 +75,8 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
   for (int chip = 0; chip < 16 ; chip++) {
     if (!strcmp(label, "BumpBonding") ){
-      hist = Form("BumpBonding/BB- %d", chip);
+      if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
+      else hist = Form("BumpBonding/BB-%d", chip);
     } else if (!strcmp(label, "PixelAlive")) { 
       hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V);
     } else if (!strcmp(label, "DAQ")) { 
@@ -176,7 +177,7 @@ void BumpBonding(TString inputFile, TString outFile, int V=0) {
 #include <iostream>
 
 void print_usage(){
-  cerr << "Usage: drawMod [-b] DAQ | PixelAlive | BumpBonding inputFile \n" 
+  cerr << "Usage: drawMod [-b] PixelAlive | BumpBonding | DAQ inputFile \n" 
        << endl; 
 }
 
