@@ -98,21 +98,11 @@ TCanvas* drawIV(vector<TString> inputFiles){
 
 #ifndef __CINT__ 
 #include <iostream>
-#include <algorithm>
 
-char* get_option(char ** begin, char ** end, const std::string & option){
-  char ** itr = std::find(begin, end, option);
-  if (itr != end && ++itr != end)  return *itr;
-  return 0;
-}
-
-bool option_exists(char** begin, char** end, const std::string& option){
-  return std::find(begin, end, option) != end;
-}
-
-void print_usage(){
+int print_usage(){
   cout << "Usage: drawIV [-b] input1 input2 ... \n"
-       << endl; 
+       << endl;
+  return 0; 
 }
 
 int main(int argc, char** argv) {
@@ -121,18 +111,33 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  if (option_exists(&argv[0], &argv[argc], "-b") ){ 
+  bool doBatch(false);
+  vector<TString> inputFiles(argv+1, argv+argc);
+  TString outFile = "test.pdf";
+  
+  for (int i = 0; i < argc; i++){
+    if (!strcmp(argv[i], "-h")) print_usage();
+    if (!strcmp(argv[i], "-b")) {
+      doBatch = true;
+      inputFiles.erase(inputFiles.begin()+i-1);
+    }
+  }
+
+  cout << "After size = " << inputFiles.size() << endl;
+  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
+    cout << i << " : " << inputFiles[i] << endl; 
+  }
+
+  if (doBatch) { 
     cout << "Run in batch mode ... " << endl;
-    TString outFile = "test.pdf";
-    vector<TString> inputFiles(argv+2, argv+argc);
     TCanvas *c = drawIV(inputFiles);
-    c->SaveAs(outFile);
+    // c->SaveAs(outFile);
+    delete c;
     gSystem->Exit(0);
   }
   
   TApplication theApp("App", 0, 0);
   theApp.SetReturnFromRun(true);
-  vector<TString> inputFiles(argv+1, argv+argc);
   drawIV(inputFiles);
   theApp.Run();
 }
