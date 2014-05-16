@@ -15,7 +15,6 @@
 
 using namespace std; 
 
-
 void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
   
   TH2D *h2d;
@@ -98,77 +97,6 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   gStyle->SetTitle(0);
 
   return c; 
-}
-
-
-
-void DAQ(TString inputFile, TString outFile="test.root", int V=0) {
-  TFile::Open(inputFile.Data());
-  TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
-  
-  for (int chip = 0; chip < 16 ; chip++) { 
-    for (int ver=0; ver<V+1; ver++) {
-      TString hist = Form("DAQ/Hits_C%d_V%d", chip, ver); 
-      addChip(hist, chip, h3); 
-    }
-  }
-  
-  TCanvas *c = new TCanvas("c", "DAQ module", 800, 200); 
-  h3->DrawCopy("colz");
-
-  gROOT->SetStyle("Plain");
-  gStyle->SetPalette(1);
-  gStyle->SetOptStat(0);
-  gStyle->SetTitle(0);
-  c->SaveAs(outFile);
-}
-
-
-void PixelAlive(TString inputFile, TString outFile, int V=0) {
-  TFile::Open(inputFile.Data());
-  double max_trig = 10; 
-
-  TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
-
-  for (int chip = 0; chip < 16 ; chip++) { 
-    TString hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
-    addChip(hist, chip, h3, max_trig); 
-  }
-  
-  TCanvas *c = new TCanvas("c", "PixelAlive module", 800, 200); 
-  h3->DrawCopy("colz");
-
-  gROOT->SetStyle("Plain");
-  
-  gStyle->SetPalette(1);
-  gStyle->SetOptStat(0);
-  gStyle->SetTitle(0);
-
-  c->SaveAs(outFile);
-}
-
-
-void BumpBonding(TString inputFile, TString outFile, int V=0) {
-  TFile::Open(inputFile.Data());
-  double max_trig = 0; 
-
-  TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
-
-  for (int chip = 0; chip < 16 ; chip++) { 
-    TString hist = Form("BumpBonding/BB- %d", chip);
-    addChip(hist, chip, h3, max_trig); 
-  }
-  
-  TCanvas *c = new TCanvas("c", "PixelAlive module", 800, 200); 
-  h3->DrawCopy("colz");
-
-  gROOT->SetStyle("Plain");
-  
-  gStyle->SetPalette(1);
-  gStyle->SetOptStat(0);
-  gStyle->SetTitle(0);
-
-  c->SaveAs(outFile);
 }
 
 
