@@ -58,9 +58,7 @@ TGraph * get_graph_from_log(TString inputFile) {
   return gr; 
 }
 
-void drawIV(vector<TString> inputFiles){
-  TString outFile = "test.pdf";
-
+TCanvas* drawIV(vector<TString> inputFiles){
   TCanvas *c = new TCanvas("c", "IV scan", 800, 800);
   c->SetGrid();
 
@@ -94,11 +92,7 @@ void drawIV(vector<TString> inputFiles){
   gStyle->SetPalette(1);
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
-
-  // c->Draw(); 
-  // c->SaveAs(outFile);
-  // return c;
-
+  return c;
 }
 
 
@@ -117,7 +111,7 @@ bool option_exists(char** begin, char** end, const std::string& option){
 }
 
 void print_usage(){
-  cout << "Usage: drawIV input1 input2 ... \n"
+  cout << "Usage: drawIV [-b] input1 input2 ... \n"
        << endl; 
 }
 
@@ -127,16 +121,20 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  if (option_exists(&argv[0], &argv[argc], "-g") )
-    cout << "found -g!" << endl; 
-      
+  if (option_exists(&argv[0], &argv[argc], "-b") ){ 
+    cout << "Run in batch mode ... " << endl;
+    TString outFile = "test.pdf";
+    vector<TString> inputFiles(argv+2, argv+argc);
+    TCanvas *c = drawIV(inputFiles);
+    c->SaveAs(outFile);
+    gSystem->Exit(0);
+  }
+  
   TApplication theApp("App", 0, 0);
   theApp.SetReturnFromRun(true);
   vector<TString> inputFiles(argv+1, argv+argc);
   drawIV(inputFiles);
   theApp.Run();
-  // gSystem->Exit(0);
-  // return 0 ;
 }
 
 #endif
