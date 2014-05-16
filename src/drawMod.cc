@@ -16,9 +16,10 @@
 using namespace std; 
 
 void addChip(const TString hist, const int chip, TH2D *h3,
+	     int& n_range, int& n_total, 
 	     const bool checkrange=false, 
 	     const double vmin=numeric_limits<double>::min(),
-	     const double vmax=numeric_limits<double>::max()) {
+	     const double vmax=numeric_limits<double>::max() ) {
   
   TH2D *h2d;
   gDirectory->GetObject(hist, h2d); 
@@ -28,11 +29,8 @@ void addChip(const TString hist, const int chip, TH2D *h3,
     return ; 
   }
 
-  int n_total = 0; 
-  int n_range = 0;  
-  // int n_overflow = 0;  
-  // int n_underflow = 0; 
-
+  n_total = 0; 
+  n_range = 0;  
   
   for (int icol = 0; icol < 52; icol++) {
     for (int irow = 0; irow < 80; irow++)  {
@@ -40,22 +38,15 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
 
-      if (checkrange && value >= vmin && value <= vmax) {
-	// value = vmax; 
-	// n_overflow += 1;
+      if (checkrange && value >= vmin && value <= vmax) 
 	n_range += 1; 
-        // printf(" pixel_col%d_row_%d \n ", icol, irow); 
-      }
-
-      // if (vmax !=0 && value < vmax) {
-      // 	n_underflow += 1; 
-      // }
-
+      
       int icol_mod, irow_mod; 
       if (chip < 8) {
 	icol_mod = 415-(chip*52+icol);
 	irow_mod = 159-irow; 
       }
+      
       if (chip > 7) {
 	icol_mod = (chip-8)*52+icol; 
 	irow_mod = irow; 
@@ -69,17 +60,9 @@ void addChip(const TString hist, const int chip, TH2D *h3,
   }
 
   if (checkrange)
-    printf("ROC%2d: %2.2f%%. \n", chip, 100.*n_range/n_total); 
-
-  // if (checkrange) 
-  //   printf("Summary: %.2f%% in range", 100.*n_range/n_total); 
-  
-  // if (checkrange ||  n_overflow != 0 || n_underflow != 0)
-  //   printf("chip %d: overflow: %.2f%%, underflow: %.2f%% \n ",
-  // 	   chip, 100.*n_overflow/n_total, 100.*n_underflow/n_total); 
-
+    printf("ROC%2d: %d / %d = %2.2f%%. \n", chip,
+	   n_range, n_total, 100.*n_range/n_total); 
 }
-
 
 
 TCanvas* drawMod(TString label, TString inputFile, int V=0){
@@ -90,13 +73,14 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   bool checkrange = false;
   double vmin = numeric_limits<double>::min(); 
   double vmax = numeric_limits<double>::max();
-
-  cout << "min : " << vmin << " , max: " << vmax << endl;
-
+  int n_range = 0;
+  int n_total = 0; 
+  
   if (!strcmp(label, "BumpBonding") ){
      checkrange = true;
-     vmin = 0.0;
-     printf("Check bad bumpbond pixels: ... \n");
+     vmin = -500.0;
+     vmax = -0.01;
+     printf("Number of good bumpbonding pixels:\n");
   }
 
   TString hist(label); 
@@ -122,12 +106,19 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
       break; 
     }
 
-    addChip(hist, chip, h3, checkrange, vmin, vmax); 
-    // addChip(hist, chip, h3); 
+    int n_r, n_t; 
+    addChip(hist, chip, h3, n_r, n_t, checkrange, vmin, vmax); 
+    // addChip(hist, chip, h3);
+    n_range += n_r;
+    n_total += n_t; 
+  }
+
+
+  if (!strcmp(label, "BumpBonding") ){
+    printf("Total good bumpbonding pixels %d / %d = %.2f%% \n",
+	   n_range, n_total, 100.*n_range/n_total); 
   }
   
-
-
   h3->DrawCopy("colz");
   gROOT->SetStyle("Plain");
   gStyle->SetPalette(1);
