@@ -115,7 +115,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
 
   if (!strcmp(label, "BumpBonding") ){
-    printf("Total good bumpbonding pixels %d / %d = %.2f%% \n",
+    printf("Total good bump bonding pixels %d / %d = %.2f%% \n",
 	   n_range, n_total, 100.*n_range/n_total); 
   }
   
