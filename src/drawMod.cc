@@ -68,6 +68,7 @@ void addChip(const TString hist, int chip, TH2D *h3, double vmax=0) {
 
 TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
+  TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
   // double max_trig = 0; //  10; 
   TString hist(label); 
@@ -76,7 +77,9 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
     if (!strcmp(label, "BumpBonding") ){
       hist = Form("BumpBonding/BB- %d", chip);
     } else if (!strcmp(label, "PixelAlive")) { 
-      hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V); 
+      hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V);
+    } else if (!strcmp(label, "DAQ")) { 
+      TString hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
     } else {
       cerr << "No such hist name: " << hist << endl;
       break; 
@@ -85,7 +88,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
     addChip(hist, chip, h3); 
   }
   
-  TCanvas *c = new TCanvas("c", "c", 800, 200); 
+
 
   h3->DrawCopy("colz");
   gROOT->SetStyle("Plain");
