@@ -197,7 +197,8 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i], "-b")) {
       doBatch = true;
-      inputFile = TString(argv[3]); 
+      label = argv[2]; 
+      inputFile = argv[3]; 
     }
   }
 
