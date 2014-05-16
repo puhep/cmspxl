@@ -125,6 +125,8 @@
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
 
 ** DTB 53
+   <2014-05-16 Fri> Flashed with 2.20. Take to CERN for pXar workshop. --Xin
+   
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
 
 ** DTB 54 (not exist) 
