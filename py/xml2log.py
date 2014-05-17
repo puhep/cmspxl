@@ -42,6 +42,16 @@ print root
 vs = [ data.text for data in root.iter('VOLTAGE_VOLT')]
 iss =[ data.text for data in root.iter('ACTV_CURRENT_AMP')]
 
+IVs = zip(vs, iss)
+#print IVs
+
+for iv in IVs:
+    logData.write('%s  %s \n' %iv)
+
+
+    
+    
+sys.exit()
 print vs, iss
 
 print len(vs), len(iss)
