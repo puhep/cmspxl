@@ -80,10 +80,15 @@ TGraph * get_graph_from_log(TString inputFile) {
     if (!in.good()) break;
     voltages.push_back(fabs(x));
     currents.push_back(fabs(y));
+
+    if (fabs(x) == 150.0 and fabs(y) >= 2E-6)
+      cout << inputFile << ": current at 150V higher than 2uA! "
+	   << fabs(y) << endl; 
+
     nlines ++; 
   }
 
-  cout << inputFile << " contains " << nlines << " lines." << endl;
+  // cout << inputFile << " contains " << nlines << " lines." << endl;
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
   return gr; 
@@ -97,11 +102,11 @@ TCanvas* drawIV(vector<TString> inputFiles){
 
   TMultiGraph *mg = new TMultiGraph();
   TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.9);
-  leg->SetBorderSize(1);
+  leg->SetBorderSize(0);
   leg->SetFillColor(0);
   leg->SetFillStyle(0);
   leg->SetNColumns(1);
-  leg->SetTextSize(0.035);
+  leg->SetTextSize(0.03);
   leg->SetTextSizePixels(25);
 
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
@@ -121,7 +126,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
   mg->GetYaxis()->SetRangeUser(1e-10, 1e-4); 
   leg->Draw(); 
 
-  // c->SetLogy();
+  c->SetLogy();
   return c;
 }
 
