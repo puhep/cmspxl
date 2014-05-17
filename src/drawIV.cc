@@ -78,8 +78,8 @@ TGraph * get_graph_from_log(TString inputFile) {
     if ( line.find("#") == 0 ) continue; 
     if (!(iss >> x >> y )) break; 
     if (!in.good()) break;
-    voltages.push_back(-x);
-    currents.push_back(-y);
+    voltages.push_back(fabs(x));
+    currents.push_back(fabs(y));
     nlines ++; 
   }
 
