@@ -22,7 +22,6 @@
 #include <TLegend.h>
 #include <TApplication.h> 
 #include <TMath.h> 
-#include <TPaveText.h> 
 
 using namespace std; 
 
@@ -87,35 +86,17 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
     currents.push_back(fabs(y));
     if (fabs(x) == 150.0) i_v150 = fabs(y); 
     if (fabs(x) == 100.0) i_v100 = fabs(y); 
-    
-    // if (fabs(x) == 150.0 and fabs(y) >= 2E-6)
-    //   cout << inputFile << ": current at 150V higher than 2uA! "
-    // 	   << fabs(y) << endl; 
-
     nlines ++; 
   }
 
-  // TString *err_msg = "";
-
   if ( i_v150 < 2E-6) pass1 = true;
-  else {
-    // cout << inputFile << ": I(V=150V) >= 2uA! " << i_v150 << endl;
-    err_msg = "I(V=150V) >= 2uA"; 
-  }  
+  else err_msg = "I(V=150V) >= 2uA"; 
 
-  if ( i_v150/i_v100 < .2 ) pass2 = true;
-  else {
-    // cout << inputFile << ": I(V=150V)/I(V=100V) >= 2! " <<  i_v150/i_v100 << endl;
-    err_msg += " I(V=150V)/I(V=100V) >= 2";
-  }
-  
-  // cout << err_msg << endl;
+  if ( i_v150/i_v100 < 2 ) pass2 = true;
+  else err_msg += " I(V=150V)/I(V=100V) >= 2";
 
-  // cout << inputFile << " contains " << nlines << " lines." << endl;
   in.close();
-
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
-
   return gr; 
 }
 
@@ -126,30 +107,24 @@ TCanvas* drawIV(vector<TString> inputFiles){
   c->SetGrid();
 
   TMultiGraph *mg = new TMultiGraph();
-  TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.9);
+  TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.8);
   leg->SetBorderSize(0);
   leg->SetFillColor(0);
   leg->SetFillStyle(0);
   leg->SetNColumns(1);
-  leg->SetTextSize(0.03);
+  leg->SetTextSize(0.02);
   leg->SetTextSizePixels(25);
 
-  TPaveText *pt = new TPaveText(0.6,0.7,0.98,0.98,"brNDC");
-  pt->SetFillColor(0);
-  pt->SetFillStyle(0);
-  pt->SetTextAlign(12);
-  pt->SetBorderSize(0);
-  
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
-    TString err_msg = ""; 
+    TString err_msg = "OK"; 
     TGraph *gr = get_graph_from_log(inputFiles[i], err_msg);
-    pt->AddText(Form("%s : %s", inputFiles[i].Data(), err_msg.Data()));
+
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.9);
     int color = i+1;
     if (color >= 5) color ++; // bypass the yellow  
     gr->SetMarkerColor(color);
-    leg->AddEntry(gr, inputFiles[i], "p"); 
+    leg->AddEntry(gr, Form("%s : %s", inputFiles[i].Data(), err_msg.Data()), "p"); 
     mg->Add(gr); 
   }
   
@@ -158,16 +133,6 @@ TCanvas* drawIV(vector<TString> inputFiles){
   mg->GetYaxis()->SetTitle("Leakage Current [A]");
   mg->GetYaxis()->SetRangeUser(1e-10, 1e-4); 
   leg->Draw(); 
-
-  // TPaveText *pt = new TPaveText(0.6,0.7,0.98,0.98,"brNDC");
-  // pt->SetFillColor(18);
-  // pt->SetTextAlign(12);
-  // pt->AddText("Use the axis Context Menu LabelsOption");
-  // pt->AddText(" \"a\"   to sort by alphabetic order");
-  // pt->AddText(" \">\"   to sort by decreasing values");
-  // pt->AddText(" \"<\"   to sort by increasing values");
-  pt->Draw();
-  
 
   c->SetLogy();
   return c;
