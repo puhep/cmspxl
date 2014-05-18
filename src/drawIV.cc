@@ -72,7 +72,11 @@ TGraph * get_graph_from_log(TString inputFile) {
   vector<Float_t> currents; 
 
   string line;
-  int nlines = 0; 
+  int nlines = 0;
+
+  float i_v150, i_v100;
+  bool pass1(false), pass2(false); 
+
   while (getline(in, line)) {
     istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
@@ -80,13 +84,23 @@ TGraph * get_graph_from_log(TString inputFile) {
     if (!in.good()) break;
     voltages.push_back(fabs(x));
     currents.push_back(fabs(y));
-
-    if (fabs(x) == 150.0 and fabs(y) >= 2E-6)
-      cout << inputFile << ": current at 150V higher than 2uA! "
-	   << fabs(y) << endl; 
+    if (fabs(x) == 150.0) i_v150 = fabs(y); 
+    if (fabs(x) == 100.0) i_v100 = fabs(y); 
+    
+    // if (fabs(x) == 150.0 and fabs(y) >= 2E-6)
+    //   cout << inputFile << ": current at 150V higher than 2uA! "
+    // 	   << fabs(y) << endl; 
 
     nlines ++; 
   }
+
+  TString err_msg = "";
+
+  if ( i_v150 < 2E-6) pass1 = true;
+  else cout << inputFile << ": I(V=150V) >= 2uA! " << i_v150 << endl;
+  
+  if ( i_v150/i_v100 < 2 ) pass2 = true;
+  else cout << inputFile << ": I(V=150V)/I(V=100V) >= 2! " <<  i_v150/i_v100 << endl;
 
   // cout << inputFile << " contains " << nlines << " lines." << endl;
   in.close();
