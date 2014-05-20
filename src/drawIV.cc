@@ -95,6 +95,8 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   if ( i_v150/i_v100 < 2 ) pass2 = true;
   else err_msg += " I(V=150V)/I(V=100V) >= 2";
 
+  if (pass1 && pass2) err_msg = "OK";
+
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
   return gr; 
@@ -116,7 +118,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
   leg->SetTextSizePixels(25);
 
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
-    TString err_msg = "OK"; 
+    TString err_msg = "";  
     TGraph *gr = get_graph_from_log(inputFiles[i], err_msg);
 
     gr->SetMarkerStyle(20+i);
