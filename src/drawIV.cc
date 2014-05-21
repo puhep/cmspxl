@@ -95,7 +95,7 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   if ( i_v150/i_v100 < 2 ) pass2 = true;
   else err_msg += Form("I(150V)/I(100V) >= 2 (%.1f)", i_v150/i_v100) ;
 
-  if (pass1 && pass2) err_msg = "OK";
+  //if (pass1 && pass2) err_msg = "OK";
 
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
@@ -127,7 +127,8 @@ TCanvas* drawIV(vector<TString> inputFiles){
     if (color >= 5) color ++; // bypass the yellow  
     if (color >= 10) color = color % 10 + 1 ; // reuse the first 9 colors
     gr->SetMarkerColor(color);
-    leg->AddEntry(gr, Form("%s : %s", inputFiles[i].Data(), err_msg.Data()), "p"); 
+    leg->AddEntry(gr, Form("%s %s", inputFiles[i].Data(),
+			   err_msg.Data()), "p"); 
     mg->Add(gr); 
   }
   
