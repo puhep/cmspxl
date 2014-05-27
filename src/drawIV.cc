@@ -74,7 +74,8 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   string line;
   int nlines = 0;
 
-  float i_v150, i_v100;
+  // float i_v150, i_v100;
+  double  i_v150, i_v100;
   bool pass1(false), pass2(false); 
 
   while (getline(in, line)) {
@@ -90,13 +91,12 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   }
 
   if ( i_v150 < 2E-6) pass1 = true;
-  else err_msg = Form("I(150V) >= 2uA (%.1e)",i_v150) ; 
-
   if ( i_v150/i_v100 < 2 ) pass2 = true;
-  else err_msg += Form("I(150V)/I(100V) >= 2 (%.1f)", i_v150/i_v100) ;
 
   //if (pass1 && pass2) err_msg = "OK";
-
+  if (!pass1) err_msg = Form("I(150V) >= 2uA (%.1e)",i_v150) ;
+  if (!pass2) err_msg += Form("I(150V)/I(100V) >= 2 (%.1f)", i_v150/i_v100) ;
+  
   in.close();
   TGraph *gr = new TGraph(nlines, &voltages[0], &currents[0]);
   return gr; 
