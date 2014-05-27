@@ -90,8 +90,9 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   for (int chip = 0; chip < 16 ; chip++) {
 
     if (!strcmp(label, "BumpBonding") ){
-      if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
-      else hist = Form("BumpBonding/BB-%d", chip);
+      // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
+      // else hist = Form("BumpBonding/BB-%d", chip);
+      hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
      }
 
     else if (!strcmp(label, "PixelAlive")) { 
