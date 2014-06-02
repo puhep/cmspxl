@@ -15,6 +15,8 @@
    Also take a set of power cord and take to PHYS360. 
    
 ** DTB 45
+   <2014-06-02 Mon> Flashed with 2.21. 
+
    <2014-05-27 Tue> Flashed with 2.20 in PHYS347. 
 
    <2014-05-12 Mon> Flashed with 2.16 in PHYS347.
