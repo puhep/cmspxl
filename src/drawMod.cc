@@ -129,6 +129,11 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
+  TFile *f = new TFile("h_mod.root", "RECREATE");
+  h3->Write();
+  f->Close();
+  cout << "Save the hist as: h_mod.root" << endl;  
+  
   return c; 
 }
 
