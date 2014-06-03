@@ -26,7 +26,7 @@ void addChip(const TString hist, const int chip, TH2D *h3,
   gDirectory->GetObject(hist, h2d); 
   
   if (!h2d) {
-    cerr << "Chip "<< chip << ": Not valid histogram!" << endl; 
+    cerr << "Chip "<< chip << ": Not valid histogram => " << hist << endl; 
     return ; 
   }
 
@@ -102,7 +102,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
     }
 
     else if (!strcmp(label, "DAQ")) { 
-      TString hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
+      hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
     }
 
     else {
