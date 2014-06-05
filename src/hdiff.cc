@@ -44,6 +44,31 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
     return NULL; 
   }
 
+  int nbinx = h2d1->GetXaxis()->GetNbins();
+  int nbiny = h2d1->GetYaxis()->GetNbins();
+
+  
+  cout << "nbinx = " << nbinx << endl;
+  cout << "nbiny = " << nbiny << endl;
+
+
+  // TH2D *hdiff = new TH2D("hdiff", "", 416, 0., 416., 160, 0., 160.);
+
+
+  // TFile *of = new TFile("diff.root", "RECREATE");
+  // h2d2->SetDirectory(of); 
+  // h2d2->Add(h2d1, -1.0);
+  // h2d2->Write(); 
+  // of->Write();
+  // of->Close(); 
+  
+  h2d2->DrawCopy("colz");
+  // h2d2->Draw("box");
+  gROOT->SetStyle("Plain");
+  gStyle->SetPalette(1);
+  gStyle->SetOptStat(0);
+  gStyle->SetTitle(0);
+
   return c; 
 }
 
