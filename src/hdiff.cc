@@ -52,9 +52,18 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
   cout << "nbiny = " << nbiny << endl;
 
 
-  // TH2D *hdiff = new TH2D("hdiff", "", 416, 0., 416., 160, 0., 160.);
+  TH2D *hdiff = new TH2D("hdiff", "", 416, 0., 416., 160, 0., 160.);
 
-
+  for (int ix = 1; ix <= nbinx; ix++) {
+    for (int iy = 1; iy <= nbiny; iy++)  {
+       double v1 = h2d1->GetBinContent(ix, iy);
+       double v2 = h2d2->GetBinContent(ix, iy);
+       double diff = v1 - v2;
+       if ( diff != 0 )  cout << "diff = " << diff << endl;
+       hdiff->SetBinContent(ix, iy, diff); 
+    }
+  }
+  
   // TFile *of = new TFile("diff.root", "RECREATE");
   // h2d2->SetDirectory(of); 
   // h2d2->Add(h2d1, -1.0);
@@ -62,7 +71,7 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
   // of->Write();
   // of->Close(); 
   
-  h2d2->DrawCopy("colz");
+  hdiff->DrawCopy("colz");
   // h2d2->Draw("box");
   gROOT->SetStyle("Plain");
   gStyle->SetPalette(1);
