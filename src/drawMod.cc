@@ -69,7 +69,9 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
   TCanvas *c = new TCanvas("c", "c", 800, 200);
-  TFile::Open(inputFile.Data());
+
+  TFile *fin = NULL; 
+  fin->Open(inputFile.Data());
 
   bool checkrange = false;
   double vmin = numeric_limits<double>::min(); 
@@ -133,7 +135,8 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   h3->Write();
   f->Close();
   cout << "Save the hist as: h_mod.root" << endl;  
-  
+
+  fin->Close(); 
   return c; 
 }
 
