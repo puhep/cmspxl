@@ -17,7 +17,7 @@ GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 DRAWIVFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod drawIV log2tree 
+PROG=drawMod drawIV log2tree hdiff  
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
@@ -40,9 +40,12 @@ $(BIN)/drawIV: $(SRC)/drawIV.cc
 $(BIN)/log2tree: $(SRC)/log2tree.cc
 	$(CC) $< $(DRAWIVFLAGS) -o $@
 
+$(BIN)/hdiff: $(SRC)/hdiff.cc
+	$(CC) $< $(DRAWMODFLAGS) -o $@
+
 clean:
-	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/log2tree
-	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)log2tree.dSYM
+	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/log2tree $(BIN)/hdiff 
+	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)/log2tree.dSYM $(BIN)/hdiff 
 
 
 
