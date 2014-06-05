@@ -17,6 +17,7 @@
 
 using namespace std; 
 
+
 TCanvas* hdiff(TString inputFile1, TString inputFile2){
 
   TFile *f1 = NULL;
@@ -26,10 +27,22 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
   f1->Open(inputFile1.Data());
   f2->Open(inputFile2.Data());
 
-  TH2D *h2d1; 
+  TH2D *h2d1, *h2d2; 
   TString hist = "h3";
 
   gDirectory->GetObject(hist, h2d1);
+  if (!h2d1) {
+    cerr << "Not able to find histogram => " << hist << "in " <<
+      inputFile1 << endl; 
+    return NULL; 
+  }
+
+  gDirectory->GetObject(hist, h2d2);
+  if (!h2d2) {
+    cerr << "Not able to find histogram => " << hist << "in " <<
+      inputFile2 << endl; 
+    return NULL; 
+  }
 
   return c; 
 }
