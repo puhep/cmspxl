@@ -79,8 +79,8 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   
   if (!strcmp(label, "BumpBonding") ){
      checkrange = true;
-     vmin = -500.0;
-     vmax = -0.01;
+     vmin = 0.5;
+     vmax = 500;
      printf("Number of good bumpbonding pixels:\n");
   }
 
@@ -93,7 +93,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
 
-      if (chip ==0 ) hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
+      if (chip == 0 ) hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
       else hist = Form("BumpBonding/thr_calSMap_vthrcomp_C%d_V%d", chip, V);
      }
 
