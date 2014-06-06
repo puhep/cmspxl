@@ -7,7 +7,8 @@
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-source ~/root/bin/thisroot.sh
+#source ~/root/bin/thisroot.sh
+source ~/local/share/root_v6.00.00/bin/thisroot.sh
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
