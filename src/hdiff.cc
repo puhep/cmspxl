@@ -19,25 +19,19 @@ using namespace std;
 
 
 TCanvas* hdiff(TString inputFile1, TString inputFile2){
-
-  TFile *f1 = NULL;
-  TFile *f2 = NULL;
-  
   TCanvas *c = new TCanvas("c", "c", 800, 200);
-  f1->Open(inputFile1.Data());
-  f2->Open(inputFile2.Data());
-
-  TH2D *h2d1, *h2d2; 
   TString hist = "h3";
 
-  gDirectory->GetObject(hist, h2d1);
+  TFile *f1 = new TFile(inputFile1.Data()); 
+  TH2D *h2d1 = (TH2D*)f1->Get(hist); 
   if (!h2d1) {
     cerr << "Not able to find histogram => " << hist << "in " <<
       inputFile1 << endl; 
     return NULL; 
   }
 
-  gDirectory->GetObject(hist, h2d2);
+  TFile *f2 = new TFile(inputFile2.Data()); 
+  TH2D *h2d2 = (TH2D*)f2->Get(hist); 
   if (!h2d2) {
     cerr << "Not able to find histogram => " << hist << "in " <<
       inputFile2 << endl; 
@@ -47,34 +41,24 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
   int nbinx = h2d1->GetXaxis()->GetNbins();
   int nbiny = h2d1->GetYaxis()->GetNbins();
 
-  
-  cout << "nbinx = " << nbinx << endl;
-  cout << "nbiny = " << nbiny << endl;
-
-
   TH2D *hdiff = new TH2D("hdiff", "", 416, 0., 416., 160, 0., 160.);
-
+  double v1, v2, diff; 
+  
   for (int ix = 1; ix <= nbinx; ix++) {
     for (int iy = 1; iy <= nbiny; iy++)  {
-       double v1 = h2d1->GetBinContent(ix, iy);
-       double v2 = h2d2->GetBinContent(ix, iy);
-       double diff = v1 - v2;
-       if ( diff != 0 )  cout << "diff = " << diff << endl;
+       v1 = h2d1->GetBinContent(ix, iy);
+       v2 = h2d2->GetBinContent(ix, iy);
+       
+       if ( v1 == 0 || v2 == 0) diff = 0;
+       else diff = (v1-v2)/v1;
+       // if ( diff != 0 )  cout << "diff = " << diff << endl;
        hdiff->SetBinContent(ix, iy, diff); 
     }
   }
   
-  // TFile *of = new TFile("diff.root", "RECREATE");
-  // h2d2->SetDirectory(of); 
-  // h2d2->Add(h2d1, -1.0);
-  // h2d2->Write(); 
-  // of->Write();
-  // of->Close(); 
-  
-  hdiff->DrawCopy("colz");
-  // h2d2->Draw("box");
+  hdiff->Draw("colz");
   gROOT->SetStyle("Plain");
-  gStyle->SetPalette(1);
+  gStyle->SetPalette(55);
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
