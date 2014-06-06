@@ -55,7 +55,9 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
        hdiff->SetBinContent(ix, iy, diff); 
     }
   }
-  
+
+  hdiff->SetMaximum(1.);
+  hdiff->SetMinimum(-1.);
   hdiff->Draw("colz");
   gROOT->SetStyle("Plain");
   gStyle->SetPalette(55);
