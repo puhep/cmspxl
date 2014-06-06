@@ -69,9 +69,7 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
   TCanvas *c = new TCanvas("c", "c", 800, 200);
-
-  TFile *fin = NULL; 
-  fin->Open(inputFile.Data());
+  TFile::Open(inputFile.Data());
 
   bool checkrange = false;
   double vmin = numeric_limits<double>::min(); 
@@ -124,19 +122,23 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
     printf("Total good bump bonding pixels %d / %d = %.2f%% \n",
 	   n_range, n_total, 100.*n_range/n_total); 
   }
-  
-  h3->DrawCopy("colz");
+
+
+
+  h3->Draw("colz");
+  // h3->Draw("surf2");
+
   gROOT->SetStyle("Plain");
-  gStyle->SetPalette(1);
+  // gStyle->SetPalette(1);
+  gStyle->SetPalette(55); // rain bow 
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  TFile *f = new TFile("h_mod.root", "RECREATE");
-  h3->Write();
-  f->Close();
-  cout << "Save the hist as: h_mod.root" << endl;  
+  // TFile *f = new TFile("h_mod.root", "RECREATE");
+  // h3->Write();
+  // f->Close();
+  // cout << "Save the hist as: h_mod.root" << endl;  
 
-  fin->Close(); 
   return c; 
 }
 
