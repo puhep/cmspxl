@@ -148,7 +148,12 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 #include <iostream>
 
 void print_usage(){
-  cerr << "Usage: drawMod [-b] PixelAlive | BumpBonding | DAQ inputFile \n" 
+  // cerr << "Usage: drawMod [-b] PixelAlive | BumpBonding | DAQ inputFile \n" 
+  cout << "Usage: drawMod [OPTIONS] \n"
+       << "Options:\n" 
+       << "    -i      input file  \n"
+       << "    -g      run GUI  \n"
+       << "    -t      test name [pixelalive, bumpbonding, daq]  \n"
        << endl; 
 }
 
@@ -158,34 +163,43 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  bool doBatch(false);
-  TString label(argv[1]); 
-  TString inputFile(argv[2]);
-  TString outFile = "test.pdf";
+  // bool doBatch(false);
+  bool doRunGui(false);
+  TString testLabel; // (argv[1]); 
+  TString inputFile; // (argv[2]);
+  // TString outFile = "test.pdf";
   // int V = 0;
-  
+
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
-    if (!strcmp(argv[i], "-b")) {
-      doBatch = true;
-      label = argv[2]; 
-      inputFile = argv[3]; 
-    }
+    // if (!strcmp(argv[i], "-b")) {
+    //   doBatch = true;
+    //   label = argv[2]; 
+    //   inputFile = argv[3]; 
+    // }
+
+    if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
+    if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
+    if (!strcmp(argv[i],"-t")) {testLabel = string(argv[++i]); }
   }
 
-  if (doBatch) { 
-    cout << "Run in batch mode ... " << endl;
-    TCanvas *c = drawMod(label, inputFile);
-    c->SaveAs(outFile);
-    delete c;
+  // if (doBatch) { 
+  //   cout << "Run in batch mode ... " << endl;
+  //   TCanvas *c = drawMod(label, inputFile);
+  //   c->SaveAs(outFile);
+  //   delete c;
+  //   gSystem->Exit(0);
+  // }
+  
+  if (doRunGui) { 
+    TApplication theApp("App", 0, 0);
+    theApp.SetReturnFromRun(true);
+    drawMod(testLabel, inputFile);  
+    theApp.Run();
+  } else {
+    drawMod(testLabel, inputFile);  
     gSystem->Exit(0);
   }
-  
-  TApplication theApp("App", 0, 0);
-  theApp.SetReturnFromRun(true);
-
-  drawMod(label, inputFile);  
-  theApp.Run();
 
 }
 
