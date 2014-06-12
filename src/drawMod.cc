@@ -42,6 +42,9 @@ void addChip(const TString hist, const int chip, TH2D *h3,
       if (checkrange && value >= vmin && value <= vmax) 
 	n_range += 1; 
       
+      if ( value < numeric_limits<double>::max() && value > vmax)
+	value = vmax; 
+
       int icol_mod, irow_mod; 
       if (chip < 8) {
 	icol_mod = 415-(chip*52+icol);
