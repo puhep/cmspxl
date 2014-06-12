@@ -89,7 +89,6 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   for (int chip = 0; chip < 16 ; chip++) {
 
     if (!strcmp(label, "bumpbonding") ){
-
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
 
@@ -129,17 +128,14 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   // h3->Draw("surf2");
 
   gROOT->SetStyle("Plain");
-  // gStyle->SetPalette(1);
   gStyle->SetPalette(55); // rain bow 
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
   TString h_mod_name = Form("h_mod_%s", inputFile.Data()); 
-  // TFile *f = new TFile("h_mod.root", "RECREATE");
   TFile *f = new TFile(h_mod_name, "RECREATE");
   h3->Write();
   f->Close();
-  // cout << "Save the hist as: h_mod.root" << endl;  
   cout << "Save the hist as: "<< h_mod_name << endl;  
 
 
@@ -152,7 +148,6 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 #include <iostream>
 
 void print_usage(){
-  // cerr << "Usage: drawMod [-b] PixelAlive | BumpBonding | DAQ inputFile \n" 
   cout << "Usage: drawMod [OPTIONS] \n"
        << "Options:\n" 
        << "    -i      input file  \n"
@@ -167,34 +162,18 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  // bool doBatch(false);
   bool doRunGui(false);
-  TString testLabel; // (argv[1]); 
-  TString inputFile; // (argv[2]);
-  // TString outFile = "test.pdf";
+  TString testLabel; 
+  TString inputFile; 
   // int V = 0;
 
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
-    // if (!strcmp(argv[i], "-b")) {
-    //   doBatch = true;
-    //   label = argv[2]; 
-    //   inputFile = argv[3]; 
-    // }
-
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
     if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {testLabel = string(argv[++i]); }
   }
 
-  // if (doBatch) { 
-  //   cout << "Run in batch mode ... " << endl;
-  //   TCanvas *c = drawMod(label, inputFile);
-  //   c->SaveAs(outFile);
-  //   delete c;
-  //   gSystem->Exit(0);
-  // }
-  
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
