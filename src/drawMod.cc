@@ -65,10 +65,28 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 	   n_range, n_total, 100.*n_range/n_total); 
 }
 
+TCanvas* drawModPretest(TString label, TString inputFile,
+			TString drawOption, int V=0){
+ 
+  TCanvas *c = new TCanvas("c", "c", 800, 800);
+  
+  TString hist = "programROC_V0";
+  TFile *f = new TFile(inputFile.Data()); 
+  TH1D *h1 = (TH1D*)f->Get(hist); 
+  h1->Draw();
+    
+  return c; 
+  
+}
+
 
 TCanvas* drawMod(TString label, TString inputFile,
 		 TString drawOption, int V=0){
+ 
+  if (!strcmp(label, "pretest") ) 
+    return drawModPretest(label, inputFile, drawOption);
 
+  
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
 
