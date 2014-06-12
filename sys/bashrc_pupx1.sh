@@ -8,7 +8,7 @@
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 #source ~/root/bin/thisroot.sh
-source ~/local/share/root_v6.00.00/bin/thisroot.sh
+source ~/local/share/root/bin/thisroot.sh
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -114,7 +114,27 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+
+#--------------------------------------------------
+# General ENV
+#--------------------------------------------------
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+export CVSEDITOR=vim
+export PATH=$HOME/local/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH #for MacPorts
+export LESS='-R'
+export LESSOPEN='|~/.sys/lessfilter.sh %s' 
+
+#--------------------------------------------------
+# General Aliases
+#--------------------------------------------------
+alias l="ls"
+alias ll="l -lh"
+alias lsd="l -d */"
+alias p="pwd"
+alias rl="root -l" 
+alias rm~="rm *~"
 alias ..='cd ..'
-. ~/.sys/bashrc_orca.sh
 
 
