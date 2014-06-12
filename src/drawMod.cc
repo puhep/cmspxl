@@ -66,7 +66,8 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 }
 
 
-TCanvas* drawMod(TString label, TString inputFile, int V=0){
+TCanvas* drawMod(TString label, TString inputFile,
+		 TString drawOption, int V=0){
 
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
@@ -124,8 +125,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
 
 
-  h3->Draw("colz");
-  // h3->Draw("surf2");
+  h3->Draw(drawOption);
 
   gROOT->SetStyle("Plain");
   gStyle->SetPalette(55); // rain bow 
@@ -153,6 +153,7 @@ void print_usage(){
        << "    -i      input file  \n"
        << "    -g      run GUI  \n"
        << "    -t      test name [pixelalive, bumpbonding, daq]  \n"
+       << "    -draw   draw option for histogram [colz, surf2]  \n"
        << endl; 
 }
 
@@ -165,6 +166,7 @@ int main(int argc, char** argv) {
   bool doRunGui(false);
   TString testLabel; 
   TString inputFile; 
+  TString drawOption("colz"); 
   // int V = 0;
 
   for (int i = 0; i < argc; i++){
@@ -172,17 +174,18 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
     if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {testLabel = string(argv[++i]); }
+    if (!strcmp(argv[i],"-draw")) {drawOption = string(argv[++i]); }
   }
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile);  
+    drawMod(testLabel, inputFile, drawOption);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile);  
+    TCanvas *c = drawMod(testLabel, inputFile, drawOption);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
     c->SaveAs(outFile);
