@@ -81,7 +81,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 
 
 TCanvas* drawMod(TString label, TString inputFile,
-		 TString drawOption, int V=0){
+		 TString drawOption, double vmax, int V=0){
  
   if (!strcmp(label, "pretest") ) 
     return drawModPretest(label, inputFile, drawOption);
@@ -92,7 +92,7 @@ TCanvas* drawMod(TString label, TString inputFile,
 
   bool checkrange = false;
   double vmin = numeric_limits<double>::min(); 
-  double vmax = numeric_limits<double>::max();
+  // double vmax = numeric_limits<double>::max();
   int n_range = 0;
   int n_total = 0; 
   
@@ -172,6 +172,7 @@ void print_usage(){
        << "    -g      run GUI  \n"
        << "    -t      test name [pixelalive, bumpbonding, daq]  \n"
        << "    -draw   draw option for histogram [colz, surf2]  \n"
+       << "    -vmax   limit the histogram within vmax \n"
        << endl; 
 }
 
@@ -185,6 +186,7 @@ int main(int argc, char** argv) {
   TString testLabel; 
   TString inputFile; 
   TString drawOption("colz"); 
+  double vmax = numeric_limits<double>::max();
   // int V = 0;
 
   for (int i = 0; i < argc; i++){
@@ -192,18 +194,25 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
     if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {testLabel = string(argv[++i]); }
-    if (!strcmp(argv[i],"-draw")) {drawOption = string(argv[++i]); }
+    if (!strcmp(argv[i],"-draw")) {
+      drawOption = string(argv[++i]);
+      cout << "Using drawOption = " << drawOption << endl;  
+    }
+    if (!strcmp(argv[i],"-vmax")) {
+      vmax = atof(argv[++i]); 
+      cout << "Using vmax = " << vmax << endl; 
+    }
   }
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile, drawOption);  
+    drawMod(testLabel, inputFile, drawOption, vmax);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile, drawOption);  
+    TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmax);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
     c->SaveAs(outFile);
