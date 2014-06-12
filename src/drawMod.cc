@@ -77,7 +77,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   int n_range = 0;
   int n_total = 0; 
   
-  if (!strcmp(label, "BumpBonding") ){
+  if (!strcmp(label, "bumpbonding") ){
      checkrange = true;
      vmin = 0.5;
      vmax = 500;
@@ -86,10 +86,10 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
 
   TString hist(label); 
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
-
   for (int chip = 0; chip < 16 ; chip++) {
 
-    if (!strcmp(label, "BumpBonding") ){
+    if (!strcmp(label, "bumpbonding") ){
+
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
 
@@ -97,11 +97,11 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
       else hist = Form("BumpBonding/thr_calSMap_vthrcomp_C%d_V%d", chip, V);
      }
 
-    else if (!strcmp(label, "PixelAlive")) { 
+    else if (!strcmp(label, "pixelalive")) { 
       hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V);
     }
 
-    else if (!strcmp(label, "DAQ")) { 
+    else if (!strcmp(label, "daq")) { 
       hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
     }
 
@@ -118,7 +118,7 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   }
 
 
-  if (!strcmp(label, "BumpBonding") ){
+  if (!strcmp(label, "bumpbonding") ){
     printf("Total good bump bonding pixels %d / %d = %.2f%% \n",
 	   n_range, n_total, 100.*n_range/n_total); 
   }
@@ -134,10 +134,14 @@ TCanvas* drawMod(TString label, TString inputFile, int V=0){
   gStyle->SetOptStat(0);
   gStyle->SetTitle(0);
 
-  TFile *f = new TFile("h_mod.root", "RECREATE");
+  TString h_mod_name = Form("h_mod_%s", inputFile.Data()); 
+  // TFile *f = new TFile("h_mod.root", "RECREATE");
+  TFile *f = new TFile(h_mod_name, "RECREATE");
   h3->Write();
   f->Close();
-  cout << "Save the hist as: h_mod.root" << endl;  
+  // cout << "Save the hist as: h_mod.root" << endl;  
+  cout << "Save the hist as: "<< h_mod_name << endl;  
+
 
   return c; 
 }
@@ -196,8 +200,16 @@ int main(int argc, char** argv) {
     theApp.SetReturnFromRun(true);
     drawMod(testLabel, inputFile);  
     theApp.Run();
-  } else {
-    drawMod(testLabel, inputFile);  
+  } 
+  
+  else {
+    TCanvas *c = drawMod(testLabel, inputFile);  
+    TString outFile = inputFile;
+    outFile.ReplaceAll("root",4,"pdf",3);  
+    c->SaveAs(outFile);
+    outFile.ReplaceAll("pdf",3,"png",3);  
+    c->SaveAs(outFile);
+    delete c;
     gSystem->Exit(0);
   }
 
