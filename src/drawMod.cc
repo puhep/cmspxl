@@ -72,21 +72,23 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 			TString drawOption, int V=0){
  
   TCanvas *c = new TCanvas("c", "c", 800, 800);
-  
-  TString hist = "Pretest/programROC_V0";
   TFile *f = new TFile(inputFile.Data()); 
-  TH1D *h1 = (TH1D*)f->Get(hist); 
-  if (!h1) {
-    cerr << "Not able to find histogram => " << hist << " in " <<
-      inputFile << endl; 
-    return NULL; 
-  }
-  
+
+  TH1D *h1 = (TH1D*)f->Get("Pretest/programROC_V0"); 
+  TH1D *h2 = (TH1D*)f->Get("Pretest/VanaSettings_V0"); 
+  TH1D *h3 = (TH1D*)f->Get("Pretest/Iana_V0"); 
+  TH1D *h4 = (TH1D*)f->Get("Pretest/pretestCalDel_V0"); 
+    
   c->Divide(2, 2); 
   c->cd(1); 
   h1->Draw();
 
-  
+  c->cd(2); 
+  h2->Draw();
+  c->cd(3); 
+  h3->Draw();
+  c->cd(4); 
+  h4->Draw();
   
   return c; 
   
