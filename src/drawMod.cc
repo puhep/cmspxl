@@ -79,7 +79,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   TH1D *h3 = (TH1D*)f->Get("Pretest/Iana_V0"); 
   TH1D *h4 = (TH1D*)f->Get("Pretest/pretestCalDel_V0"); 
     
-  c->Divide(2, 2); 
+  c->Divide(2, 3); 
   c->cd(1); 
   h1->Draw();
 
@@ -90,7 +90,16 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   c->cd(4); 
   h4->Draw();
 
+  TString common = "Pretest/pretestVthrCompCalDel_c11_r20"; 
+  for (int chip=0; chip<2; chip++) {
+    c->cd(5+chip); 
+    // int chip = 0; 
+    TH2D *h5 = (TH2D*)f->Get(Form("%s_C%d_V0", common.Data(), chip)); 
+    h5->Draw("colz"); 
+  }
+
   gROOT->SetStyle("Plain");
+  gStyle->SetPalette(55); // rain bow 
   gStyle->SetOptStat(0);
   
   return c; 
@@ -104,7 +113,7 @@ TCanvas* drawMod(TString label, TString inputFile,
   if (!strcmp(label, "pretest") ) 
     return drawModPretest(label, inputFile, drawOption);
 
-  
+
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
 
