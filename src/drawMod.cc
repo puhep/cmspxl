@@ -89,6 +89,9 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   h3->Draw();
   c->cd(4); 
   h4->Draw();
+
+  gROOT->SetStyle("Plain");
+  gStyle->SetOptStat(0);
   
   return c; 
   
