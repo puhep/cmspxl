@@ -68,9 +68,9 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 	   n_range, n_total, 100.*n_range/n_total); 
 }
 
+
 TCanvas* drawModPretest(TString label, TString inputFile,
 			TString drawOption, int V=0){
- 
   TCanvas *c = new TCanvas("c", "c", 800, 800);
   TFile *f = new TFile(inputFile.Data()); 
 
@@ -79,7 +79,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   TH1D *h3 = (TH1D*)f->Get("Pretest/Iana_V0"); 
   TH1D *h4 = (TH1D*)f->Get("Pretest/pretestCalDel_V0"); 
     
-  c->Divide(2, 3); 
+  c->Divide(4, 5); 
   c->cd(1); 
   h1->Draw();
 
@@ -91,9 +91,8 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   h4->Draw();
 
   TString common = "Pretest/pretestVthrCompCalDel_c11_r20"; 
-  for (int chip=0; chip<2; chip++) {
+  for (int chip=0; chip<16; chip++) {
     c->cd(5+chip); 
-    // int chip = 0; 
     TH2D *h5 = (TH2D*)f->Get(Form("%s_C%d_V0", common.Data(), chip)); 
     h5->Draw("colz"); 
   }
