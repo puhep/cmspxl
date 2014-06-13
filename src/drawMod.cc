@@ -81,8 +81,13 @@ TCanvas* drawModPretest(TString label, TString inputFile,
       inputFile << endl; 
     return NULL; 
   }
+  
+  c->Divide(2, 2); 
+  c->cd(1); 
   h1->Draw();
-    
+
+  
+  
   return c; 
   
 }
