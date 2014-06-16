@@ -145,3 +145,11 @@ et() {
     find . -name "*.cc" -print -or -name "*.h" -print  -or -name "*.py" -print | xargs etags
 }
 
+#--------------------------------------------------
+# CMSPXL ENV
+#--------------------------------------------------
+pwd_=$PWD 
+cd ~/cmspxl
+. setup.sh
+cd $pwd_ 
+
