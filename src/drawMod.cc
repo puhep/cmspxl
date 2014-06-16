@@ -192,14 +192,7 @@ TCanvas* drawMod(TString label, TString inputFile,
 #include <iostream>
 
 void print_usage(){
-  cout << "Usage: drawMod [OPTIONS] \n"
-       << "Options:\n" 
-       << "    -i      input file  \n"
-       << "    -g      run GUI  \n"
-       << "    -t      test name [pixelalive, bumpbonding, daq]  \n"
-       << "    -draw   draw option for histogram [colz, surf2]  \n"
-       << "    -vmax   limit the histogram within vmax \n"
-       << endl; 
+  cout << "Usage see: man drawMod " << endl; 
 }
 
 int main(int argc, char** argv) {
