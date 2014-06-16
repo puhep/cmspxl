@@ -146,8 +146,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
 #ifndef __CINT__ 
 
 int print_usage(){
-  cout << "Usage: drawIV [-b] input1 input2 ... \n"
-       << endl;
+  cout << "Please see usage: man drawIV \n" << endl;
   return 0; 
 }
 
