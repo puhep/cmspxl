@@ -115,7 +115,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 
-#--------------------------------------------------
+#-----------------------------------ye---------------
 # General ENV
 #--------------------------------------------------
 export CLICOLOR=1
@@ -137,4 +137,11 @@ alias rl="root -l"
 alias rm~="rm *~"
 alias ..='cd ..'
 
+#--------------------------------------------------
+# Functions 
+#--------------------------------------------------
+et() {
+    echo "Recursively generating TAGS for *.cc *.h *.py ..."
+    find . -name "*.cc" -print -or -name "*.h" -print  -or -name "*.py" -print | xargs etags
+}
 
