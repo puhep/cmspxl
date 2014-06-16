@@ -3,7 +3,7 @@
 #  2014.03.11 
 #
 
-BIN=$(HOME)/local/bin
+BIN=./bin
 SRC=./src
 
 CC = g++
@@ -17,7 +17,7 @@ GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 DRAWIVFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod drawIV log2tree hdiff  
+PROG=drawMod drawIV hdiff
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
@@ -29,7 +29,6 @@ $(LIST): | $(BIN)
 
 $(BIN): 
 	mkdir -p $(BIN)
-
 
 $(BIN)/drawMod: $(SRC)/drawMod.cc
 	$(CC) $< $(DRAWMODFLAGS) -o $@
@@ -44,8 +43,8 @@ $(BIN)/hdiff: $(SRC)/hdiff.cc
 	$(CC) $< $(DRAWMODFLAGS) -o $@
 
 clean:
-	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/log2tree $(BIN)/hdiff 
-	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)/log2tree.dSYM $(BIN)/hdiff 
+	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/hdiff 
+	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)/hdiff 
 
 
 
