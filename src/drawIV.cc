@@ -162,7 +162,9 @@ int main(int argc, char** argv) {
   TString outFile = "test.pdf";
   
   for (int i = 0; i < argc; i++){
-    if (!strcmp(argv[i], "-h")) print_usage();
+    if (!strcmp(argv[i], "-h")) 
+      return print_usage();
+
     if (!strcmp(argv[i], "-b")) {
       doBatch = true;
       inputFiles.erase(inputFiles.begin()+i-1);
