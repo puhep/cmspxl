@@ -1,0 +1,30 @@
+.TH drawMod 1 "16 June 2014" CMSPXL "User Manuals"
+.SH NAME
+drawMod \- draw Module plots
+.SH SYNOPSIS
+.B drawMod [-i 
+.I input-file
+.B ] 
+.B [-g] [-t 
+.I testname
+.B ] [-draw 
+.I draw-option
+.B ] [-vmax 
+.I vmax-value
+.B ]
+.SH DESCRIPTION
+.B drawMod 
+Draw Modul curves based on root files. 
+.SH OPTIONS
+.IP -i 
+Input file 
+.IP -g 
+Run GUI
+.IP -t 
+test name [pixelalive, bumpbonding, daq]
+.IP -draw
+draw option for histogram [colz, surf2]
+.IP -vmax 
+limit the histogram within vmax-value 
+.SH AUTHOR
+Xin Shi <Xin.Shi@cern.ch>
