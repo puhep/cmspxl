@@ -28,19 +28,16 @@ TCanvas* drawHist(TString histType, TString histName, TString inputFile,
     // }
     
   gROOT->SetStyle("Plain");
-  //gStyle->SetPalette(55); // rain bow 
   gStyle->SetOptStat(0);
-  
+
+  TString h_file_name = Form("h_%s", inputFile.Data()); 
+  TFile *fo = new TFile(h_file_name, "RECREATE");
+  h->Write();
+  fo->Close();
+  cout << "Save the hist as: "<< h_file_name << endl;  
+
   return c; 
 }
-
-  // h3->Draw(drawOption);
-
-  // gROOT->SetStyle("Plain");
-  // gStyle->SetPalette(55); // rain bow 
-  // gStyle->SetOptStat(0);
-  // gStyle->SetTitle(0);
-
 
 
 
@@ -57,7 +54,7 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  bool doRunGui(false);
+  bool doRunGui(true);
   TString histType; 
   TString inputFile;
   TString histName; 
@@ -66,7 +63,7 @@ int main(int argc, char** argv) {
   
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
-    if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
+    if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
     if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {histType = string(argv[++i]); }
     if (!strcmp(argv[i],"-draw")) {
@@ -75,7 +72,7 @@ int main(int argc, char** argv) {
     }
     if (!strcmp(argv[i],"-hname")) {
       histName = string(argv[++i]); 
-      cout << "Using hname = " << histName << endl; 
+      cout << "Hist name = " << histName << endl; 
     }
   }
 
