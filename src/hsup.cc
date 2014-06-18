@@ -12,7 +12,8 @@
 #include <TH2D.h> 
 #include <TFile.h> 
 #include <TCanvas.h> 
-#include <TStyle.h> 
+#include <TStyle.h>
+#include <TLegend.h>    
 #include <TApplication.h> 
 
 using namespace std; 
@@ -21,23 +22,32 @@ using namespace std;
 TCanvas* hsup(vector<TString> inputFiles){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
 
-  // TFile *f = NULL; 
   TString hname = "dist_sig_scurveVcal_Vcal_C0_V0"; 
+  
+  TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.8);
+  leg->SetBorderSize(0);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(0);
+  leg->SetNColumns(1);
+  leg->SetTextSize(0.02);
+  leg->SetTextSizePixels(25);
 
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TFile *f = new TFile(inputFiles[i]); 
-    // f->Open(inputFiles[i]);
     TH1D *h = (TH1D*)f->Get(hname);
     h->SetDirectory(0); // "detach" the histogram from the file
     delete f; 
     int color = i+1;
 
     cout << "File name = " << inputFiles[i] << endl; 
-    // h->SetLineColor(color); 
+    h->SetLineColor(color); 
     if (i==0) h->Draw(); 
-    else h->Draw("same"); 
+    else h->Draw("same");
+
+    leg->AddEntry(h, Form("%s", inputFiles[i].Data()),"f"); 
   }
 
+  leg->Draw(); 
   c->Update();
 
   // TH2D *hsup = new TH2D("hsup", "", 416, 0., 416., 160, 0., 160.);
