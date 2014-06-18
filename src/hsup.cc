@@ -28,6 +28,8 @@ TCanvas* hsup(vector<TString> inputFiles){
     TFile *f = new TFile(inputFiles[i]); 
     // f->Open(inputFiles[i]);
     TH1D *h = (TH1D*)f->Get(hname);
+    h->SetDirectory(0); // "detach" the histogram from the file
+    delete f; 
     int color = i+1;
 
     cout << "File name = " << inputFiles[i] << endl; 
