@@ -14,10 +14,9 @@ ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTGLIBS     = $(shell $(ROOTSYS)/bin/root-config --glibs)
 GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 
-DRAWMODFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
-DRAWIVFLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
+FLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod drawIV hdiff
+PROG=drawMod drawIV drawHist hdiff 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
@@ -31,20 +30,23 @@ $(BIN):
 	mkdir -p $(BIN)
 
 $(BIN)/drawMod: $(SRC)/drawMod.cc
-	$(CC) $< $(DRAWMODFLAGS) -o $@
+	$(CC) $< $(FLAGS) -o $@
 
 $(BIN)/drawIV: $(SRC)/drawIV.cc
-	$(CC) $< $(DRAWIVFLAGS) -o $@
+	$(CC) $< $(FLAGS) -o $@
+
+$(BIN)/drawHist: $(SRC)/drawHist.cc
+	$(CC) $< $(FLAGS) -o $@
 
 $(BIN)/log2tree: $(SRC)/log2tree.cc
-	$(CC) $< $(DRAWIVFLAGS) -o $@
+	$(CC) $< $(FLAGS) -o $@
 
 $(BIN)/hdiff: $(SRC)/hdiff.cc
-	$(CC) $< $(DRAWMODFLAGS) -o $@
+	$(CC) $< $(FLAGS) -o $@
 
 clean:
-	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/hdiff 
-	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)/hdiff 
+	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawHist $(BIN)/hdiff 
+	rm -rf $(BIN)/drawMod.dSYM $(BIN)/drawIV.dSYM $(BIN)/drawHist.dSYM $(BIN)/hdiff 
 
 
 
