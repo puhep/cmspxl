@@ -139,6 +139,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
   leg->Draw(); 
 
   c->SetLogy();
+  c->Update(); 
   return c;
 }
 
