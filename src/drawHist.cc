@@ -16,6 +16,11 @@
 
 using namespace std; 
 
+TH1D* getHist(TFile *f, TString histName) {
+  TH1D *h = (TH1D*)f->Get(histName); 
+  return h; 
+}
+
 
 TCanvas* drawHist(TString histType, TString histName, TString inputFile,
 		  TString drawOption, int V=0){
@@ -23,9 +28,10 @@ TCanvas* drawHist(TString histType, TString histName, TString inputFile,
   TFile *f = new TFile(inputFile.Data()); 
   
   // if (!strcmp(histType, "TH1D"))  {
-   TH1D *h = (TH1D*)f->Get(histName); 
-    h->Draw();
-    // }
+  // TH1D *h = (TH1D*)f->Get(histName); 
+  TH1D *h = getHist(f, histName); 
+  h->Draw();
+  // }
     
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
