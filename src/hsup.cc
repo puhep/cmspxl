@@ -40,7 +40,8 @@ TCanvas* hsup(vector<TString> inputFiles){
     int color = i+1;
 
     cout << "File name = " << inputFiles[i] << endl; 
-    h->SetLineColor(color); 
+    h->SetLineColor(color);  
+    // h->Fit("gaus"); 
     if (i==0) h->Draw(); 
     else h->Draw("same");
 
@@ -56,9 +57,10 @@ TCanvas* hsup(vector<TString> inputFiles){
   // hsup->SetMaximum(1.);
   // hsup->SetMinimum(-1.);
   // hsup->Draw("colz");
-  // gROOT->SetStyle("Plain");
+  gROOT->SetStyle("Plain");
   // gStyle->SetPalette(55);
   // gStyle->SetOptStat(0);
+  // gStyle->SetOptFit(1011);
   // gStyle->SetTitle(0);
 
   return c; 
