@@ -12,9 +12,17 @@
 #include <TFile.h> 
 #include <TCanvas.h> 
 #include <TStyle.h> 
+#include <TKey.h> 
 #include <TApplication.h> 
 
 using namespace std; 
+
+// template<class T>
+// T* getHist(TFile *f, TString histName){
+//   T *h = (T*)f->Get(histName); 
+//   return h; 
+// }
+
 
 TH1D* getHist(TFile *f, TString histName) {
   TH1D *h = (TH1D*)f->Get(histName); 
@@ -26,7 +34,14 @@ TCanvas* drawHist(TString histType, TString histName, TString inputFile,
 		  TString drawOption, int V=0){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
   TFile *f = new TFile(inputFile.Data()); 
-  
+  cout << "Key = " << f->GetListOfKeys() << endl; 
+
+  TIter nextkey(f->GetListOfKeys());
+  TKey *key; 
+  while ( (key = (TKey*)nextkey()) ) {
+    cout << "key name = " << key->GetName() << endl; 
+  }
+
   // if (!strcmp(histType, "TH1D"))  {
   // TH1D *h = (TH1D*)f->Get(histName); 
   TH1D *h = getHist(f, histName); 
