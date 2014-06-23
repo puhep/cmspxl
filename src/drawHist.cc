@@ -36,10 +36,15 @@ TCanvas* drawHist(TString histType, TString histName, TString inputFile,
   TFile *f = new TFile(inputFile.Data()); 
   cout << "Key = " << f->GetListOfKeys() << endl; 
 
+  //histName = "dist_sig_scurveVcal_Vcal_C0_V0"; 
+  
+  // f->cd("Scurves"); 
+
   TIter nextkey(f->GetListOfKeys());
   TKey *key; 
   while ( (key = (TKey*)nextkey()) ) {
-    cout << "key name = " << key->GetName() << endl; 
+    cout << "key name = " << key->GetName() 
+	 << ", class name = " << key->GetClassName() << endl; 
   }
 
   // if (!strcmp(histType, "TH1D"))  {
