@@ -16,6 +16,45 @@
 
 using namespace std; 
 
+void set_root_style(int stat=1110, int grid=0){
+  gROOT->Reset();
+
+  gStyle->SetTitleFillColor(0) ; 
+  gStyle->SetTitleBorderSize(0); 
+    
+  gStyle->SetCanvasBorderMode(0);
+  gStyle->SetCanvasColor(0);
+  gStyle->SetCanvasDefX(0); 
+  gStyle->SetCanvasDefY(0); 
+  gStyle->SetFrameBorderMode(0); 
+  gStyle->SetFrameBorderSize(1); 
+  gStyle->SetFrameFillColor(0); 
+  gStyle->SetFrameFillStyle(0); 
+  gStyle->SetFrameLineColor(1); 
+  gStyle->SetFrameLineStyle(1); 
+  gStyle->SetFrameLineWidth(1); 
+
+  // gStyle->SetPadTopMargin(PadTopMargin);  
+  gStyle->SetPadLeftMargin(0.10);  
+  gStyle->SetPadRightMargin(0.15);  
+
+  gStyle->SetLabelSize(0.03, "XYZ");  
+  gStyle->SetTitleSize(0.04, "XYZ");  
+  gStyle->SetTitleOffset(1.2, "Y");  
+
+  gStyle->SetPadBorderMode(0);  
+  gStyle->SetPadColor(0);  
+  gStyle->SetPadTickX(1); 
+  gStyle->SetPadTickY(1); 
+  gStyle->SetPadGridX(grid); 
+  gStyle->SetPadGridY(grid); 
+
+  gStyle->SetOptStat(stat); 
+  gStyle->SetStatColor(0); 
+  gStyle->SetStatBorderSize(1); 
+}
+
+
 TCanvas* drawHist(vector<TString> inputFiles,
 		  TString histType, 
 		  TString histName, 
@@ -23,9 +62,11 @@ TCanvas* drawHist(vector<TString> inputFiles,
 		  double vmax, 
 		  int V=0){
  
-  TCanvas *c = new TCanvas("c", "c", 800, 800);
+  int nfig = inputFiles.size(); 
+  set_root_style();
+  TCanvas *c = new TCanvas("c", "c", 400*nfig, 400);
 
-  c->Divide(inputFiles.size()); 
+  c->Divide(nfig); 
   
   // TString h_file_name = Form("h_test", inputFile.Data()); 
   TString h_file_name = "h_test.root"; 
