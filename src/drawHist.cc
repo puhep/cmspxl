@@ -36,7 +36,7 @@ void set_root_style(int stat=1110, int grid=0){
 
   // gStyle->SetPadTopMargin(PadTopMargin);  
   gStyle->SetPadLeftMargin(0.10);  
-  gStyle->SetPadRightMargin(0.15);  
+  gStyle->SetPadRightMargin(0.25);  
 
   gStyle->SetLabelSize(0.03, "XYZ");  
   gStyle->SetTitleSize(0.04, "XYZ");  
@@ -83,7 +83,7 @@ TCanvas* drawHist(vector<TString> inputFiles,
 	cout << "Not able to find hist: " << histName << endl; 
 	return NULL; 
       }
-      h->SetDirectory(0); // "detach" the histogram from the file
+      h->SetDirectory(0); 
       delete f; 
       h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
@@ -98,7 +98,7 @@ TCanvas* drawHist(vector<TString> inputFiles,
 	cout << "Not able to find hist: " << histName << endl; 
 	return NULL; 
       }
-      h->SetDirectory(0); // "detach" the histogram from the file
+      h->SetDirectory(0); 
       delete f; 
       h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
@@ -112,6 +112,7 @@ TCanvas* drawHist(vector<TString> inputFiles,
       cout << "Not supported type: " << histType << endl; 
     }
   }
+  
   c->Update();
 
   gROOT->SetStyle("Plain");
@@ -145,14 +146,13 @@ int main(int argc, char** argv) {
   int delta_idx = 0; 
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
-    // if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }  
 
     if (!strcmp(argv[i],"-t")) {
       histType = string(argv[++i]); 
       // inputFiles.erase(inputFiles.begin()+i-2, inputFiles.begin()+i); 
       inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
 		       inputFiles.begin()+i+delta_idx); 
-      delta_idx = -2; 
+      delta_idx -= 2; 
     }
     
     if (!strcmp(argv[i],"-drawOption")) {
