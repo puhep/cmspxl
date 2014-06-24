@@ -12,59 +12,26 @@
 #include <TFile.h> 
 #include <TCanvas.h> 
 #include <TStyle.h> 
-#include <TKey.h> 
 #include <TApplication.h> 
 
 using namespace std; 
-
-// template<class T>
-// T* getHist(TFile *f, TString histName){
-//   T *h = (T*)f->Get(histName); 
-//   return h; 
-// }
-
-
-TH1D* getHist(TFile *f, TString histName) {
-  TH1D *h = (TH1D*)f->Get(histName); 
-  return h; 
-}
-
 
 TCanvas* drawHist(TString inputFile, TString histType, TString histName, 
 		  TString drawOption, double vmax, int V=0){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
   TFile *f = new TFile(inputFile.Data()); 
-  // cout << "Key = " << f->GetListOfKeys() << endl; 
 
-  //histName = "dist_sig_scurveVcal_Vcal_C0_V0"; 
-  
-  // if (!strcmp(dirName, ""))
-  //   f->cd(); 
-  // else 
-  //   cout << "Chaning dir: " << f->cd(dirName) << endl; 
-  
-  // f->cd("Scurves"); 
-
-  // TIter nextkey(f->GetListOfKeys());
-  // TKey *key; 
-  // while ( (key = (TKey*)nextkey()) ) {
-  //   cout << "key name = " << key->GetName() 
-  // 	 << ", class name = " << key->GetClassName() << endl; 
-  // }
-
-  // TH1D *h = getHist(f, histName); 
   TString h_file_name = Form("h_%s", inputFile.Data()); 
   TFile *fo = new TFile(h_file_name, "RECREATE");
+
   if (!strcmp(histType, "TH1D")) {
     TH1D *h = (TH1D*)f->Get(histName);
     if (!h) {
       cout << "Not able to find hist: " << histName << endl; 
       return NULL; 
     }
-    
     if ( vmax != numeric_limits<double>::max())
       h->SetMaximum(vmax); 
-    
     h->Draw(drawOption); 
     h->Write();
   }
@@ -75,10 +42,8 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
       cout << "Not able to find hist: " << histName << endl; 
       return NULL; 
     }
-    
     if ( vmax != numeric_limits<double>::max())
       h->SetMaximum(vmax); 
-    
     if (drawOption == "") h->Draw("colz"); 
     else h->Draw(drawOption);
     h->Write();
@@ -87,29 +52,16 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
   else {
     cout << "Not supported type: " << histType << endl; 
   }
-  // h->Draw();
-  //}
-
-  // TH2D *h = (TH2D*)f->Get(histName);
-
-  // h->Draw(); 
     
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
 
-  // TString h_file_name = Form("h_%s", inputFile.Data()); 
-  // TFile *fo = new TFile(h_file_name, "RECREATE");
-  // h->Write();
   fo->Close();
   cout << "Save the hist as: "<< h_file_name << endl;  
 
   return c; 
 }
 
-
-
-#ifndef __CINT__ 
-#include <iostream>
 
 void print_usage(){
   cout << "Usage see: man drawHist " << endl; 
@@ -126,11 +78,9 @@ int main(int argc, char** argv) {
   TString inputFile;
   TString histName; 
   TString drawOption(""); 
-  // TString dirName(""); 
   double vmax = numeric_limits<double>::max();
   
   for (int i = 0; i < argc; i++){
-    // if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
     if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {histType = string(argv[++i]); }
@@ -142,15 +92,10 @@ int main(int argc, char** argv) {
       histName = string(argv[++i]); 
       cout << "Hist name = " << histName << endl; 
     }
-    // if (!strcmp(argv[i],"-d")) {
-    //   dirName = string(argv[++i]); 
-    //   cout << "Dir name = " << dirName << endl; 
-    // }
     if (!strcmp(argv[i],"-vmax")) {
       vmax = atof(argv[++i]); 
       cout << "Using vmax = " << vmax << endl; 
     }
-    
   }
 
   if (doRunGui) { 
@@ -174,6 +119,5 @@ int main(int argc, char** argv) {
 
 }
 
-#endif
 
 
