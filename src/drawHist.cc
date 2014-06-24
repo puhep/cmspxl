@@ -16,49 +16,67 @@
 
 using namespace std; 
 
-TCanvas* drawHist(TString inputFile, TString histType, TString histName, 
-		  TString drawOption, double vmax, int V=0){
+TCanvas* drawHist(vector<TString> inputFiles,
+		  TString histType, 
+		  TString histName, 
+		  TString drawOption, 
+		  double vmax, 
+		  int V=0){
+ 
   TCanvas *c = new TCanvas("c", "c", 800, 800);
-  TFile *f = new TFile(inputFile.Data()); 
 
-  TString h_file_name = Form("h_%s", inputFile.Data()); 
-  TFile *fo = new TFile(h_file_name, "RECREATE");
-
-  if (!strcmp(histType, "TH1D")) {
-    TH1D *h = (TH1D*)f->Get(histName);
-    if (!h) {
-      cout << "Not able to find hist: " << histName << endl; 
-      return NULL; 
-    }
-    if ( vmax != numeric_limits<double>::max())
-      h->SetMaximum(vmax); 
-    h->Draw(drawOption); 
-    h->Write();
-  }
-
-  else if (!strcmp(histType, "TH2D")) {
-    TH2D *h = (TH2D*)f->Get(histName);
-    if (!h) {
-      cout << "Not able to find hist: " << histName << endl; 
-      return NULL; 
-    }
-    if ( vmax != numeric_limits<double>::max())
-      h->SetMaximum(vmax); 
-    if (drawOption == "") h->Draw("colz"); 
-    else h->Draw(drawOption);
-    h->Write();
-  }
+  c->Divide(inputFiles.size()); 
   
-  else {
-    cout << "Not supported type: " << histType << endl; 
-  }
+  // TString h_file_name = Form("h_test", inputFile.Data()); 
+  TString h_file_name = "h_test.root"; 
+
+  TFile *fo = new TFile(h_file_name, "RECREATE");
+  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
+    c->cd(i+1); 
+
+    TFile *f = new TFile(inputFiles[i]); 
     
+    if (!strcmp(histType, "TH1D")) {
+      TH1D *h = (TH1D*)f->Get(histName);
+      if (!h) {
+	cout << "Not able to find hist: " << histName << endl; 
+	return NULL; 
+      }
+      h->SetDirectory(0); // "detach" the histogram from the file
+      delete f; 
+      if ( vmax != numeric_limits<double>::max())
+	h->SetMaximum(vmax); 
+      h->Draw(drawOption); 
+      h->Write();
+    }
+
+    else if (!strcmp(histType, "TH2D")) {
+      TH2D *h = (TH2D*)f->Get(histName);
+      if (!h) {
+	cout << "Not able to find hist: " << histName << endl; 
+	return NULL; 
+      }
+      h->SetDirectory(0); // "detach" the histogram from the file
+      delete f; 
+      if ( vmax != numeric_limits<double>::max())
+	h->SetMaximum(vmax); 
+      if (drawOption == "") h->Draw("colz"); 
+      else h->Draw(drawOption);
+      h->Write();
+    }
+  
+    else {
+      cout << "Not supported type: " << histType << endl; 
+    }
+  }
+  c->Update();
+
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
-
+  
   fo->Close();
   cout << "Save the hist as: "<< h_file_name << endl;  
-
+  
   return c; 
 }
 
@@ -118,17 +136,17 @@ int main(int argc, char** argv) {
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     cout << "inputFile >>> " << inputFiles[i] << endl; 
   }
-  exit(0); 
+  // exit(0); 
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawHist(inputFile, histType, histName, drawOption, vmax);  
+    drawHist(inputFiles, histType, histName, drawOption, vmax);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawHist(inputFile, histType, histName, drawOption, 
+    TCanvas *c = drawHist(inputFiles, histType, histName, drawOption, 
 			  vmax);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
