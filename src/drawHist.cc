@@ -83,10 +83,11 @@ int main(int argc, char** argv) {
   
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
-    // if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
+    // if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }  
+ 
     if (!strcmp(argv[i],"-t")) {
       histType = string(argv[++i]); 
-      inputFiles.erase(inputFiles.begin()+i-1); 
+      inputFiles.erase(inputFiles.begin()+i-2, inputFiles.begin()+i); 
     }
     
     if (!strcmp(argv[i],"-drawOption")) {
