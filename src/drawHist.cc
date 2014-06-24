@@ -53,13 +53,26 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
   // }
 
   // TH1D *h = getHist(f, histName); 
+  TString h_file_name = Form("h_%s", inputFile.Data()); 
+  TFile *fo = new TFile(h_file_name, "RECREATE");
   if (!strcmp(histType, "TH1D")) {
     TH1D *h = (TH1D*)f->Get(histName);
-    h->Draw(); 
+    if (!h) {
+      cout << "Not able to find hist: " << histName << endl; 
+      return NULL; 
+    }
+      h->Draw(); 
+      h->Write();
   }
+
   else if (!strcmp(histType, "TH2D")) {
     TH2D *h = (TH2D*)f->Get(histName);
-    if (h) h->Draw(); 
+    if (!h) {
+      cout << "Not able to find hist: " << histName << endl; 
+      return NULL; 
+    }
+    h->Draw(drawOption);
+    h->Write();
   }
   
   else {
@@ -78,8 +91,8 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
   // TString h_file_name = Form("h_%s", inputFile.Data()); 
   // TFile *fo = new TFile(h_file_name, "RECREATE");
   // h->Write();
-  // fo->Close();
-  // cout << "Save the hist as: "<< h_file_name << endl;  
+  fo->Close();
+  cout << "Save the hist as: "<< h_file_name << endl;  
 
   return c; 
 }
