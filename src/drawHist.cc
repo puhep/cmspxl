@@ -29,6 +29,7 @@ TH1D* getHist(TFile *f, TString histName) {
   return h; 
 }
 
+
 TCanvas* drawHist(TString inputFile, TString histType, TString histName, 
 		  TString drawOption, int V=0){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
@@ -52,26 +53,24 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
   // }
 
   // TH1D *h = getHist(f, histName); 
-  // if (!strcmp(histType, "TH1D")) {
-  //   TH1D *h = (TH1D*)f->Get(histName);
-  //   h->Draw(); 
-  // }
-  // else if (!strcmp(histType, "TH2D")) {
-  //   TH2D *h = (TH2D*)f->Get(histName);
-  //   h->Draw(); 
-  // }
+  if (!strcmp(histType, "TH1D")) {
+    TH1D *h = (TH1D*)f->Get(histName);
+    h->Draw(); 
+  }
+  else if (!strcmp(histType, "TH2D")) {
+    TH2D *h = (TH2D*)f->Get(histName);
+    if (h) h->Draw(); 
+  }
   
-  // else {
-  //   cout << "Not supported type: " << histType << endl; 
-  // }
+  else {
+    cout << "Not supported type: " << histType << endl; 
+  }
   // h->Draw();
-  // }
+  //}
 
-  TH2D *h = (TH2D*)f->Get(histName);
+  // TH2D *h = (TH2D*)f->Get(histName);
 
-  if (!h) cout << "Not able to find hist!" << endl; 
-
-  h->Draw(); 
+  // h->Draw(); 
     
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
