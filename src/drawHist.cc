@@ -31,7 +31,7 @@ TH1D* getHist(TFile *f, TString histName) {
 
 
 TCanvas* drawHist(TString inputFile, TString histType, TString histName, 
-		  TString drawOption, int V=0){
+		  TString drawOption, double vmax, int V=0){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
   TFile *f = new TFile(inputFile.Data()); 
   // cout << "Key = " << f->GetListOfKeys() << endl; 
@@ -71,7 +71,12 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
       cout << "Not able to find hist: " << histName << endl; 
       return NULL; 
     }
-    h->Draw(drawOption);
+    
+    if ( vmax != numeric_limits<double>::max())
+      h->SetMaximum(vmax); 
+    
+    if (drawOption == "") h->Draw("colz"); 
+    else h->Draw(drawOption);
     h->Write();
   }
   
@@ -118,7 +123,7 @@ int main(int argc, char** argv) {
   TString histName; 
   TString drawOption(""); 
   // TString dirName(""); 
-
+  double vmax = numeric_limits<double>::max();
   
   for (int i = 0; i < argc; i++){
     // if (!strcmp(argv[i], "-h")) print_usage();
@@ -137,18 +142,23 @@ int main(int argc, char** argv) {
     //   dirName = string(argv[++i]); 
     //   cout << "Dir name = " << dirName << endl; 
     // }
+    if (!strcmp(argv[i],"-vmax")) {
+      vmax = atof(argv[++i]); 
+      cout << "Using vmax = " << vmax << endl; 
+    }
     
   }
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawHist(inputFile, histType, histName, drawOption);  
+    drawHist(inputFile, histType, histName, drawOption, vmax);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawHist(inputFile, histType, histName, drawOption);  
+    TCanvas *c = drawHist(inputFile, histType, histName, drawOption, 
+			  vmax);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
     c->SaveAs(outFile);
