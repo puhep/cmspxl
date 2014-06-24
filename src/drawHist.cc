@@ -161,7 +161,9 @@ int main(int argc, char** argv) {
     
     if (!strcmp(argv[i],"-drawOption")) {
       drawOption = string(argv[++i]);
-      inputFiles.erase(inputFiles.begin()+i-1); 
+      inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
+		       inputFiles.begin()+i+delta_idx); 
+      delta_idx -= 2; 
       cout << "Using drawOption = " << drawOption << endl;  
     }
 
@@ -174,6 +176,9 @@ int main(int argc, char** argv) {
     }
     if (!strcmp(argv[i],"-vmax")) {
       vmax = atof(argv[++i]); 
+      inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
+		       inputFiles.begin()+i+delta_idx); 
+      delta_idx -= 2; 
       cout << "Using vmax = " << vmax << endl; 
     }
   }
