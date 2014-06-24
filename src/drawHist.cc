@@ -85,6 +85,7 @@ TCanvas* drawHist(vector<TString> inputFiles,
       }
       h->SetDirectory(0); // "detach" the histogram from the file
       delete f; 
+      h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
       h->Draw(drawOption); 
@@ -99,6 +100,7 @@ TCanvas* drawHist(vector<TString> inputFiles,
       }
       h->SetDirectory(0); // "detach" the histogram from the file
       delete f; 
+      h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
       if (drawOption == "") h->Draw("colz"); 
