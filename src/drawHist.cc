@@ -61,8 +61,12 @@ TCanvas* drawHist(TString inputFile, TString histType, TString histName,
       cout << "Not able to find hist: " << histName << endl; 
       return NULL; 
     }
-      h->Draw(); 
-      h->Write();
+    
+    if ( vmax != numeric_limits<double>::max())
+      h->SetMaximum(vmax); 
+    
+    h->Draw(drawOption); 
+    h->Write();
   }
 
   else if (!strcmp(histType, "TH2D")) {
