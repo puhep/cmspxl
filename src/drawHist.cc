@@ -75,17 +75,23 @@ int main(int argc, char** argv) {
 
   bool doRunGui(true);
   TString histType; 
-  TString inputFile;
+  TString inputFile;  
+  vector<TString> inputFiles(argv+1, argv+argc);
   TString histName; 
   TString drawOption(""); 
   double vmax = numeric_limits<double>::max();
   
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
-    if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
-    if (!strcmp(argv[i],"-t")) {histType = string(argv[++i]); }
+    // if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
+    if (!strcmp(argv[i],"-t")) {
+      histType = string(argv[++i]); 
+      inputFiles.erase(inputFiles.begin()+i-1); 
+    }
+    
     if (!strcmp(argv[i],"-drawOption")) {
       drawOption = string(argv[++i]);
+      inputFiles.erase(inputFiles.begin()+i-1); 
       cout << "Using drawOption = " << drawOption << endl;  
     }
     if (!strcmp(argv[i],"-h")) {
@@ -97,6 +103,11 @@ int main(int argc, char** argv) {
       cout << "Using vmax = " << vmax << endl; 
     }
   }
+  
+  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
+    cout << inputFiles[i] << endl; 
+  }
+  exit(0); 
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
