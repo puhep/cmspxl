@@ -145,11 +145,15 @@ int main(int argc, char** argv) {
   
   int delta_idx = 0; 
   for (int i = 0; i < argc; i++){
-    if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
+    // if (!strcmp(argv[i],"-b")) {
+    //   doRunGui = false;  
+    //   inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
+    // 		       inputFiles.begin()+i+delta_idx); 
+    //   delta_idx -= 1; 
+    // } 
 
     if (!strcmp(argv[i],"-t")) {
       histType = string(argv[++i]); 
-      // inputFiles.erase(inputFiles.begin()+i-2, inputFiles.begin()+i); 
       inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
 		       inputFiles.begin()+i+delta_idx); 
       delta_idx -= 2; 
@@ -163,8 +167,6 @@ int main(int argc, char** argv) {
 
     if (!strcmp(argv[i],"-h")) {
       histName = string(argv[++i]); 
-      //inputFiles.erase(inputFiles.begin()+i-4, 
-      // inputFiles.begin()+i-2);
       inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
 		       inputFiles.begin()+i+delta_idx); 
       delta_idx -= 2; 
