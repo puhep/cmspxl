@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i],"-b")) {doRunGui = false; } 
     // if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }  
- 
+
     if (!strcmp(argv[i],"-t")) {
       histType = string(argv[++i]); 
       inputFiles.erase(inputFiles.begin()+i-2, inputFiles.begin()+i); 
@@ -95,8 +95,11 @@ int main(int argc, char** argv) {
       inputFiles.erase(inputFiles.begin()+i-1); 
       cout << "Using drawOption = " << drawOption << endl;  
     }
+
     if (!strcmp(argv[i],"-h")) {
       histName = string(argv[++i]); 
+      inputFiles.erase(inputFiles.begin()+i-4, 
+		       inputFiles.begin()+i-2);
       cout << "Hist name = " << histName << endl; 
     }
     if (!strcmp(argv[i],"-vmax")) {
@@ -106,7 +109,7 @@ int main(int argc, char** argv) {
   }
   
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
-    cout << inputFiles[i] << endl; 
+    cout << "inputFile >>> " << inputFiles[i] << endl; 
   }
   exit(0); 
 
