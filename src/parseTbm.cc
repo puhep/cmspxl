@@ -6,21 +6,44 @@
 
 
 #include <iostream>
-#include <limits>  
+#include <fstream>
+#include <sstream>
+#include <string>
 
-using namespace std; 
 
 void print_usage(){
-  cerr << "Usage: parseTbm inputFile" << endl; 
+  std::cout << "Usage: parseTbm inputFile" << std::endl; 
 }
 
 
 int main(int argc, char** argv) {
   if (argc < 2) {
     print_usage() ;  
-    return -1; 
+    return 1; 
   }
-  
+
+  std::string inputFile(argv[1]); 
+  std::ifstream fin;
+  fin.open(inputFile);
+
+  if (!fin.good()) 
+    return 1;
+
+  std::string line;
+  int nlines = 0; 
+  while(getline(fin, line))   {
+    nlines ++; 
+    std::istringstream iss(line);
+    if (line.find("words" == 0)) {
+      std::cout << nlines << ": " << line << std::endl; 
+      }
+    // getline(iss, name, ':');
+    // getline(iss, age, '-');
+    // getline(iss, salary, ',');
+    // getline(iss, hoursWorked, '[');
+    // getline(iss, randomText, ']');
+  }
+  fin.close();
   
 
 }
