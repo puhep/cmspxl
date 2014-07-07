@@ -3,7 +3,9 @@
 // 2014.03.11
 // 
 
+
 #include <iostream>
+#include <string> 
 #include <limits>  
 #include <TROOT.h>
 #include <TSystem.h>
@@ -14,19 +16,17 @@
 #include <TStyle.h> 
 #include <TApplication.h> 
 
-using namespace std; 
-
 void addChip(const TString hist, const int chip, TH2D *h3,
 	     int& n_range, int& n_total, 
 	     const bool checkrange=false, 
-	     const double vmin=numeric_limits<double>::min(),
-	     const double vmax=numeric_limits<double>::max() ) {
+	     const double vmin=std::numeric_limits<double>::min(),
+	     const double vmax=std::numeric_limits<double>::max() ) {
   
   TH2D *h2d;
   gDirectory->GetObject(hist, h2d); 
   
   if (!h2d) {
-    cerr << "Chip "<< chip << ": Not valid histogram => " << hist << endl; 
+    std::cerr << "Chip "<< chip << ": Not valid histogram => " << hist << std::endl; 
     return ; 
   }
 
@@ -42,7 +42,7 @@ void addChip(const TString hist, const int chip, TH2D *h3,
       if (checkrange && value >= vmin && value <= vmax) 
 	n_range += 1; 
       
-      if ( value < numeric_limits<double>::max() && value > vmax)
+      if ( value < std::numeric_limits<double>::max() && value > vmax)
 	value = vmax; 
 
       int icol_mod, irow_mod; 
@@ -117,8 +117,8 @@ TCanvas* drawMod(TString label, TString inputFile,
   TFile::Open(inputFile.Data());
 
   bool checkrange = false;
-  double vmin = numeric_limits<double>::min(); 
-  // double vmax = numeric_limits<double>::max();
+  double vmin = std::numeric_limits<double>::min(); 
+  // double vmax = std::numeric_limits<double>::max();
   int n_range = 0;
   int n_total = 0; 
   
@@ -150,7 +150,7 @@ TCanvas* drawMod(TString label, TString inputFile,
     }
 
     else {
-      cerr << "No such hist name: " << hist << endl;
+      std::cerr << "No such hist name: " << hist << std::endl;
       break; 
     }
 
@@ -180,7 +180,7 @@ TCanvas* drawMod(TString label, TString inputFile,
   TFile *f = new TFile(h_mod_name, "RECREATE");
   h3->Write();
   f->Close();
-  cout << "Save the hist as: "<< h_mod_name << endl;  
+  std::cout << "Save the hist as: "<< h_mod_name << std::endl;  
 
 
   return c; 
@@ -188,11 +188,8 @@ TCanvas* drawMod(TString label, TString inputFile,
 
 
 
-#ifndef __CINT__ 
-#include <iostream>
-
 void print_usage(){
-  cout << "Usage see: man drawMod " << endl; 
+  std::cout << "Usage see: man drawMod " << std::endl; 
 }
 
 int main(int argc, char** argv) {
@@ -205,21 +202,21 @@ int main(int argc, char** argv) {
   TString testLabel; 
   TString inputFile; 
   TString drawOption("colz"); 
-  double vmax = numeric_limits<double>::max();
+  double vmax = std::numeric_limits<double>::max();
   // int V = 0;
 
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
-    if (!strcmp(argv[i],"-i")) {inputFile = string(argv[++i]); }   
-    if (!strcmp(argv[i],"-t")) {testLabel = string(argv[++i]); }
+    if (!strcmp(argv[i],"-i")) {inputFile = std::string(argv[++i]); }   
+    if (!strcmp(argv[i],"-t")) {testLabel = std::string(argv[++i]); }
     if (!strcmp(argv[i],"-draw")) {
-      drawOption = string(argv[++i]);
-      cout << "Using drawOption = " << drawOption << endl;  
+      drawOption = std::string(argv[++i]);
+      std::cout << "Using drawOption = " << drawOption << std::endl;  
     }
     if (!strcmp(argv[i],"-vmax")) {
       vmax = atof(argv[++i]); 
-      cout << "Using vmax = " << vmax << endl; 
+      std::cout << "Using vmax = " << vmax << std::endl; 
     }
   }
 
@@ -242,7 +239,5 @@ int main(int argc, char** argv) {
   }
 
 }
-
-#endif
 
 
