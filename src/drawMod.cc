@@ -16,7 +16,7 @@
 #include <TStyle.h> 
 #include <TApplication.h> 
 
-void addChip(const TString hist, const int chip, TH2D *h3,
+bool addChip(const TString hist, const int chip, TH2D *h3,
 	     int& n_range, int& n_total, 
 	     const bool checkrange=false, 
 	     const double vmin=std::numeric_limits<double>::min(),
@@ -27,7 +27,7 @@ void addChip(const TString hist, const int chip, TH2D *h3,
   
   if (!h2d) {
     std::cerr << "Chip "<< chip << ": Not valid histogram => " << hist << std::endl; 
-    return ; 
+    return false; 
   }
 
   n_total = 0; 
@@ -65,7 +65,9 @@ void addChip(const TString hist, const int chip, TH2D *h3,
 
   if (checkrange)
     printf("ROC%2d: %d / %d = %2.2f%%. \n", chip,
-	   n_range, n_total, 100.*n_range/n_total); 
+	   n_range, n_total, 100.*n_range/n_total);
+
+  return true; 
 }
 
 
@@ -131,15 +133,18 @@ TCanvas* drawMod(TString label, TString inputFile,
 
   TString hist(label); 
   TH2D *h3 = new TH2D("h3", "", 416, 0., 416., 160, 0., 160.);
+  TH2D *h2d;
+
   for (int chip = 0; chip < 16 ; chip++) {
 
     if (!strcmp(label, "bumpbonding") ){
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
-
-      if (chip == 0 ) hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
-      else hist = Form("BumpBonding/thr_calSMap_vthrcomp_C%d_V%d", chip, V);
-     }
+      hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
+      gDirectory->GetObject(hist, h2d);
+      if (!h2d)
+	hist = Form("BumpBonding/thr_calSMap_vthrcomp_C%d_V%d", chip, V);
+    }
 
     else if (!strcmp(label, "pixelalive")) { 
       hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V);
@@ -147,6 +152,13 @@ TCanvas* drawMod(TString label, TString inputFile,
 
     else if (!strcmp(label, "daq")) { 
       hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
+    }
+
+    else if (!strcmp(label, "scurves")) { 
+      hist = Form("Scurves/sig_scurveVcal_vcal_C%d_V%d", chip, V);
+      gDirectory->GetObject(hist, h2d);
+      if (!h2d)
+	hist = Form("Scurves/sig_scurveVcal_Vcal_C%d_V%d", chip, V);
     }
 
     else {
