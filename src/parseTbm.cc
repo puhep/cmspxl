@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
   std::string inputFile(argv[1]); 
   std::ifstream fin;
-  fin.open(inputFile);
+  fin.open(inputFile.c_str());
 
   if (!fin.good()) 
     return 1;
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
   while(getline(fin, line))   {
     nlines ++; 
     std::istringstream iss(line);
-    if (line.find("words" == 0)) {
+    if (line.find("words") == 0) {
       std::cout << nlines << ": " << line << std::endl; 
       }
     // getline(iss, name, ':');
@@ -45,7 +45,6 @@ int main(int argc, char** argv) {
   }
   fin.close();
   
-
 }
 
 
