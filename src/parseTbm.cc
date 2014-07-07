@@ -58,6 +58,7 @@ int main(int argc, char** argv) {
   bool check_tbm_header(false);
   // bool tbm_trailer(false);
 
+  std::string digits("1111"); 
   while(getline(fin, line))   {
     line_num ++; 
     std::istringstream iss(line);
@@ -72,9 +73,13 @@ int main(int argc, char** argv) {
 
     if (check_tbm_header)  {
       if (line.find("8") == 0) {
-	std::string digits("1111"); 
-	std::cout << "EVT NUM: " << get_value_from_digits(line, digits) << std::endl; 
+	std::cout << "Event: " << get_value_from_digits(line, digits); //<< std::endl; 
       }
+
+      if (line.find("9") == 0) {
+	std::cout << get_value_from_digits(line, digits) << std::endl; 
+      }
+
     }
 
     // getline(iss, name, ':');
