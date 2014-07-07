@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 #include <algorithm>
-
+#include <bitset> 
 
 static inline std::string &ltrim(std::string &s) {
   s.erase(s.begin(), std::find_if(s.begin(), s.end(),
@@ -22,6 +22,22 @@ void print_usage(){
   std::cout << "Usage: parseTbm inputFile" << std::endl; 
 }
 
+int get_value_from_digits(std::string line, std::string digits){
+  // std::cout << line << std::endl;
+  std::size_t pos = line.find("=");
+  std::string value = line.substr(pos+2);
+  // value = "111100110";
+  std::bitset<16> b_val(value);  
+  std::bitset<16> b_dig(digits);  
+
+  b_val = (b_val & b_dig);
+  int i_value = b_val.to_ulong(); 
+  // std::cout << value << " ==== " << (b_val & b_dig) <<  std::endl; 
+  // std::cout << value << ", i_value = " << i_value << std::endl; 
+  
+  // exit(0); 
+  return i_value; 
+}
 
 int main(int argc, char** argv) {
   if (argc < 2) {
@@ -56,7 +72,8 @@ int main(int argc, char** argv) {
 
     if (check_tbm_header)  {
       if (line.find("8") == 0) {
-	std::cout << "EVT NUM: " << line << std::endl; 
+	std::string digits("1111"); 
+	std::cout << "EVT NUM: " << get_value_from_digits(line, digits) << std::endl; 
       }
     }
 
