@@ -83,7 +83,9 @@
    <2014-02-28 Fri> Received by Nick. Put into box at PHYS347. 
 
 ** DTB 53
-   <2014-05-27 Tue> Returned from CERN. Put back to PHYS347. 
+   <2014-07-10 Thr> Unstable with readout with FW3.2. Put label one. --Xin
+   
+   <2014-05-27 Tue> Was not able to read out at CERN, maybe a hardware issue. Put back to PHYS347. 
 
    <2014-05-16 Fri> Flashed with 2.20. Take to CERN for pXar workshop. --Xin
    
