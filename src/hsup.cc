@@ -14,12 +14,21 @@
 #include <TCanvas.h> 
 #include <TStyle.h>
 #include <TLegend.h>    
-#include <TApplication.h> 
+#include <TApplication.h>
+#include <TPaveStats.h>
+#include <TPad.h> 
 
 using namespace std; 
 
 
 TCanvas* hsup(vector<TString> inputFiles){
+  gROOT->SetStyle("Plain");
+  // gStyle->SetPalette(55);
+  gStyle->SetOptStat("Mner");
+  // gStyle->SetOptStat(1111111);
+  // gStyle->SetOptFit(1011);
+  gStyle->SetTitle(0);
+  
   TCanvas *c = new TCanvas("c", "c", 800, 800);
 
   TString hname = "dist_sig_scurveVcal_Vcal_C0_V0"; 
@@ -38,18 +47,26 @@ TCanvas* hsup(vector<TString> inputFiles){
     h->SetDirectory(0); // "detach" the histogram from the file
     delete f; 
     int color = i+1;
-
+    h->SetStats(1); 
     cout << "File name = " << inputFiles[i] << endl; 
-    h->SetLineColor(color);  
-    // h->Fit("gaus"); 
-    if (i==0) h->Draw(); 
-    else h->Draw("same");
+    h->SetLineColor(color);
+
+    // h->Fit("gaus");
+    if (i==0) {
+      h->Draw();
+    }
+    else h->Draw("sames");
+
+    // TPaveStats* st = (TPaveStats*) h->FindObject("stats");
+    //st->SetTextColor(color); 
+    // st->SetX1NDC(0.1);
+    // st->SetX2NDC(0.3);
+    // st->SetY1NDC(0.7);
+    // st->SetY2NDC(0.9);
+    //gPad->Update();     
 
     leg->AddEntry(h, Form("%s", inputFiles[i].Data()),"f"); 
   }
-
-  leg->Draw(); 
-  c->Update();
 
   // TH2D *hsup = new TH2D("hsup", "", 416, 0., 416., 160, 0., 160.);
   // double v1, v2, sup; 
@@ -57,12 +74,10 @@ TCanvas* hsup(vector<TString> inputFiles){
   // hsup->SetMaximum(1.);
   // hsup->SetMinimum(-1.);
   // hsup->Draw("colz");
-  gROOT->SetStyle("Plain");
-  // gStyle->SetPalette(55);
-  // gStyle->SetOptStat(0);
-  // gStyle->SetOptFit(1011);
-  // gStyle->SetTitle(0);
-
+  
+  leg->Draw(); 
+  c->Update();
+  
   return c; 
 }
 
