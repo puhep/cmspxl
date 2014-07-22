@@ -50,20 +50,21 @@ TCanvas* hsup(vector<TString> inputFiles){
     h->SetStats(1); 
     cout << "File name = " << inputFiles[i] << endl; 
     h->SetLineColor(color);
-
+    
     // h->Fit("gaus");
     if (i==0) {
       h->Draw();
     }
     else h->Draw("sames");
-
-    // TPaveStats* st = (TPaveStats*) h->FindObject("stats");
-    //st->SetTextColor(color); 
+    gPad->Update();     
+    TPaveStats* st = (TPaveStats*) h->FindObject("stats");
+    // cout << ">>>> st : " << st << endl; 
+    st->SetTextColor(color); 
     // st->SetX1NDC(0.1);
     // st->SetX2NDC(0.3);
     // st->SetY1NDC(0.7);
     // st->SetY2NDC(0.9);
-    //gPad->Update();     
+
 
     leg->AddEntry(h, Form("%s", inputFiles[i].Data()),"f"); 
   }
