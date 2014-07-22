@@ -47,6 +47,7 @@ TCanvas* hsup(vector<TString> inputFiles){
     h->SetDirectory(0); // "detach" the histogram from the file
     delete f; 
     int color = i+1;
+    if (color == 3) color ++; // skip green 
     h->SetStats(1); 
     cout << "File name = " << inputFiles[i] << endl; 
     h->SetLineColor(color);
