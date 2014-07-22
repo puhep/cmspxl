@@ -71,25 +71,29 @@ TCanvas* drawHist(vector<TString> inputFiles,
   // TString h_file_name = Form("h_test", inputFile.Data()); 
   TString h_file_name = "h_test.root"; 
 
-  TFile *fo = new TFile(h_file_name, "RECREATE");
+  // TFile *fo = new TFile(h_file_name, "RECREATE");
+  TH1D *h;
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     c->cd(i+1); 
 
     TFile *f = new TFile(inputFiles[i]); 
     
     if (!strcmp(histType, "TH1D")) {
-      TH1D *h = (TH1D*)f->Get(histName);
+      // TH1D *h = (TH1D*)f->Get(histName);
+      h = (TH1D*)f->Get(histName);
       if (!h) {
 	cout << "Not able to find hist: " << histName << endl; 
 	return NULL; 
       }
+
+      // std::cout << ">>> testing... " << std::endl; 
       h->SetDirectory(0); 
       delete f; 
-      h->SetTitle(inputFiles[i]); 
+      // h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
       h->Draw(drawOption); 
-      h->Write();
+      // h->Write();
     }
 
     else if (!strcmp(histType, "TH2D")) {
@@ -117,7 +121,9 @@ TCanvas* drawHist(vector<TString> inputFiles,
 
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
-  
+
+  TFile *fo = new TFile(h_file_name, "RECREATE");
+  h->Write();
   fo->Close();
   cout << "Save the hist as: "<< h_file_name << endl;  
   
