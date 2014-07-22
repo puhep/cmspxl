@@ -21,7 +21,7 @@
 using namespace std; 
 
 
-TCanvas* hsup(vector<TString> inputFiles){
+TCanvas* hsup(vector<TString> inputFiles, TString hname){
   gROOT->SetStyle("Plain");
   // gStyle->SetPalette(55);
   gStyle->SetOptStat("Mner");
@@ -31,7 +31,7 @@ TCanvas* hsup(vector<TString> inputFiles){
   
   TCanvas *c = new TCanvas("c", "c", 800, 800);
 
-  TString hname = "dist_sig_scurveVcal_Vcal_C0_V0"; 
+  // TString hname = "dist_sig_scurveVcal_Vcal_C0_V0"; 
   
   TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.8);
   leg->SetBorderSize(0);
@@ -101,6 +101,7 @@ int main(int argc, char** argv) {
 
   // bool doBatch(false);
   vector<TString> inputFiles(argv+1, argv+argc);
+  TString histName; 
   TString outFile = "sup.pdf";
   
   // if (doBatch) { 
@@ -110,11 +111,24 @@ int main(int argc, char** argv) {
   //   delete c;
   //   gSystem->Exit(0);
   // }
-  
+    int delta_idx = 0; 
+  for (int i = 0; i < argc; i++){
+
+    if (!strcmp(argv[i],"-h")) {
+      histName = string(argv[++i]); 
+      inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
+		       inputFiles.begin()+i+delta_idx); 
+      delta_idx -= 2; 
+      cout << "Hist name = " << histName << endl; 
+    }
+
+  }
+ 
+
   TApplication theApp("App", 0, 0);
   theApp.SetReturnFromRun(true);
 
-  hsup(inputFiles);  
+  hsup(inputFiles, histName);  
   theApp.Run();
 
 }
