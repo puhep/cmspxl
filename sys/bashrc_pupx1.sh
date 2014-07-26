@@ -145,6 +145,28 @@ et() {
     find . -name "*.cc" -print -or -name "*.h" -print  -or -name "*.py" -print | xargs etags
 }
 
+sl() {
+    if [ -z "$1" ]; then
+	echo "[rcac]    hep.rcac.purdue.edu"
+	echo "[cern]    lxplus.cern.ch"
+	read menu 
+    else
+	menu=$1
+    fi
+
+    export sl_rcac=shi210@hep.rcac.purdue.edu 
+    export sl_cern=xshi@lxplus.cern.ch
+
+    case $menu in 
+	rcac) ssh -Y shi210@hep.rcac.purdue.edu 
+	    ;;
+
+	cern) ssh -Y xshi@lxplus.cern.ch
+	    ;;
+    esac
+}
+
+
 #--------------------------------------------------
 # CMSPXL ENV
 #--------------------------------------------------
