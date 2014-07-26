@@ -41,17 +41,17 @@ modsel b1111
 
 udelay 1000
 
-tbmset $E4 $F0    Init TBM, Reset ROC
+tbmset $E4 $F0    clear: Init TBM, Reset ROC
 tbmset $F4 $F0
-tbmset $E0 $00    Enable ROC triggers 
+tbmset $E0 $00    counters: Enable ROC triggers 
 tbmset $F0 $00
-tbmset $E2 $C0    Mode = Calibration
+tbmset $E2 $C0    mode: Calibration
 tbmset $F2 $C0
-tbmset $E8 $02    Set PKAM Counter
+tbmset $E8 $02    pkam_set: Set PKAM Counter
 tbmset $F8 $02
-tbmset $EA b00000000 No delay 
+tbmset $EA b00000000 delays: No delay 
 tbmset $FA b00000000
-tbmset $EC $00    Temp measurement control
+tbmset $EC $00    temperature: Temp measurement control
 tbmset $FC $00
 
 
