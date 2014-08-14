@@ -1,6 +1,6 @@
 // 
-// Author: 
-// Date: 
+// Author: Sam Higginbotham <shigginb@purdue.edu>
+// Date: 2014.08.14 
 // 
 
 #include <iostream>
