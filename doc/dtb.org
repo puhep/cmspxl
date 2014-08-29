@@ -26,7 +26,7 @@
    <2014-03-20 Thu> Flashed with 2.7 in PHYS347. 
    
 ** DTB 47 
-
+   <2014-08-28 Thu> Flashed with v3.3. 
    <2014-02-13 Thu> Took from PHYS360 to PHYS347.
    Flashed with v1.25 using JTAG. 
 
