@@ -16,7 +16,7 @@ GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 
 FLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
-PROG=drawMod drawIV drawHist hdiff hsup parseTbm 
+PROG=drawMod drawIV drawHist hdiff hsup parseTbm drawVD 
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
@@ -50,8 +50,12 @@ $(BIN)/hsup: $(SRC)/hsup.cc
 $(BIN)/parseTbm: $(SRC)/parseTbm.cc
 	$(CC) $< $(GCCFLAGS) -o $@
 
+$(BIN)/drawVD: $(SRC)/drawVD.cc
+	$(CC) $< $(FLAGS) -o $@
+
+
 clean:
-	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawHist $(BIN)/hdiff $(BIN)/hsup $(BIN)/parseTbm
+	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawHist $(BIN)/hdiff $(BIN)/hsup $(BIN)/parseTbm $(BIN)/drawVD
 	rm -rf $(BIN)/*.dSYM 
 
 

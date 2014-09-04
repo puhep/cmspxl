@@ -23,7 +23,7 @@
 #include <TApplication.h> 
 #include <TMath.h> 
 
-using namespace std; 
+// using namespace std; 
 
 void set_root_style(int stat=1110, int grid=0){
   gROOT->Reset();
@@ -65,13 +65,18 @@ void set_root_style(int stat=1110, int grid=0){
 
 
 TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
-  ifstream in;
+  std::ifstream in;
   in.open(inputFile); 
   Float_t x, y; 
-  vector<Float_t> voltages; 
-  vector<Float_t> currents; 
+  Float_t factor_I(1.0);
+  if (inputFile.Contains("_uA_") ) {
+    factor_I = 1e-6;
+    std::cout << "Using current factor: " << factor_I << " for " << inputFile << std::endl;  
+  } 
+  std::vector<Float_t> voltages; 
+  std::vector<Float_t> currents; 
 
-  string line;
+  std::string line;
   int nlines = 0;
 
   // float i_v150, i_v100;
@@ -79,12 +84,12 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   bool pass1(false), pass2(false); 
 
   while (getline(in, line)) {
-    istringstream iss(line);
+    std::istringstream iss(line);
     if ( line.find("#") == 0 ) continue; 
     if (!(iss >> x >> y )) break; 
     if (!in.good()) break;
     voltages.push_back(fabs(x));
-    currents.push_back(fabs(y));
+    currents.push_back(fabs(y)*factor_I);
     // Pick up values like: -100.043	
     if ( fabs(fabs(x)-150) < 1) i_v150 = fabs(y); 
     if ( fabs(fabs(x)-100) < 1) i_v100 = fabs(y); 
@@ -102,7 +107,7 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
   return gr; 
 }
 
-TCanvas* drawIV(vector<TString> inputFiles){
+TCanvas* drawIV(std::vector<TString> inputFiles){
   set_root_style();
 
   TCanvas *c = new TCanvas("c", "IV scan", 800, 800);
@@ -117,7 +122,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
   leg->SetTextSize(0.02);
   leg->SetTextSizePixels(25);
 
-  for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
+  for (std::vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TString err_msg = "";  
     TGraph *gr = get_graph_from_log(inputFiles[i], err_msg);
 
@@ -147,7 +152,7 @@ TCanvas* drawIV(vector<TString> inputFiles){
 #ifndef __CINT__ 
 
 int print_usage(){
-  cout << "Please see usage: man drawIV \n" << endl;
+  std::cout << "Please see usage: man drawIV \n" << std::endl;
   return 0; 
 }
 
@@ -158,7 +163,7 @@ int main(int argc, char** argv) {
   }
 
   bool doBatch(false);
-  vector<TString> inputFiles(argv+1, argv+argc);
+  std::vector<TString> inputFiles(argv+1, argv+argc);
   TString outFile = "test.pdf";
   
   for (int i = 0; i < argc; i++){
@@ -172,7 +177,7 @@ int main(int argc, char** argv) {
   }
 
   if (doBatch) { 
-    cout << "Run in batch mode ... " << endl;
+    std::cout << "Run in batch mode ... " << std::endl;
     TCanvas *c = drawIV(inputFiles);
     c->SaveAs(outFile);
     delete c;
