@@ -1,4 +1,4 @@
-.TH drawMod 1 "16 June 2014" CMSPXL "User Manuals"
+.TH drawMod 1 "14 December 2014" CMSPXL "User Manuals"
 .SH NAME
 drawMod \- draw Module plots
 .SH SYNOPSIS
@@ -9,6 +9,9 @@ drawMod \- draw Module plots
 .I testname
 .B ] [-draw 
 .I draw-option
+.B ] [-vmin 
+.I vmin-value
+.B ]
 .B ] [-vmax 
 .I vmax-value
 .B ]
@@ -24,6 +27,8 @@ Run GUI
 test name [pretest, pixelalive, bumpbonding, daq]
 .IP -draw
 draw option for histogram [colz, surf2]
+.IP -vmin 
+limit the histogram within vmin-value 
 .IP -vmax 
 limit the histogram within vmax-value 
 .SH AUTHOR
