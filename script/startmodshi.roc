@@ -42,8 +42,8 @@ tbmset $E2 $C0    Mode = Calibration
 tbmset $F2 $C0
 tbmset $E8 $02    Set PKAM Counter
 tbmset $F8 $02
-tbmset $EA $00
-tbmset $FA $00
+tbmset $EA $FA
+tbmset $FA $DB
 tbmset $EC $00    Temp measurement control
 tbmset $FC $00
 

@@ -26,7 +26,12 @@
 #include <TApplication.h> 
 #include <TMath.h> 
 
+
+
+//User Defined Functions
 void createTree(); 
+void createHist();
+
 
 //Executables
 int main()
@@ -38,6 +43,8 @@ int main()
   theApp.Run();
   */
   createTree();
+  createHist(VD.root);
+
   return(0);
 }
 
@@ -90,10 +97,13 @@ void createTree()
   } 
 
   //Shows the tree after it has been filled. 
-  tree->Print();
+  //tree->Print();
   fclose(fp);
   f->Write();
 }
 
 //Creating the graphical Interface. 
+void createHist(VD.root)
+{
+ 
 
