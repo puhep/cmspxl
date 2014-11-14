@@ -4,6 +4,7 @@
 // 
 
 #include <iostream>
+#include <stdlib.h> /* atof */ 
 #include <limits>  
 #include <TROOT.h>
 #include <TSystem.h>
