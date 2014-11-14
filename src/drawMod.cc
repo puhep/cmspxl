@@ -110,7 +110,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 
 
 TCanvas* drawMod(TString label, TString inputFile,
-		 TString drawOption, double vmax, int V=0){
+		 TString drawOption, double vmin, double vmax, int V=0){
  
   if (!strcmp(label, "pretest") ) 
     return drawModPretest(label, inputFile, drawOption);
@@ -120,16 +120,19 @@ TCanvas* drawMod(TString label, TString inputFile,
   TFile::Open(inputFile.Data());
 
   bool checkrange = false;
-  double vmin = std::numeric_limits<double>::min(); 
+  // double vmin = std::numeric_limits<double>::min(); 
   // double vmax = std::numeric_limits<double>::max();
   int n_range = 0;
   int n_total = 0; 
   
   if (!strcmp(label, "bumpbonding") ){
      checkrange = true;
-     vmin = 0.5;
-     vmax = 500;
-     printf("Number of good bumpbonding pixels:\n");
+     if (vmin == std::numeric_limits<double>::min() )
+       vmin = 20.; // 0.5;
+     if (vmax == std::numeric_limits<double>::max() )
+       vmax = 80.; // 500;
+
+     printf("Number of good bumpbonding pixels: (thr vmin %.1f vmax %.1f) \n", vmin, vmax);
   }
 
   TString hist(label); 
@@ -215,6 +218,7 @@ int main(int argc, char** argv) {
   TString testLabel; 
   TString inputFile; 
   TString drawOption("colz"); 
+  double vmin = std::numeric_limits<double>::min();
   double vmax = std::numeric_limits<double>::max();
   // int V = 0;
 
@@ -227,6 +231,10 @@ int main(int argc, char** argv) {
       drawOption = std::string(argv[++i]);
       std::cout << "Using drawOption = " << drawOption << std::endl;  
     }
+    if (!strcmp(argv[i],"-vmin")) {
+      vmin = atof(argv[++i]); 
+      std::cout << "Using vmin = " << vmin << std::endl; 
+    }
     if (!strcmp(argv[i],"-vmax")) {
       vmax = atof(argv[++i]); 
       std::cout << "Using vmax = " << vmax << std::endl; 
@@ -236,12 +244,12 @@ int main(int argc, char** argv) {
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile, drawOption, vmax);  
+    drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmax);  
+    TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
     c->SaveAs(outFile);
