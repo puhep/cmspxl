@@ -136,7 +136,7 @@ alias p="pwd"
 alias rl="root -l" 
 alias rm~="rm *~"
 alias ..='cd ..'
-
+alias setroot6="source ~/local/share/root6/bin/thisroot.sh"
 #--------------------------------------------------
 # Functions 
 #--------------------------------------------------
