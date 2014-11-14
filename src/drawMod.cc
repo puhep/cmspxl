@@ -65,8 +65,8 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
   }
 
   if (checkrange)
-    printf("ROC%2d: %d / %d = %2.2f%%. \n", chip,
-	   n_range, n_total, 100.*n_range/n_total);
+    printf("ROC%2d: %d / %d = %2.2f%%. (%d)\n", chip,
+	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range));
 
   return true; 
 }
@@ -179,8 +179,8 @@ TCanvas* drawMod(TString label, TString inputFile,
 
 
   if (!strcmp(label, "bumpbonding") ){
-    printf("Total good bump bonding pixels %d / %d = %.2f%% \n",
-	   n_range, n_total, 100.*n_range/n_total); 
+    printf("Total good bump bonding pixels %d / %d = %.2f%% (%d)\n",
+	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range)); 
   }
 
 
@@ -250,9 +250,11 @@ int main(int argc, char** argv) {
   
   else {
     TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
-    TString outFile = inputFile;
-    outFile.ReplaceAll("root",4,"pdf",3);  
+    TString comname = inputFile;
+    comname.ReplaceAll(".root", "");
+    TString outFile = Form("%s_%s.pdf", comname.Data(), testLabel.Data());
     c->SaveAs(outFile);
+
     outFile.ReplaceAll("pdf",3,"png",3);  
     c->SaveAs(outFile);
     delete c;
