@@ -16,7 +16,8 @@ def xml2log(xmlFile):
     root = tree.getroot()
 
     Vs = [ data.text for data in root.iter('VOLTAGE_VOLT')]
-    Is =[ data.text for data in root.iter('ACTV_CURRENT_AMP')]
+    Is = [ data.text for data in root.iter('ACTV_CURRENT_AMP')]
+    Igs =[ data.text for data in root.iter('GRD_CURRENT_AMP')]
 
     IVs = zip(Vs, Is)
 
@@ -26,6 +27,14 @@ def xml2log(xmlFile):
         logData.write('%s  %s \n' %IV)
 
     print 'Saved as %s.' %logFile
+
+    IgVs = zip(Vs, Igs)    
+    logFile_guard = xmlFile.replace('.xml', '_guard.log')    
+    logData_guard = open(logFile_guard, 'w')
+    for IV in IgVs:
+        logData_guard.write('%s  %s \n' %IV)
+
+    print 'Saved as %s.' %logFile_guard
 
 xmlFiles = sys.argv[1:]
 
