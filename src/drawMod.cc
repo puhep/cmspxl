@@ -125,12 +125,22 @@ TCanvas* drawMod(TString label, TString inputFile,
   int n_range = 0;
   int n_total = 0; 
   
+  if (!strcmp(label, "pixelalive") ){
+     checkrange = true;
+     if (vmin == std::numeric_limits<double>::min() )
+       vmin = 9.; 
+     if (vmax == std::numeric_limits<double>::max() )
+       vmax = 10.; 
+
+     printf("Number of alive pixels: (thr vmin %.1f vmax %.1f) \n", vmin, vmax);
+  }
+
   if (!strcmp(label, "bumpbonding") ){
      checkrange = true;
      if (vmin == std::numeric_limits<double>::min() )
-       vmin = 20.; // 0.5;
+       vmin = 20.; 
      if (vmax == std::numeric_limits<double>::max() )
-       vmax = 80.; // 500;
+       vmax = 80.; 
 
      printf("Number of good bumpbonding pixels: (thr vmin %.1f vmax %.1f) \n", vmin, vmax);
   }
@@ -175,6 +185,11 @@ TCanvas* drawMod(TString label, TString inputFile,
     // addChip(hist, chip, h3);
     n_range += n_r;
     n_total += n_t; 
+  }
+
+  if (!strcmp(label, "pixelalive") ){
+    printf("Total alive pixels %d / %d = %.2f%% (%d)\n",
+	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range)); 
   }
 
 
