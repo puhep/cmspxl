@@ -6,7 +6,8 @@
 
 #include <iostream>
 #include <string> 
-#include <limits>  
+#include <limits> 
+#include <stdlib.h> /* atof */ 
 #include <TROOT.h>
 #include <TSystem.h>
 #include <TString.h>
