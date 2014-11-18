@@ -52,20 +52,21 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2,
        v1 = h2d1->GetBinContent(ix, iy);
        v2 = h2d2->GetBinContent(ix, iy);
        diff = v1-v2; 
-       hdiff->SetBinContent(ix, iy, diff);
+       // hdiff->SetBinContent(ix, iy, diff);
        
        // if ( v1 == 0 || v2 == 0) diff = 0;
        // else diff = (v1-v2)/v1;
        // if ( fabs(diff) > 1 )
        // 	 printf("v1: %.2f, v2: %.2f, diff: %.2f \n", v1, v2, diff);
 
-       //if (diff > vmin && diff < vmax )
-       //hdiff->SetBinContent(ix, iy, diff); 
+       if (diff > vmin && diff < vmax )
+	 hdiff->SetBinContent(ix, iy, diff);
+       // else printf("Out of range: %.2f", diff);  
     }
   }
 
 
-  if (vmin != std::numeric_limits<double>::min())
+  if (vmin != -std::numeric_limits<double>::max())
     hdiff->SetMinimum(vmin);
 
   if (vmax != std::numeric_limits<double>::max())
@@ -100,9 +101,10 @@ int main(int argc, char** argv) {
   TString inputFile1(argv[1]); 
   TString inputFile2(argv[2]);
   TString outFile = "diff.pdf";
-  double vmin = std::numeric_limits<double>::min();
+  // double vmin = std::numeric_limits<double>::min();
   double vmax = std::numeric_limits<double>::max();
-
+  double vmin = -vmax; 
+  
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i],"-vmin")) {
