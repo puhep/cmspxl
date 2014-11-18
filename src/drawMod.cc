@@ -20,7 +20,7 @@
 bool addChip(const TString hist, const int chip, TH2D *h3,
 	     int& n_range, int& n_total, 
 	     const bool checkrange=false, 
-	     const double vmin=std::numeric_limits<double>::min(),
+	     const double vmin=-std::numeric_limits<double>::max(),
 	     const double vmax=std::numeric_limits<double>::max() ) {
   
   TH2D *h2d;
@@ -68,6 +68,13 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
     printf("ROC%2d: %d / %d = %2.2f%%. (%d)\n", chip,
 	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range));
 
+
+  if (vmin != -std::numeric_limits<double>::max())
+    h3->SetMinimum(vmin);
+
+  if (vmax != std::numeric_limits<double>::max())
+    h3->SetMaximum(vmax);  
+    
   return true; 
 }
 
@@ -127,7 +134,7 @@ TCanvas* drawMod(TString label, TString inputFile,
   
   if (!strcmp(label, "pixelalive") ){
      checkrange = true;
-     if (vmin == std::numeric_limits<double>::min() )
+     if (vmin == -std::numeric_limits<double>::max() )
        vmin = 9.; 
      if (vmax == std::numeric_limits<double>::max() )
        vmax = 10.; 
@@ -137,7 +144,7 @@ TCanvas* drawMod(TString label, TString inputFile,
 
   if (!strcmp(label, "bumpbonding") ){
      checkrange = true;
-     if (vmin == std::numeric_limits<double>::min() )
+     if (vmin == -std::numeric_limits<double>::max() )
        vmin = 20.; 
      if (vmax == std::numeric_limits<double>::max() )
        vmax = 80.; 
@@ -233,7 +240,8 @@ int main(int argc, char** argv) {
   TString testLabel; 
   TString inputFile; 
   TString drawOption("colz"); 
-  double vmin = std::numeric_limits<double>::min();
+  // double vmin = std::numeric_limits<double>::min();
+  double vmin = -std::numeric_limits<double>::max();
   double vmax = std::numeric_limits<double>::max();
   // int V = 0;
 
