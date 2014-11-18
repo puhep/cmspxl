@@ -21,7 +21,7 @@ using namespace std;
 
 
 TCanvas* hdiff(TString inputFile1, TString inputFile2,
-	       const double vmin=std::numeric_limits<double>::min()){
+	       const double vmin, const double vmax){
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TString hist = "h3";
 
@@ -55,7 +55,7 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2,
        if ( v1 == 0 || v2 == 0) diff = 0;
        else diff = (v1-v2)/v1;
        // if ( diff != 0 )  cout << "diff = " << diff << endl;
-       if (fabs(diff) > vmin )
+       if (diff > vmin && diff < vmax )
 	 hdiff->SetBinContent(ix, iy, diff); 
     }
   }
@@ -92,12 +92,17 @@ int main(int argc, char** argv) {
   TString inputFile2(argv[2]);
   TString outFile = "diff.pdf";
   double vmin = std::numeric_limits<double>::min();
+  double vmax = std::numeric_limits<double>::max();
 
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i],"-vmin")) {
       vmin = atof(argv[++i]); 
       std::cout << "Using vmin = " << vmin << std::endl; 
+    }
+     if (!strcmp(argv[i],"-vmax")) {
+      vmax = atof(argv[++i]); 
+      std::cout << "Using vmax = " << vmax << std::endl; 
     }
   }
 
@@ -112,7 +117,7 @@ int main(int argc, char** argv) {
   TApplication theApp("App", 0, 0);
   theApp.SetReturnFromRun(true);
 
-  hdiff(inputFile1, inputFile2, vmin);  
+  hdiff(inputFile1, inputFile2, vmin, vmax);  
   theApp.Run();
 
 }
