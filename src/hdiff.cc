@@ -5,7 +5,9 @@
 // 
 
 #include <iostream>
-#include <limits>  
+#include <limits>
+#include <stdlib.h> /* atof */ 
+#include <math.h>       /* fabs */
 #include <TROOT.h>
 #include <TSystem.h>
 #include <TString.h>
@@ -18,7 +20,8 @@
 using namespace std; 
 
 
-TCanvas* hdiff(TString inputFile1, TString inputFile2){
+TCanvas* hdiff(TString inputFile1, TString inputFile2,
+	       const double vmin=std::numeric_limits<double>::min()){
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TString hist = "h3";
 
@@ -52,7 +55,8 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
        if ( v1 == 0 || v2 == 0) diff = 0;
        else diff = (v1-v2)/v1;
        // if ( diff != 0 )  cout << "diff = " << diff << endl;
-       hdiff->SetBinContent(ix, iy, diff); 
+       if (fabs(diff) > vmin )
+	 hdiff->SetBinContent(ix, iy, diff); 
     }
   }
 
@@ -73,7 +77,7 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2){
 #include <iostream>
 
 void print_usage(){
-  cerr << "Usage: hdiff h1.root h2.root \n" 
+  cerr << "Usage: hdiff h1.root h2.root [-vmin value] \n" 
        << endl; 
 }
 
@@ -83,24 +87,32 @@ int main(int argc, char** argv) {
     return -1; 
   }
 
-  bool doBatch(false);
+  // bool doBatch(false);
   TString inputFile1(argv[1]); 
   TString inputFile2(argv[2]);
   TString outFile = "diff.pdf";
+  double vmin = std::numeric_limits<double>::min();
 
-  
-  if (doBatch) { 
-    cout << "Run in batch mode ... " << endl;
-    TCanvas *c = hdiff(inputFile1, inputFile2);
-    c->SaveAs(outFile);
-    delete c;
-    gSystem->Exit(0);
+  for (int i = 0; i < argc; i++){
+    if (!strcmp(argv[i], "-h")) print_usage();
+    if (!strcmp(argv[i],"-vmin")) {
+      vmin = atof(argv[++i]); 
+      std::cout << "Using vmin = " << vmin << std::endl; 
+    }
   }
+
+  // if (doBatch) { 
+  //   cout << "Run in batch mode ... " << endl;
+  //   TCanvas *c = hdiff(inputFile1, inputFile2);
+  //   c->SaveAs(outFile);
+  //   delete c;
+  //   gSystem->Exit(0);
+  // }
   
   TApplication theApp("App", 0, 0);
   theApp.SetReturnFromRun(true);
 
-  hdiff(inputFile1, inputFile2);  
+  hdiff(inputFile1, inputFile2, vmin);  
   theApp.Run();
 
 }
