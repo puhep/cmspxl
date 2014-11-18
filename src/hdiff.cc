@@ -102,8 +102,8 @@ int main(int argc, char** argv) {
   TString inputFile2(argv[2]);
   TString outFile = "diff.pdf";
   // double vmin = std::numeric_limits<double>::min();
+  double vmin = -std::numeric_limits<double>::max();
   double vmax = std::numeric_limits<double>::max();
-  double vmin = -vmax; 
   
   for (int i = 0; i < argc; i++){
     if (!strcmp(argv[i], "-h")) print_usage();
