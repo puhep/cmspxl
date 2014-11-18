@@ -51,17 +51,26 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2,
     for (int iy = 1; iy <= nbiny; iy++)  {
        v1 = h2d1->GetBinContent(ix, iy);
        v2 = h2d2->GetBinContent(ix, iy);
+       diff = v1-v2; 
+       hdiff->SetBinContent(ix, iy, diff);
        
-       if ( v1 == 0 || v2 == 0) diff = 0;
-       else diff = (v1-v2)/v1;
-       // if ( diff != 0 )  cout << "diff = " << diff << endl;
-       if (diff > vmin && diff < vmax )
-	 hdiff->SetBinContent(ix, iy, diff); 
+       // if ( v1 == 0 || v2 == 0) diff = 0;
+       // else diff = (v1-v2)/v1;
+       // if ( fabs(diff) > 1 )
+       // 	 printf("v1: %.2f, v2: %.2f, diff: %.2f \n", v1, v2, diff);
+
+       //if (diff > vmin && diff < vmax )
+       //hdiff->SetBinContent(ix, iy, diff); 
     }
   }
 
-  hdiff->SetMaximum(1.);
-  hdiff->SetMinimum(-1.);
+
+  if (vmin != std::numeric_limits<double>::min())
+    hdiff->SetMinimum(vmin);
+
+  if (vmax != std::numeric_limits<double>::max())
+    hdiff->SetMaximum(vmax);  
+
   hdiff->Draw("colz");
   gROOT->SetStyle("Plain");
   gStyle->SetPalette(55);
