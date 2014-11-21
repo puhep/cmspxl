@@ -96,6 +96,11 @@ TGraph * get_graph_from_log(TString inputFile, TString& err_msg) {
     nlines ++; 
   }
 
+  if (nlines < 1) {
+    std::cerr << "No valid data found in : " << inputFile << std::endl;
+    return NULL; 
+  }
+  
   if ( i_v150 < 2E-6) pass1 = true;
   if ( i_v150/i_v100 < 2 ) pass2 = true;
 
@@ -125,7 +130,7 @@ TCanvas* drawIV(std::vector<TString> inputFiles){
   for (std::vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     TString err_msg = "";  
     TGraph *gr = get_graph_from_log(inputFiles[i], err_msg);
-
+    if (gr == NULL) continue; 
     gr->SetMarkerStyle(20+i);
     gr->SetMarkerSize(0.9);
     int color = i+1;
