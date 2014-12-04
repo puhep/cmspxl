@@ -238,6 +238,7 @@ int main(int argc, char** argv) {
 
   bool doRunGui(false);
   TString testLabel; 
+  TString version(""); 
   TString inputFile; 
   TString drawOption("colz"); 
   // double vmin = std::numeric_limits<double>::min();
@@ -250,6 +251,7 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
     if (!strcmp(argv[i],"-i")) {inputFile = std::string(argv[++i]); }   
     if (!strcmp(argv[i],"-t")) {testLabel = std::string(argv[++i]); }
+    if (!strcmp(argv[i],"-v")) {version = std::string(argv[++i]); }
     if (!strcmp(argv[i],"-draw")) {
       drawOption = std::string(argv[++i]);
       std::cout << "Using drawOption = " << drawOption << std::endl;  
@@ -273,9 +275,15 @@ int main(int argc, char** argv) {
   
   else {
     TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
-    TString comname = inputFile;
-    comname.ReplaceAll(".root", "");
-    TString outFile = Form("%s_%s.pdf", comname.Data(), testLabel.Data());
+    // TString comname = inputFile;
+    // comname.ReplaceAll(".root", "");
+    TString outFile;
+    if (version == "") {
+      outFile = Form("%s.pdf", testLabel.Data());
+    }
+    else {
+      outFile = Form("%s_v%s.pdf", testLabel.Data(), version.Data());
+    }
     c->SaveAs(outFile);
 
     outFile.ReplaceAll("pdf",3,"png",3);  
