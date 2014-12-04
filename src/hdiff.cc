@@ -51,7 +51,7 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2,
     for (int iy = 1; iy <= nbiny; iy++)  {
        v1 = h2d1->GetBinContent(ix, iy);
        v2 = h2d2->GetBinContent(ix, iy);
-       diff = v1-v2; 
+       diff = v2-v1; 
        // hdiff->SetBinContent(ix, iy, diff);
        
        // if ( v1 == 0 || v2 == 0) diff = 0;
