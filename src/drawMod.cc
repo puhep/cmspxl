@@ -132,7 +132,7 @@ TCanvas* drawMod(TString label, TString inputFile,
   int n_range = 0;
   int n_total = 0; 
   
-  if (!strcmp(label, "pixelalive") ){
+  if (!strcmp(label, "alive") ){
      checkrange = true;
      if (vmin == -std::numeric_limits<double>::max() )
        vmin = 9.; 
@@ -167,7 +167,7 @@ TCanvas* drawMod(TString label, TString inputFile,
 	hist = Form("BumpBonding/thr_calSMap_vthrcomp_C%d_V%d", chip, V);
     }
 
-    else if (!strcmp(label, "pixelalive")) { 
+    else if (!strcmp(label, "alive")) { 
       hist = Form("PixelAlive/PixelAlive_C%d_V%d", chip, V);
     }
 
@@ -182,6 +182,11 @@ TCanvas* drawMod(TString label, TString inputFile,
 	hist = Form("Scurves/sig_scurveVcal_Vcal_C%d_V%d", chip, V);
     }
 
+    else if (!strcmp(label, "trim")) { 
+      hist = Form("Trim/thr_TrimThrFinal_vcal_C%d_V%d", chip, V);
+      gDirectory->GetObject(hist, h2d);
+    }
+
     else {
       std::cerr << "No such hist name: " << hist << std::endl;
       break; 
@@ -194,7 +199,7 @@ TCanvas* drawMod(TString label, TString inputFile,
     n_total += n_t; 
   }
 
-  if (!strcmp(label, "pixelalive") ){
+  if (!strcmp(label, "alive") ){
     printf("Total alive pixels %d / %d = %.2f%% (%d)\n",
 	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range)); 
   }
