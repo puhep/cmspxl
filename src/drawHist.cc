@@ -88,8 +88,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
       }
 
       // std::cout << ">>> testing... " << std::endl; 
-      h->SetDirectory(0); 
-      delete f; 
+      // h->SetDirectory(0); 
+      // delete f; 
       // h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
@@ -103,8 +103,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
 	cout << "Not able to find hist: " << histName << endl; 
 	return NULL; 
       }
-      h->SetDirectory(0); 
-      delete f; 
+      // h->SetDirectory(0); 
+      // delete f; 
       h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
