@@ -1,11 +1,13 @@
-.TH drawMod 1 "4 December 2014" CMSPXL "User Manuals"
+.TH drawMod 1 "5 Jan 2015" CMSPXL "User Manuals"
 .SH NAME
 drawMod \- draw Module plots
 .SH SYNOPSIS
 .B drawMod [-i 
 .I input-file
 .B ] 
-.B [-g] [-t 
+.B [-g] [-r
+.I roc 
+.B ] [-t 
 .I testname
 .B ] [-draw 
 .I draw-option
@@ -23,6 +25,8 @@ Draw Modul curves based on root files.
 Input file 
 .IP -g 
 Run GUI
+.IP -r 
+ROC number [0, ... ,15]
 .IP -t 
 test name [pretest, alive, bumpbonding, trim, daq]
 .IP -v 
