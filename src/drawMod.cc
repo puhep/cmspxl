@@ -116,12 +116,11 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 }
 
 
-TCanvas* drawMod(TString label, TString inputFile,
+TCanvas* drawMod(TString label, TString inputFile, int roc, 
 		 TString drawOption, double vmin, double vmax, int V=0){
  
   if (!strcmp(label, "pretest") ) 
     return drawModPretest(label, inputFile, drawOption);
-
 
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
@@ -157,6 +156,9 @@ TCanvas* drawMod(TString label, TString inputFile,
   TH2D *h2d;
 
   for (int chip = 0; chip < 16 ; chip++) {
+
+    // only plot one roc case 
+    if ( roc != 16 && chip != roc) continue;
 
     if (!strcmp(label, "bumpbonding") ){
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
@@ -244,7 +246,8 @@ int main(int argc, char** argv) {
   bool doRunGui(false);
   TString testLabel; 
   TString version(""); 
-  TString inputFile; 
+  TString inputFile;
+  int roc(16); 
   TString drawOption("colz"); 
   // double vmin = std::numeric_limits<double>::min();
   double vmin = -std::numeric_limits<double>::max();
@@ -255,6 +258,10 @@ int main(int argc, char** argv) {
     if (!strcmp(argv[i], "-h")) print_usage();
     if (!strcmp(argv[i],"-g")) {doRunGui = true; } 
     if (!strcmp(argv[i],"-i")) {inputFile = std::string(argv[++i]); }   
+    if (!strcmp(argv[i],"-r")) {
+      roc = atoi(argv[++i]);
+      std::cout << "Using ROC " << roc << std::endl;  
+    }
     if (!strcmp(argv[i],"-t")) {testLabel = std::string(argv[++i]); }
     if (!strcmp(argv[i],"-v")) {version = std::string(argv[++i]); }
     if (!strcmp(argv[i],"-draw")) {
@@ -274,12 +281,12 @@ int main(int argc, char** argv) {
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
+    drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile, drawOption, vmin, vmax);  
+    TCanvas *c = drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax);  
     // TString comname = inputFile;
     // comname.ReplaceAll(".root", "");
     TString outFile;
