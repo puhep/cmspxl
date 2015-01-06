@@ -60,14 +60,21 @@ TCanvas* drawHist(vector<TString> inputFiles,
 		  TString histType, 
 		  TString histName, 
 		  TString drawOption, 
-		  double vmax, 
+		  double vmax,
+		  int npad, 
 		  int V=0){
- 
-  int nfig = inputFiles.size(); 
+
+  int nfig;
+  if (npad == 0) 
+    nfig = inputFiles.size();
+  else
+    nfig = npad;
+
   set_root_style();
   TCanvas *c = new TCanvas("c", "c", 400*nfig, 400);
 
-  c->Divide(nfig); 
+  if (npad > 1) 
+    c->Divide(nfig); 
   
   // TString h_file_name = Form("h_test", inputFile.Data()); 
   TString h_file_name = "h_test.root"; 
@@ -75,7 +82,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
   // TFile *fo = new TFile(h_file_name, "RECREATE");
   TH1D *h;
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
-    c->cd(i+1); 
+    if (npad > 1) 
+      c->cd(i+1); 
 
     TFile *f = new TFile(inputFiles[i]); 
     
@@ -92,8 +100,10 @@ TCanvas* drawHist(vector<TString> inputFiles,
       // delete f; 
       // h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
-	h->SetMaximum(vmax); 
-      h->Draw(drawOption); 
+	h->SetMaximum(vmax);
+
+      if (i==0) 
+	h->Draw(drawOption); 
       // h->Write();
     }
 
@@ -149,7 +159,8 @@ int main(int argc, char** argv) {
   TString histName; 
   TString drawOption(""); 
   double vmax = numeric_limits<double>::max();
-  
+  int npad = 0; 
+
   int delta_idx = 0; 
   for (int i = 0; i < argc; i++){
     // if (!strcmp(argv[i],"-b")) {
@@ -188,6 +199,15 @@ int main(int argc, char** argv) {
       delta_idx -= 2; 
       cout << "Using vmax = " << vmax << endl; 
     }
+    
+    if (!strcmp(argv[i],"-npad")) {
+      npad = atof(argv[++i]); 
+      inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
+		       inputFiles.begin()+i+delta_idx); 
+      delta_idx -= 2; 
+      cout << "Using npad = " << npad << endl; 
+    }
+ 
   }
   
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
@@ -198,13 +218,13 @@ int main(int argc, char** argv) {
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawHist(inputFiles, histType, histName, drawOption, vmax);  
+    drawHist(inputFiles, histType, histName, drawOption, vmax, npad);  
     theApp.Run();
   } 
   
   else {
     TCanvas *c = drawHist(inputFiles, histType, histName, drawOption, 
-			  vmax);  
+			  vmax, npad);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
     c->SaveAs(outFile);
