@@ -62,7 +62,7 @@ void set_root_style(int stat=1110, int grid=0){
 TCanvas* drawHist(vector<TString> inputFiles,
 		  TString histType, 
 		  TString histName, 
-		  TString drawOption, 
+		  TString opt, 
 		  double vmax,
 		  int npad, 
 		  int V=0){
@@ -119,14 +119,14 @@ TCanvas* drawHist(vector<TString> inputFiles,
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax);
 
-      if ( npad != 1) h->Draw(drawOption);
+      if ( npad != 1) h->Draw(opt);
       else { // superimpose on one pad
 	// h->SetStats(1); 
 	int color = i+1;
 	h->SetLineColor(color);
 	
 	if (i==0) 
-	  h->Draw(drawOption);
+	  h->Draw(opt);
 	else
 	  h->Draw("sames");
 
@@ -155,8 +155,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
       h->SetTitle(inputFiles[i]); 
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax); 
-      if (drawOption == "") h->Draw("colz"); 
-      else h->Draw(drawOption);
+      if (opt == "") h->Draw("colz"); 
+      else h->Draw(opt);
       h->Write();
     }
   
@@ -181,8 +181,18 @@ TCanvas* drawHist(vector<TString> inputFiles,
 
 
 void print_usage(){
-  cout << "Usage see: man drawHist " << endl; 
+  printf("NAME\n\tdrawHist - draw Histograms\n");
+  printf("\nSYNOPSIS\n\tdrawHist [-t hist-type ] [-opt draw-option]\n "); 
+  printf("\t[-h hist-name ] [-vmax max-value] [-npad num-pad] input1 input2 ...\n");
+  printf("\nOPTIONS\n");
+  printf("\t%-5s  %-40s\n", "-t", "hist type [TH1D, TH2D]");
+  printf("\n\t%-5s  %-40s\n", "-opt", "draw option for histgram [colz, surf2]");
+  printf("\n\t%-5s  %-40s\n", "-h", "histogram name");
+  printf("\n\t%-5s  %-40s\n", "-vmax", "limit the histogram within vmax-value");
+  printf("\n\t%-5s  %-40s\n", "-npad", "number of pads, set to 1 for superimpose");
+  printf("\nAUTHOR\n\tXin Shi <Xin.Shi@cern.ch>\n");
 }
+
 
 int main(int argc, char** argv) {
   if (argc < 2) {
@@ -195,7 +205,7 @@ int main(int argc, char** argv) {
   TString inputFile;  
   vector<TString> inputFiles(argv+1, argv+argc);
   TString histName; 
-  TString drawOption(""); 
+  TString opt(""); 
   double vmax = numeric_limits<double>::max();
   int npad = 0; 
 
@@ -215,12 +225,12 @@ int main(int argc, char** argv) {
       delta_idx -= 2; 
     }
     
-    if (!strcmp(argv[i],"-drawOption")) {
-      drawOption = string(argv[++i]);
+    if (!strcmp(argv[i],"-opt")) {
+      opt = string(argv[++i]);
       inputFiles.erase(inputFiles.begin()+i-2+delta_idx,
 		       inputFiles.begin()+i+delta_idx); 
       delta_idx -= 2; 
-      cout << "Using drawOption = " << drawOption << endl;  
+      cout << "Using opt = " << opt << endl;  
     }
 
     if (!strcmp(argv[i],"-h")) {
@@ -256,12 +266,12 @@ int main(int argc, char** argv) {
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawHist(inputFiles, histType, histName, drawOption, vmax, npad);  
+    drawHist(inputFiles, histType, histName, opt, vmax, npad);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawHist(inputFiles, histType, histName, drawOption, 
+    TCanvas *c = drawHist(inputFiles, histType, histName, opt, 
 			  vmax, npad);  
     TString outFile = inputFile;
     outFile.ReplaceAll("root",4,"pdf",3);  
