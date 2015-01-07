@@ -13,7 +13,10 @@
 #include <TFile.h> 
 #include <TCanvas.h> 
 #include <TStyle.h> 
-#include <TApplication.h> 
+#include <TApplication.h>
+#include <TLegend.h>    
+#include <TPaveStats.h>
+
 
 using namespace std; 
 
@@ -64,14 +67,19 @@ TCanvas* drawHist(vector<TString> inputFiles,
 		  int npad, 
 		  int V=0){
 
-  int nfig;
-  if (npad == 0) 
+  int nfig, ww, wh;
+  if (npad == 0) {
     nfig = inputFiles.size();
-  else
+    ww = 400*nfig;
+    wh = 400; 
+  } else {
     nfig = npad;
-
+    ww = 800;
+    wh = 800; 
+  }
+  
   set_root_style();
-  TCanvas *c = new TCanvas("c", "c", 400*nfig, 400);
+  TCanvas *c = new TCanvas("c", "c", ww, wh); 
 
   if (npad > 1) 
     c->Divide(nfig); 
@@ -81,6 +89,15 @@ TCanvas* drawHist(vector<TString> inputFiles,
 
   // TFile *fo = new TFile(h_file_name, "RECREATE");
   TH1D *h;
+
+  TLegend *leg = new TLegend(0.2, 0.6, 0.5, 0.8);
+  leg->SetBorderSize(0);
+  leg->SetFillColor(0);
+  leg->SetFillStyle(0);
+  leg->SetNColumns(1);
+  leg->SetTextSize(0.02);
+  leg->SetTextSizePixels(25);
+
   for (vector<int>:: size_type i = 0; i != inputFiles.size(); i++) {
     if (npad > 1) 
       c->cd(i+1); 
@@ -102,8 +119,28 @@ TCanvas* drawHist(vector<TString> inputFiles,
       if ( vmax != numeric_limits<double>::max())
 	h->SetMaximum(vmax);
 
-      if (i==0) 
-	h->Draw(drawOption); 
+      if ( npad != 1) h->Draw(drawOption);
+      else { // superimpose on one pad
+	// h->SetStats(1); 
+	int color = i+1;
+	h->SetLineColor(color);
+	
+	if (i==0) 
+	  h->Draw(drawOption);
+	else
+	  h->Draw("sames");
+
+	gPad->Update();
+	TPaveStats* st = (TPaveStats*) h->FindObject("stats");
+	// cout << ">>>> st : " << st << endl; 
+	st->SetTextColor(color); 
+	st->SetX1NDC(0.78);
+	st->SetX2NDC(0.98);
+	st->SetY1NDC(0.98-0.22*i);
+	st->SetY2NDC(0.78-0.22*i);
+	
+	leg->AddEntry(h, Form("%s", inputFiles[i].Data()),"f"); 
+      }
       // h->Write();
     }
 
@@ -127,7 +164,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
       cout << "Not supported type: " << histType << endl; 
     }
   }
-  
+
+  leg->Draw(); 
   c->Update();
 
   gROOT->SetStyle("Plain");
