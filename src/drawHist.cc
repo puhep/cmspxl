@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
   TString histName; 
   TString opt(""); 
   double vmax = numeric_limits<double>::max();
-  int npad = 0; 
+  int npad = 1; // use 1 as default  
 
   int delta_idx = 0; 
   for (int i = 0; i < argc; i++){
