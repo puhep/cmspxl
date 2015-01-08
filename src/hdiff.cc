@@ -19,6 +19,23 @@
 
 using namespace std; 
 
+void get_roc_info(int x, int y,
+		  int& roc, int& col, int& row) {
+  int roc_x, roc_y;
+
+  roc_x = x/52;
+  roc_y = y/80;
+    
+  if (roc_y==0) {  // ROC start from 8 to 15 
+    roc = 8+roc_x;
+  }
+  if (roc_y==1) {   // ROC start from 0 to 7
+    roc = 7-roc_x;
+  }
+  col = x - roc_x*52;
+  row = y - roc_y*80;
+}
+
 
 TCanvas* hdiff(TString inputFile1, TString inputFile2,
 	       const double vmin, const double vmax){
@@ -46,35 +63,24 @@ TCanvas* hdiff(TString inputFile1, TString inputFile2,
 
   TH2D *hdiff = new TH2D("hdiff", "", 416, 0., 416., 160, 0., 160.);
   double v1, v2, diff; 
-  int roc_x, roc_y, roc_no, pix_x, pix_y;
+  // int roc_x, roc_y, roc_no, pix_x, pix_y;
   int ndiff_total(0);
 
   for (int ix = 1; ix <= nbinx; ix++) {
     for (int iy = 1; iy <= nbiny; iy++)  {
        v1 = h2d1->GetBinContent(ix, iy);
        v2 = h2d2->GetBinContent(ix, iy);
-       diff = v2-v1; 
-	   roc_x = ix/52;
-	   roc_y = iy/80;
-	   if (roc_y==0) {
-		   roc_no = 7+roc_x;
-	   }
-	   if (roc_y==1) {
-		   roc_no = 8-roc_x;
-	   }
-	   pix_x = ix - roc_x*52;
-	   pix_y = iy - roc_y*80;
-       // hdiff->SetBinContent(ix, iy, diff);
-       
-       // if ( v1 == 0 || v2 == 0) diff = 0;
-       // else diff = (v1-v2)/v1;
-       // if ( fabs(diff) > 1 )
-       // 	 printf("v1: %.2f, v2: %.2f, diff: %.2f \n", v1, v2, diff);
+       diff = v2-v1;
 
        if (diff > vmin && diff < vmax ) {
 	 hdiff->SetBinContent(ix, iy, diff);
-	 ndiff_total += 1; 
-	 printf("v1=%f, v2=%f, diff=%f \n\tROC%i X:%i, Y:%i\n", v1, v2, diff, roc_no, pix_x, pix_y); 
+	 ndiff_total += 1;
+
+	 int roc, col, row;
+	 get_roc_info(ix, iy, roc, col, row);  
+
+	 printf("  ROC %i (c%i, r%i): v1=%f, v2=%f, diff=%f \n",
+		roc, col, row, v1, v2, diff); 
        }
        // else printf("Out of range: %.2f", diff);  
     }
