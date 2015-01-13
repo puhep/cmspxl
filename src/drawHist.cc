@@ -67,22 +67,20 @@ TCanvas* drawHist(vector<TString> inputFiles,
 		  int npad, 
 		  int V=0){
 
-  int nfig, ww, wh;
-  if (npad == 0) {
-    nfig = inputFiles.size();
-    ww = 400*nfig;
-    wh = 400; 
-  } else {
-    nfig = npad;
+  int ww, wh;
+  if (npad == 1) {
     ww = 800;
     wh = 800; 
+  } else {
+    ww = 400*inputFiles.size();
+    wh = 400; 
   }
   
   set_root_style();
   TCanvas *c = new TCanvas("c", "c", ww, wh); 
 
   if (npad > 1) 
-    c->Divide(nfig); 
+    c->Divide(npad); 
   
   // TString h_file_name = Form("h_test", inputFile.Data()); 
   TString h_file_name = "h_test.root"; 
