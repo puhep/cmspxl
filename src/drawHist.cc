@@ -166,8 +166,8 @@ TCanvas* drawHist(vector<TString> inputFiles,
   leg->Draw(); 
   c->Update();
 
-  gROOT->SetStyle("Plain");
-  gStyle->SetOptStat(0);
+  // gROOT->SetStyle("Plain");
+  // gStyle->SetOptStat(0);
 
   TFile *fo = new TFile(h_file_name, "RECREATE");
   h->Write();
