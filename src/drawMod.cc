@@ -21,7 +21,8 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
 	     int& n_range, int& n_total, 
 	     const bool checkrange=false, 
 	     const double vmin=-std::numeric_limits<double>::max(),
-	     const double vmax=std::numeric_limits<double>::max() ) {
+	     const double vmax=std::numeric_limits<double>::max(),
+	     bool printpix=false) {
   
   TH2D *h2d;
   gDirectory->GetObject(hist, h2d); 
@@ -39,6 +40,11 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
       n_total += 1; 
 
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
+
+      //Print values to stdout if -p option is active
+      if (printpix && value >= vmin && value <= vmax) {
+	printf("  ROC %i (c%i, r%i): %f \n", chip, icol+1, irow+1, value);
+      }
 
       if (checkrange && value >= vmin && value <= vmax) 
 	n_range += 1; 
@@ -117,7 +123,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 
 
 TCanvas* drawMod(TString label, TString inputFile, int roc, 
-		 TString drawOption, double vmin, double vmax, int V=0){
+		 TString drawOption, double vmin, double vmax, bool printpix, int V=0){
  
   if (!strcmp(label, "pretest") ) 
     return drawModPretest(label, inputFile, drawOption);
@@ -174,7 +180,7 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
     }
 
     else if (!strcmp(label, "daq")) { 
-      hist = Form("DAQ/Hits_C%d_V%d", chip, V); 
+      hist = Form("DAQ/hits_C%d_V%d", chip, V); 
     }
 
     else if (!strcmp(label, "scurves")) { 
@@ -195,10 +201,11 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
     }
 
     int n_r, n_t; 
-    addChip(hist, chip, h3, n_r, n_t, checkrange, vmin, vmax); 
+    addChip(hist, chip, h3, n_r, n_t, checkrange, vmin, vmax, printpix); 
     // addChip(hist, chip, h3);
     n_range += n_r;
-    n_total += n_t; 
+    n_total += n_t;
+    
   }
 
   if (!strcmp(label, "alive") ){
@@ -211,8 +218,6 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
     printf("Total good bump bonding pixels %d / %d = %.2f%% (%d)\n",
 	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range)); 
   }
-
-
 
   h3->Draw(drawOption);
 
@@ -252,6 +257,7 @@ int main(int argc, char** argv) {
   // double vmin = std::numeric_limits<double>::min();
   double vmin = -std::numeric_limits<double>::max();
   double vmax = std::numeric_limits<double>::max();
+  bool printpix(false);
   // int V = 0;
 
   for (int i = 0; i < argc; i++){
@@ -276,17 +282,18 @@ int main(int argc, char** argv) {
       vmax = atof(argv[++i]); 
       std::cout << "Using vmax = " << vmax << std::endl; 
     }
+    if (!strcmp(argv[i],"-p")) {printpix = true; }
   }
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax);  
+    drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax, printpix);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax);  
+    TCanvas *c = drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax, printpix);  
     // TString comname = inputFile;
     // comname.ReplaceAll(".root", "");
     TString outFile;
