@@ -171,8 +171,28 @@ sl() {
 #--------------------------------------------------
 # CMSPXL ENV
 #--------------------------------------------------
+
 pwd_=$PWD 
 cd ~/cmspxl
 . setup.sh
 cd $pwd_ 
+
+setpxl() {
+    if [ -z "$1" ]; then
+	echo "Please specify the version: [1.0]" 
+	return 
+    fi; 
+
+    if [ "$1" = 1.0 ]; then
+	export PATH=/home/purduepix/cmspxl/v2015.01/bin:/home/purduepix/pxar/v2014.11/bin:/home/purduepix/pxar/v2014.11/main:$PATH 
+    fi;
+
+    echo "Using the following binnary: "
+    which pXar
+    which mkConfig
+    which drawMod
+    which drawIV
+    
+}
+
 
