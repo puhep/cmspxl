@@ -177,6 +177,8 @@ cd ~/cmspxl
 . setup.sh
 cd $pwd_ 
 
+export SUBSERVER="127.0.0.1:12334"
+
 setpxl() {
     if [ -z "$1" ]; then
 	echo "Please specify the version: [1.0]" 
@@ -184,7 +186,7 @@ setpxl() {
     fi; 
 
     if [ "$1" = 1.0 ]; then
-	export PATH=/home/purduepix/cmspxl/v2015.01/bin:/home/purduepix/pxar/v2014.11/bin:/home/purduepix/pxar/v2014.11/main:$PATH 
+	export PATH=/home/purduepix/cmspxl/v2015.01/bin:/home/purduepix/pxar/v2014.11/bin:/home/purduepix/pxar/v2014.11/main:/home/purduepix/elComandante/v1.0/subsystem:$PATH 
     fi;
 
     echo "Using the following binnary: "
@@ -192,6 +194,8 @@ setpxl() {
     which mkConfig
     which drawMod
     which drawIV
+    which subserver
+    which client
     
 }
 
