@@ -41,7 +41,7 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
 
       double value = h2d->GetBinContent(icol+1, irow+1); //(0,0) is underflow. 
 
-      //Print values to stdout if -p option is active
+      //Print pixel values to stdout if -p option is active
       if (printpix && value >= vmin && value <= vmax) {
 	printf("  ROC %i (c%i, r%i): %f \n", chip, icol+1, irow+1, value);
       }
@@ -106,7 +106,7 @@ TCanvas* drawModPretest(TString label, TString inputFile,
   c->cd(4); 
   h4->Draw();
 
-  TString common = "Pretest/pretestVthrCompCalDel_c11_r20"; 
+  TString common = "Pretest/pretestVthrCompCalDel_c12_r22"; 
   for (int chip=0; chip<16; chip++) {
     c->cd(5+chip); 
     TH2D *h5 = (TH2D*)f->Get(Form("%s_C%d_V0", common.Data(), chip)); 
