@@ -166,7 +166,7 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
     // only plot one roc case 
     if ( roc != 16 && chip != roc) continue;
 
-    if (!strcmp(label, "bumpbonding") ){
+    if (!strcmp(label, "bb") ){
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
       hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
@@ -214,7 +214,7 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
   }
 
 
-  if (!strcmp(label, "bumpbonding") ){
+  if (!strcmp(label, "bb") ){
     printf("Total good bump bonding pixels %d / %d = %.2f%% (%d)\n",
 	   n_range, n_total, 100.*n_range/n_total, (n_total-n_range)); 
   }
