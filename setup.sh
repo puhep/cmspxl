@@ -189,7 +189,7 @@ setpxl() {
 
     if [ "$1" = 1.1 ]; then
 	setroot5 
-	export PATH=/home/purduepix/cmspxl/v2015.04/bin:/home/purduepix/pxar/pxar_crosscalibrate/bin:/home/purduepix/pxar/pxar_crosscalibrate/main:/home/purduepix/elComandante/v1.0/subsystem:/home/purduepix/elComandante/v1.0/elComandante:$PATH 
+	export PATH=/home/purduepix/cmspxl/v2015.04/bin:/home/purduepix/pxar/pxar_crosscalibrate/bin:/home/purduepix/pxar/pxar_crosscalibrate/main:/home/purduepix/elComandante/v1.1/subsystem:/home/purduepix/elComandante/v1.1/elComandante:$PATH 
     fi;
 
     if [ "$1" = 1.0 ]; then

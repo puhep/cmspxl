@@ -57,6 +57,8 @@ $(BIN)/drawVD: $(SRC)/drawVD.cc
 $(BIN)/findHistMax: $(SRC)/findHistMax.cc
 	$(CC) $< $(FLAGS) -o $@
 
+$(BIN)/compBXplot: $(SRC)/compBXplot.cc
+	$(CC) $< $(FLAGS) -o $@
 
 clean:
 	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawHist $(BIN)/hdiff $(BIN)/hsup $(BIN)/parseTbm $(BIN)/drawVD $(BIN)/findHistMax
