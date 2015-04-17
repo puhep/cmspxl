@@ -58,6 +58,8 @@ for row in logData:
         continue
 
     items = row.split() 
+    if len(items) == 0: 
+        continue 
     voltage = -1*Decimal(items[0])
     current = -1*Decimal(items[1])
 
