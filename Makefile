@@ -36,6 +36,9 @@ $(BIN)/drawMod: $(SRC)/drawMod.cc
 $(BIN)/drawIV: $(SRC)/drawIV.cc
 	$(CC) $< $(FLAGS) -o $@
 
+$(BIN)/drawTemp: $(SRC)/drawTemp.cc
+	$(CC) $< $(FLAGS) -o $@
+
 $(BIN)/drawHist: $(SRC)/drawHist.cc
 	$(CC) $< $(FLAGS) -o $@
 
@@ -61,7 +64,7 @@ $(BIN)/compBXplot: $(SRC)/compBXplot.cc
 	$(CC) $< $(FLAGS) -o $@
 
 clean:
-	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawHist $(BIN)/hdiff $(BIN)/hsup $(BIN)/parseTbm $(BIN)/drawVD $(BIN)/findHistMax
+	rm -f $(BIN)/drawMod $(BIN)/drawIV $(BIN)/drawTemp $(BIN)/drawHist $(BIN)/hdiff $(BIN)/hsup $(BIN)/parseTbm $(BIN)/drawVD $(BIN)/findHistMax
 	rm -rf $(BIN)/*.dSYM 
 
 
