@@ -46,7 +46,7 @@ void set_root_style(int stat=1110, int grid=0){
 
   // gStyle->SetPadTopMargin(PadTopMargin);  
   gStyle->SetPadLeftMargin(0.10);  
-  gStyle->SetPadRightMargin(0.05);  
+  gStyle->SetPadRightMargin(0.10);  
 
   gStyle->SetLabelSize(0.03, "XYZ");  
   gStyle->SetTitleSize(0.04, "XYZ");  
@@ -55,7 +55,7 @@ void set_root_style(int stat=1110, int grid=0){
   gStyle->SetPadBorderMode(0);  
   gStyle->SetPadColor(0);  
   gStyle->SetPadTickX(1); 
-  gStyle->SetPadTickY(1); 
+  gStyle->SetPadTickY(0); 
   gStyle->SetPadGridX(grid); 
   gStyle->SetPadGridY(grid); 
 
@@ -129,7 +129,7 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
   TCanvas *c = new TCanvas("c", "Thermal Cycle", 800, 800);
   c->SetGrid();
   c->cd();
-  TPad *pad = new TPad("pad","",0,0,0.93,1);
+  TPad *pad = new TPad("pad","",0,0,1,1);
   pad->Draw();
   pad->cd();
 
@@ -156,7 +156,7 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
 			   err_msg.Data()), "p"); 
     if (i>0) {
       c->cd();
-      TPad *overlay = new TPad("overlay","",0,0,0.93,1);
+      TPad *overlay = new TPad("overlay","",0,0,1,1);
       overlay->SetFillStyle(4000);
       overlay->SetFillColor(0);
       overlay->SetFrameFillStyle(4000);
@@ -172,8 +172,9 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
     }
     else if (inputFiles[i].Contains("Hum")) {
       gr->Draw("AP,Y+");
-      gr->GetXaxis()->SetTitle("Time [s]");
+      // gr->GetXaxis()->SetTitle("Time [s]");
       gr->GetYaxis()->SetTitle("Humidity [%]");
+      gr->GetYaxis()->SetTicks("+");
       gr->GetYaxis()->SetRangeUser(0,100);
     }
     //mg->Add(gr);
