@@ -17,7 +17,7 @@ GLIBS         = $(filter-out -lz, $(ROOTGLIBS))
 FLAGS=$(GCCFLAGS) $(ROOTCFLAGS) $(ROOTLIBS) -lHistPainter 
 
 #drawVD
-PROG=drawMod drawIV drawHist hdiff hsup parseTbm findHistMax
+PROG=drawMod drawTemp drawIV drawHist hdiff hsup parseTbm findHistMax
 LIST=$(addprefix $(BIN)/, $(PROG))
 
 
