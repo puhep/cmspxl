@@ -152,6 +152,7 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
     if (color >= 5) color ++; // bypass the yellow  
     if (color >= 10) color = color % 10 + 1 ; // reuse the first 9 colors
     gr->SetMarkerColor(color);
+    gr->SetTitle(""); 
     leg->AddEntry(gr, Form("%s %s", inputFiles[i].Data(),
 			   err_msg.Data()), "p"); 
     if (i>0) {
@@ -179,6 +180,7 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
     }
     //mg->Add(gr);
   }
+
 
   leg->Draw(); 
   // c->SetLogy();
