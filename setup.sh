@@ -187,6 +187,11 @@ setpxl() {
 	return 
     fi; 
 
+    if [ "$1" = 1.2 ]; then
+	setroot5 
+	export PATH=/home/purduepix/cmspxl/v2015.04/bin:/home/purduepix/pxar/v2015.04/bin:/home/purduepix/pxar/v2015.04/main:/home/purduepix/elComandante/v1.1/subsystem:/home/purduepix/elComandante/v1.1/elComandante:$PATH 
+    fi;
+
     if [ "$1" = 1.1 ]; then
 	setroot5 
 	export PATH=/home/purduepix/cmspxl/v2015.04/bin:/home/purduepix/pxar/pxar_crosscalibrate/bin:/home/purduepix/pxar/pxar_crosscalibrate/main:/home/purduepix/elComandante/v1.1/subsystem:/home/purduepix/elComandante/v1.1/elComandante:$PATH 
@@ -209,7 +214,4 @@ setpxl() {
 }
 
 # Set the default env 
-setpxl 1.1 
-
-
-
+setpxl 1.2 
