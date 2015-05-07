@@ -86,7 +86,7 @@ bool addChip(const TString hist, const int chip, TH2D *h3,
 
 
 TCanvas* drawModPretest(TString label, TString inputFile,
-			TString drawOption, int V=0){
+			TString drawOption, int col, int row, int V=0){
   TCanvas *c = new TCanvas("c", "c", 800, 800);
   TFile *f = new TFile(inputFile.Data()); 
 
@@ -97,20 +97,22 @@ TCanvas* drawModPretest(TString label, TString inputFile,
     
   c->Divide(4, 5); 
   c->cd(1); 
-  h1->Draw();
-
+  if (h1) h1->Draw();
   c->cd(2); 
-  h2->Draw();
+  if (h2) h2->Draw();
   c->cd(3); 
-  h3->Draw();
+  if (h3) h3->Draw();
   c->cd(4); 
-  h4->Draw();
+  if (h4) h4->Draw();
 
-  TString common = "Pretest/pretestVthrCompCalDel_c12_r22"; 
+  // TString common = "Pretest/pretestVthrCompCalDel_c12_r22"; 
+  // TString common = "Pretest/pretestVthrCompCalDel_c11_r20"; 
+  TString common = Form("Pretest/pretestVthrCompCalDel_c%d_r%d", col, row); ; 
   for (int chip=0; chip<16; chip++) {
     c->cd(5+chip); 
     TH2D *h5 = (TH2D*)f->Get(Form("%s_C%d_V0", common.Data(), chip)); 
-    h5->Draw("colz"); 
+    if (h5) h5->Draw("colz"); 
+    else printf("Not able to find %s\n",  common.Data());
   }
 
   gROOT->SetStyle("Plain");
@@ -123,10 +125,11 @@ TCanvas* drawModPretest(TString label, TString inputFile,
 
 
 TCanvas* drawMod(TString label, TString inputFile, int roc, 
-		 TString drawOption, double vmin, double vmax, bool printpix, int V=0){
+		 TString drawOption, double vmin, double vmax, bool printpix, 
+		 int col, int row, int V=0){
  
   if (!strcmp(label, "pretest") ) 
-    return drawModPretest(label, inputFile, drawOption);
+    return drawModPretest(label, inputFile, drawOption, col, row);
 
   TCanvas *c = new TCanvas("c", "c", 800, 200);
   TFile::Open(inputFile.Data());
@@ -147,7 +150,7 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
      printf("Number of alive pixels: (thr vmin %.1f vmax %.1f) \n", vmin, vmax);
   }
 
-  if (!strcmp(label, "bumpbonding") ){
+  if (!strcmp(label, "bb") ){
      checkrange = true;
      if (vmin == -std::numeric_limits<double>::max() )
        vmin = 20.; 
@@ -169,6 +172,9 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
     if (!strcmp(label, "bb") ){
       // if (chip < 10)  hist = Form("BumpBonding/BB- %d", chip);
       // else hist = Form("BumpBonding/BB-%d", chip);
+      // need to extract the separation cut from the dist file
+      //bb_cut = Form("BumbBonding/dist_thr_calSmap_VthrComp_C%d_V%d", chip, V);
+      // replicate fitting procedure done in pXar?
       hist = Form("BumpBonding/thr_calSMap_VthrComp_C%d_V%d", chip, V);
       gDirectory->GetObject(hist, h2d);
       if (!h2d)
@@ -237,9 +243,22 @@ TCanvas* drawMod(TString label, TString inputFile, int roc,
 }
 
 
-
 void print_usage(){
-  std::cout << "Usage see: man drawMod " << std::endl; 
+  printf("NAME\n\tdrawMod - draw Module plots\n");
+  printf("\nSYNOPSIS\n\tdrawMod [-t testname ] [-i input-file] [-g] [-r roc] [-opt draw-option] [-v] [-vmin min-value] [-vmax max-value] [-col column] [-row row]\n");
+  printf("\nOPTIONS\n");
+  printf("\t%-5s  %-40s\n", "-i", "Input file");
+  printf("\n\t%-5s  %-40s\n", "-g", "Run GUI");
+  printf("\n\t%-5s  %-40s\n", "-r", "ROC number [0, ... , 15]");
+  printf("\n\t%-5s  %-40s\n", "-t", "test name [pretest, alive, bb, trim, daq]");
+  printf("\n\t%-5s  %-40s\n", "-v", "version number for output file");
+  printf("\n\t%-5s  %-40s\n", "-opt", "draw option for histogram [colz, surf2]");
+  printf("\n\t%-5s  %-40s\n", "-vmax", "limit the histogram within vmax-value");
+  printf("\n\t%-5s  %-40s\n", "-vmin", "limit the histogram within vmin-value");
+  printf("\n\t%-5s  %-40s\n", "-col", "column value in pretest");
+  printf("\n\t%-5s  %-40s\n", "-row", "row value in pretest");
+  printf("\n\t%-5s  %-40s\n", "-p", "print pixel values to stdout");
+  printf("\nAUTHOR\n\tXin Shi <Xin.Shi@cern.ch>\n");
 }
 
 int main(int argc, char** argv) {
@@ -253,6 +272,8 @@ int main(int argc, char** argv) {
   TString version(""); 
   TString inputFile;
   int roc(16); 
+  int col(12); 
+  int row(22); 
   TString drawOption("colz"); 
   // double vmin = std::numeric_limits<double>::min();
   double vmin = -std::numeric_limits<double>::max();
@@ -270,7 +291,7 @@ int main(int argc, char** argv) {
     }
     if (!strcmp(argv[i],"-t")) {testLabel = std::string(argv[++i]); }
     if (!strcmp(argv[i],"-v")) {version = std::string(argv[++i]); }
-    if (!strcmp(argv[i],"-draw")) {
+    if (!strcmp(argv[i],"-opt")) {
       drawOption = std::string(argv[++i]);
       std::cout << "Using drawOption = " << drawOption << std::endl;  
     }
@@ -282,18 +303,28 @@ int main(int argc, char** argv) {
       vmax = atof(argv[++i]); 
       std::cout << "Using vmax = " << vmax << std::endl; 
     }
+    if (!strcmp(argv[i],"-col")) {
+      col = atof(argv[++i]); 
+      std::cout << "Using col = " << col << std::endl; 
+    }
+    if (!strcmp(argv[i],"-row")) {
+      row = atof(argv[++i]); 
+      std::cout << "Using row = " << row << std::endl; 
+    }
     if (!strcmp(argv[i],"-p")) {printpix = true; }
   }
 
   if (doRunGui) { 
     TApplication theApp("App", 0, 0);
     theApp.SetReturnFromRun(true);
-    drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax, printpix);  
+    drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax,
+	    printpix, col, row);  
     theApp.Run();
   } 
   
   else {
-    TCanvas *c = drawMod(testLabel, inputFile, roc, drawOption, vmin, vmax, printpix);  
+    TCanvas *c = drawMod(testLabel, inputFile, roc, drawOption, 
+			 vmin, vmax, printpix, col, row);  
     // TString comname = inputFile;
     // comname.ReplaceAll(".root", "");
     TString outFile;
