@@ -156,9 +156,13 @@ TCanvas* drawIV(std::vector<TString> inputFiles){
 
 #ifndef __CINT__ 
 
-int print_usage(){
-  std::cout << "Please see usage: man drawIV \n" << std::endl;
-  return 0; 
+void print_usage(){
+  printf("NAME\n\tdrawIV - draw IV curves from log files\n");
+  printf("\nSYNOPSIS\n\tdrawIV [-b] [-h] file1 file2 ...\n");
+  printf("\nOPTIONS\n");
+  printf("\t%-5s  %-40s\n", "-h", "Print this message");
+  printf("\t%-5s  %-40s\n", "-b", "Batch mode, save to pdf file directly");
+  printf("\nAUTHOR\n\tXin Shi <Xin.Shi@cern.ch>\n");
 }
 
 int main(int argc, char** argv) {
@@ -172,8 +176,10 @@ int main(int argc, char** argv) {
   TString outFile = "test.pdf";
   
   for (int i = 0; i < argc; i++){
-    if (!strcmp(argv[i], "-h")) 
-      return print_usage();
+    if (!strcmp(argv[i], "-h")) {
+      print_usage();
+      break; 
+    }
 
     if (!strcmp(argv[i], "-b")) {
       doBatch = true;
