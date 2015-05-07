@@ -176,7 +176,7 @@ TCanvas* drawPlot(std::vector<TString> inputFiles){
       // gr->GetXaxis()->SetTitle("Time [s]");
       gr->GetYaxis()->SetTitle("Humidity [%]");
       gr->GetYaxis()->SetTicks("+");
-      gr->GetYaxis()->SetRangeUser(0,100);
+      gr->GetYaxis()->SetRangeUser(0,50);
     }
     //mg->Add(gr);
   }
